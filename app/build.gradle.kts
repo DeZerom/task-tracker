@@ -72,5 +72,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //app modules
+    implementation(project(":core:ui"))
     implementation(project(":auth:ui"))
 }
