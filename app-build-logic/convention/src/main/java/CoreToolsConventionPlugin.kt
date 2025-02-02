@@ -6,10 +6,9 @@ import org.gradle.kotlin.dsl.dependencies
 import ru.dezerom.app_build_logic.convention.utils.BuildConsts
 import ru.dezerom.app_build_logic.convention.utils.configureKotlinAndroid
 import ru.dezerom.app_build_logic.convention.utils.coreUiDependencies
-import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
 
-class FeatureUiConventionPlugin: Plugin<Project> {
+class CoreToolsConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
@@ -30,9 +29,6 @@ class FeatureUiConventionPlugin: Plugin<Project> {
             }
 
             dependencies {
-                implementation(project(":core:tools"))
-                implementation(project(":core:ui"))
-
                 coreUiDependencies(libs)
             }
         }

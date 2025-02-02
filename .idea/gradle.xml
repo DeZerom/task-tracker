@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/auth/domain" />
             <option value="$PROJECT_DIR$/auth/ui" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/tools" />
             <option value="$PROJECT_DIR$/core/ui" />
           </set>
         </option>

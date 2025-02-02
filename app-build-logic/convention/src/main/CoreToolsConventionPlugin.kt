@@ -1,15 +1,4 @@
-import com.android.build.api.dsl.LibraryExtension
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
-import ru.dezerom.app_build_logic.convention.utils.BuildConsts
-import ru.dezerom.app_build_logic.convention.utils.configureKotlinAndroid
-import ru.dezerom.app_build_logic.convention.utils.coreUiDependencies
-import ru.dezerom.app_build_logic.convention.utils.implementation
-import ru.dezerom.app_build_logic.convention.utils.libs
-
-class FeatureUiConventionPlugin: Plugin<Project> {
+class CoreToolsConventionPlugin {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
@@ -33,7 +22,7 @@ class FeatureUiConventionPlugin: Plugin<Project> {
                 implementation(project(":core:tools"))
                 implementation(project(":core:ui"))
 
-                coreUiDependencies(libs)
+
             }
         }
     }

@@ -6,8 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import ru.dezerom.core.ui.kit.consts.Colors
+import ru.dezerom.core.tools.consts.Colors
+import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.ui.kit.text_style.TS
 
 @Composable
@@ -28,7 +28,7 @@ fun TextInput(
             focusedIndicatorColor = Colors.accent,
             unfocusedIndicatorColor = Colors.darkSurface,
         ),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(Dimens.CornerRadius.Default),
         label = {
             Text(
                 text = labelText,

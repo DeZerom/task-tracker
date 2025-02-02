@@ -1,4 +1,4 @@
-package ru.dezerom.core.ui.kit.consts
+package ru.dezerom.core.tools.consts
 
 import androidx.compose.ui.graphics.Color
 

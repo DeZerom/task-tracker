@@ -4,7 +4,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import ru.dezerom.core.ui.kit.consts.Colors
+import ru.dezerom.core.tools.consts.Colors
 
 val TS = Typography(
     titleLarge = TextStyle(

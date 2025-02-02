@@ -31,6 +31,12 @@ gradlePlugin {
             implementationClass = "AndroidApplicationConventionPlugin"
         }
 
+        //tools
+        register("coreToolsConventionPlugin") {
+            id = "build.android.core.tools.module"
+            implementationClass = "CoreToolsConventionPlugin"
+        }
+
         //ui
         register("coreUiConventionPlugin") {
             id = "build.android.core.ui.module"
