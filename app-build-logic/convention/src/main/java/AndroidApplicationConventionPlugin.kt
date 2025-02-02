@@ -1,21 +1,22 @@
-import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import ru.dezerom.app_build_logic.convention.utils.BuildConsts
-import ru.dezerom.app_build_logic.convention.utils.configureKotlinAndroid
+import org.gradle.kotlin.dsl.dependencies
+import ru.dezerom.app_build_logic.convention.utils.coreUiDependencies
+import ru.dezerom.app_build_logic.convention.utils.implementation
+import ru.dezerom.app_build_logic.convention.utils.libs
 
 class AndroidApplicationConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply("com.android.application")
-                apply("org.jetbrains.kotlin.android")
-            }
+            dependencies {
+                implementation(project(":core:tools"))
+                implementation(project(":core:ui"))
+                implementation(project(":core:navigation:logic"))
+                implementation(project(":core:navigation:api"))
 
-            extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
-                defaultConfig.targetSdk = BuildConsts.TARGET_SDK
+                implementation(project(":auth:ui"))
+
+                coreUiDependencies(libs)
             }
         }
     }

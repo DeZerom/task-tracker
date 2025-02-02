@@ -32,6 +32,7 @@ class FeatureUiConventionPlugin: Plugin<Project> {
             dependencies {
                 implementation(project(":core:tools"))
                 implementation(project(":core:ui"))
+                implementation(project(":core:navigation:api"))
 
                 coreUiDependencies(libs)
             }

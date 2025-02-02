@@ -1,6 +1,7 @@
 package ru.dezerom.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,9 +21,13 @@ import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.widgets.VSpacer
+import ru.dezerom.navigation.api.destinations.RegistrationDestination
+import ru.dezerom.navigation.api.tools.LocalNavController
 
 @Composable
 fun AuthScreen() {
+    val navController = LocalNavController.current
+
     Scaffold { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,7 +65,9 @@ fun AuthScreen() {
                 text = stringResource(id = R.string.create_account),
                 color = Colors.secondaryText,
                 style = TS.bodySmall,
-                modifier = Modifier.align(Alignment.Start)
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .clickable { navController.navigate(RegistrationDestination) }
             )
             Spacer(modifier = Modifier.weight(1f))
             WhiteButton(
