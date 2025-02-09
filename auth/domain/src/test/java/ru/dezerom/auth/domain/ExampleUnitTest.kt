@@ -1,4 +1,4 @@
-package ru.dezerom.domain
+package ru.dezerom.auth.domain
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

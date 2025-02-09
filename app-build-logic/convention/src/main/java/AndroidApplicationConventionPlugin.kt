@@ -1,7 +1,7 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import ru.dezerom.app_build_logic.convention.utils.coreUiDependencies
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreUiDependencies
 import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
 

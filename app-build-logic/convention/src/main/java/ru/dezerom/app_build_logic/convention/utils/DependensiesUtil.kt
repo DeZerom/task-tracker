@@ -20,3 +20,6 @@ fun DependencyHandlerScope.androidTestImplementation(dependencyNotation: Any) =
 
 fun DependencyHandlerScope.debugImplementation(dependencyNotation: Any) =
     add("debugImplementation", dependencyNotation)
+
+fun DependencyHandlerScope.ksp(dependencyNotation: Any) =
+    add("ksp", dependencyNotation)

@@ -3,15 +3,13 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import ru.dezerom.app_build_logic.convention.utils.BuildConsts
 import ru.dezerom.app_build_logic.convention.utils.configureKotlinAndroid
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.androidTestDependencies
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiDependencies
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiPlugins
-import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreUiDependencies
-import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
 
-class FeatureUiConventionPlugin: Plugin<Project> {
+class FeatureDomainConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
@@ -22,22 +20,10 @@ class FeatureUiConventionPlugin: Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-
-                buildFeatures {
-                    compose = true
-                }
-
-                composeOptions {
-                    kotlinCompilerExtensionVersion = BuildConsts.KOTLIN_COMPILER_EXTENSION_VERSION
-                }
             }
 
             dependencies {
-                implementation(project(":core:tools"))
-                implementation(project(":core:ui"))
-                implementation(project(":core:navigation:api"))
-
-                coreUiDependencies(libs)
+                androidTestDependencies(libs)
                 coreDiDependencies(libs)
             }
         }

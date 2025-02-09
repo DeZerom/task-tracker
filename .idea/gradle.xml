@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/app-build-logic" />
             <option value="$PROJECT_DIR$/app-build-logic/convention" />
             <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/auth/data" />
             <option value="$PROJECT_DIR$/auth/domain" />
             <option value="$PROJECT_DIR$/auth/ui" />
             <option value="$PROJECT_DIR$/core" />

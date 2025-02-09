@@ -46,5 +46,17 @@ gradlePlugin {
             id = "build.android.feature.ui.module"
             implementationClass = "FeatureUiConventionPlugin"
         }
+
+        //domain
+        register("featureDomainConventionPlugin") {
+            id = "build.android.feature.domain.module"
+            implementationClass = "FeatureDomainConventionPlugin"
+        }
+
+        //data
+        register("featureDataConventionPlugin") {
+            id = "build.android.feature.data.module"
+            implementationClass = "FeatureDataConventionPlugin"
+        }
     }
 }

@@ -1,4 +1,4 @@
-package ru.dezerom.domain
+package ru.dezerom.auth.data
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("ru.dezerom.domain.test", appContext.packageName)
+        assertEquals("ru.dezerom.auth.data.test", appContext.packageName)
     }
 }

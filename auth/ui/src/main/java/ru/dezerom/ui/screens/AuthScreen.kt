@@ -14,18 +14,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
+import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.navigation.api.destinations.RegistrationDestination
 import ru.dezerom.navigation.api.tools.LocalNavController
 
 @Composable
 fun AuthScreen() {
+    AuthScreenContent()
+}
+
+@Composable
+internal fun AuthScreenContent() {
     val navController = LocalNavController.current
 
     Scaffold { innerPadding ->
@@ -76,5 +83,13 @@ fun AuthScreen() {
                 modifier = Modifier.fillMaxWidth()
             )
         }
+    }
+}
+
+@Composable
+@Preview
+private fun AuthScreenPreview() {
+    TaskTrackerTheme {
+        AuthScreenContent()
     }
 }

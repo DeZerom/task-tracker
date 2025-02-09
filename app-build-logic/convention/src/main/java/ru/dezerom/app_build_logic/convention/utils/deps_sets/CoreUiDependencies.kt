@@ -1,9 +1,13 @@
-package ru.dezerom.app_build_logic.convention.utils
+package ru.dezerom.app_build_logic.convention.utils.deps_sets
 
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.kotlin.dsl.DependencyHandlerScope
+import ru.dezerom.app_build_logic.convention.utils.androidTestImplementation
+import ru.dezerom.app_build_logic.convention.utils.debugImplementation
+import ru.dezerom.app_build_logic.convention.utils.implementation
+import ru.dezerom.app_build_logic.convention.utils.testImplementation
 
-fun DependencyHandlerScope.coreUiDependencies(libs: VersionCatalog) {
+internal fun DependencyHandlerScope.coreUiDependencies(libs: VersionCatalog) {
     //test
     testImplementation(libs.findLibrary("junit").get())
     androidTestImplementation(libs.findLibrary("androidx-junit").get())
