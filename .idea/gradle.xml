@@ -29,6 +29,7 @@
             <option value="$PROJECT_DIR$/auth/domain" />
             <option value="$PROJECT_DIR$/auth/ui" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/navigation/api" />
             <option value="$PROJECT_DIR$/core/navigation/logic" />

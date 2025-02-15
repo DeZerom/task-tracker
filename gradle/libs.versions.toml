@@ -59,5 +59,7 @@ google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 build-android-application = { id = "build.android.application", version = "unspecified" }
 build-android-core-ui-module = { id = "build.android.core.ui.module", version = "unspecified" }
 build-android-core-tools-module = { id = "build.android.core.tools.module", version = "unspecified"}
+build-android-core-data-module = { id = "build.android.core.data.module", version = "unspecified" }
 build-android-feature-ui-module = { id = "build.android.feature.ui.module", version = "unspecified" }
 build-android-feature-domain-module = { id = "build.android.feature.domain.module", version = "unspecified" }
+build-android-feature-data-module = { id = "build.android.feature.data.module", version = "unspecified" }

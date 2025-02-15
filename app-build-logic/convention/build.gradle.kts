@@ -54,6 +54,10 @@ gradlePlugin {
         }
 
         //data
+        register("coreDataConventionPlugin") {
+            id = "build.android.core.data.module"
+            implementationClass = "CoreDataConventionPlugin"
+        }
         register("featureDataConventionPlugin") {
             id = "build.android.feature.data.module"
             implementationClass = "FeatureDataConventionPlugin"
