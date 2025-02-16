@@ -5,6 +5,9 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import ru.dezerom.app_build_logic.convention.utils.configureKotlinAndroid
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.apiDependencies
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiDependencies
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiPlugins
+import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
 
 class CoreDataConventionPlugin: Plugin<Project> {
@@ -13,6 +16,7 @@ class CoreDataConventionPlugin: Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
+                coreDiPlugins()
             }
 
             extensions.configure<LibraryExtension> {
@@ -20,7 +24,10 @@ class CoreDataConventionPlugin: Plugin<Project> {
             }
 
             dependencies {
+                implementation(project(":core:tools"))
+
                 apiDependencies(libs)
+                coreDiDependencies(libs)
             }
         }
     }

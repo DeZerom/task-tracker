@@ -10,5 +10,9 @@ data class ResponseDto<T>(
 
     @Expose
     @SerializedName("body")
-    val body: T
+    val body: T,
+
+    @Expose
+    @SerializedName("error")
+    val error: String
 )
