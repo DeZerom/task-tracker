@@ -1,6 +1,7 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiDependencies
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreUiDependencies
 import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
@@ -9,6 +10,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             dependencies {
+                implementation(project(":core:data"))
                 implementation(project(":core:tools"))
                 implementation(project(":core:ui"))
                 implementation(project(":core:navigation:logic"))
@@ -17,6 +19,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 implementation(project(":auth:ui"))
 
                 coreUiDependencies(libs)
+                coreDiDependencies(libs)
             }
         }
     }

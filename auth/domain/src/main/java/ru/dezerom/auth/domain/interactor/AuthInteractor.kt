@@ -1,9 +1,12 @@
 package ru.dezerom.auth.domain.interactor
 
-class AuthInteractor {
+import ru.dezerom.auth.data.repositories.AuthRepository
+import javax.inject.Inject
 
-//    fun authorize(login: String, pass: String): Result<Boolean> {
-//
-//    }
-
+class AuthInteractor @Inject constructor(
+    private val authRepository: AuthRepository
+) {
+    suspend fun authorize(login: String, pass: String): Result<Boolean> {
+        return authRepository.authorize(login, pass)
+    }
 }

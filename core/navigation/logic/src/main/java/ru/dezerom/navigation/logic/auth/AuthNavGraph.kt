@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.navigation.api.destinations.AuthDestination
 import ru.dezerom.navigation.api.destinations.RegistrationDestination
-import ru.dezerom.ui.screens.AuthScreen
+import ru.dezerom.ui.auth.AuthScreen
 
 fun NavGraphBuilder.authNavGraph() {
     composable<AuthDestination> { AuthScreen() }

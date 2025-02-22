@@ -1,4 +1,4 @@
-package ru.dezerom.ui.screens
+package ru.dezerom.ui.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
