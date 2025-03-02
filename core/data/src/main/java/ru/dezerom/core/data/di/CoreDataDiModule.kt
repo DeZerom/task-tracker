@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CoreDataDiModule {
+object CoreDataDiModule {
 
     @Provides
     fun provideRetrofit(@ApplicationContext context: Context): Retrofit =

@@ -1,8 +1,7 @@
 [versions]
 androidTools = "31.8.0"
-androidGradlePlugin = "8.8.0"
-agp = "8.5.2"
-kotlin = "1.9.24"
+agp = "8.8.2"
+kotlin = "2.1.10"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -12,9 +11,10 @@ activityCompose = "1.10.0"
 composeBom = "2025.01.00"
 appcompat = "1.7.0"
 material = "1.12.0"
-ksp = "1.9.24-1.0.20"
+ksp = "2.1.10-1.0.31"
 navVersion = "2.8.6"
-hiltVersion = "2.51.1"
+hiltVersion = "2.55"
+hiltNavigation = "1.2.0"
 retrofitVersion = "2.11.0"
 
 [libraries]
@@ -40,6 +40,7 @@ google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android
 google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltVersion" }
 squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
 squareup-retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
+androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
 
 # for build logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -54,6 +55,8 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 #convetion plugins
 build-android-application = { id = "build.android.application", version = "unspecified" }

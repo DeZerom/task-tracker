@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.build.android.application)
 }
 

@@ -23,3 +23,6 @@ fun DependencyHandlerScope.debugImplementation(dependencyNotation: Any) =
 
 fun DependencyHandlerScope.ksp(dependencyNotation: Any) =
     add("ksp", dependencyNotation)
+
+fun DependencyHandlerScope.kapt(dependencyNotation: Any) =
+    add("kapt", dependencyNotation)

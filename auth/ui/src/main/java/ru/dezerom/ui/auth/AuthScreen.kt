@@ -6,15 +6,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
@@ -23,23 +26,32 @@ import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
-import ru.dezerom.navigation.api.destinations.RegistrationDestination
 import ru.dezerom.navigation.api.tools.LocalNavController
 
 @Composable
 fun AuthScreen() {
-    AuthScreenContent()
+    val viewModel: AuthViewModel = hiltViewModel()
+    val navController = LocalNavController.current
+
+    val state = viewModel.state.collectAsState()
+
+    AuthScreenContent(
+        onEvent = viewModel::onEvent,
+        state = state.value
+    )
 }
 
 @Composable
-internal fun AuthScreenContent() {
-    val navController = LocalNavController.current
-
+internal fun AuthScreenContent(
+    onEvent: (AuthScreenEvent) -> Unit,
+    state: AuthScreenState,
+) {
     Scaffold { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(innerPadding)
+                .imePadding()
                 .fillMaxSize()
                 .padding(all = Dimens.Padding.Medium)
         ) {
@@ -74,7 +86,7 @@ internal fun AuthScreenContent() {
                 style = TS.bodySmall,
                 modifier = Modifier
                     .align(Alignment.Start)
-                    .clickable { navController.navigate(RegistrationDestination) }
+                    .clickable { }
             )
             Spacer(modifier = Modifier.weight(1f))
             WhiteButton(
@@ -90,6 +102,9 @@ internal fun AuthScreenContent() {
 @Preview
 private fun AuthScreenPreview() {
     TaskTrackerTheme {
-        AuthScreenContent()
+        AuthScreenContent(
+            onEvent = {},
+            state = AuthScreenState()
+        )
     }
 }
