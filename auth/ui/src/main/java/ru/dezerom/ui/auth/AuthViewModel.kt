@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -64,7 +63,7 @@ internal class AuthViewModel @Inject constructor(
         if (!validate()) return@launch
 
         _state.value = state.value.copy(isLoading = true)
-        delay(3000) //todo
+//        delay(3000) //todo
 
 //        val result = authInteractor.authorize(
 //            login = state.value.login,
@@ -84,7 +83,7 @@ internal class AuthViewModel @Inject constructor(
 //            }
 //        )
 
-        _state.value = state.value.copy(isLoading = false)
+//        _state.value = state.value.copy(isLoading = false)
     }
 
     private fun validate(): Boolean {

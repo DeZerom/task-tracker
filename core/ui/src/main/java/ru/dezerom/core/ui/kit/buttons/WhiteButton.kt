@@ -8,13 +8,15 @@ import ru.dezerom.core.tools.consts.Colors
 fun WhiteButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
 ) {
     BaseButton(
         onClick = onClick,
         text = text,
         textColor = Colors.darkSurface,
         backgroundColor = Colors.white,
-        modifier = modifier
+        modifier = modifier,
+        isLoading = isLoading
     )
 }

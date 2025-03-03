@@ -18,5 +18,6 @@ object Dimens {
 
     object Sizes {
         val ButtonHeight = 50.dp
+        val ButtonLoaderSize = 36.dp
     }
 }

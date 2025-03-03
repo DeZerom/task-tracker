@@ -112,7 +112,8 @@ internal fun AuthScreenContent(
             WhiteButton(
                 onClick = { onEvent(AuthScreenEvent.OnAuthorizeClicked) },
                 text = stringResource(id = R.string.authorize),
-                modifier = Modifier.fillMaxWidth()
+                isLoading = state.isLoading,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
