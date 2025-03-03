@@ -6,4 +6,5 @@
     <string name="create_account">Создать аккаунт</string>
     <string name="authorize">Войти</string>
     <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="field_must_not_be_empty">Поле обязательно</string>
 </resources>

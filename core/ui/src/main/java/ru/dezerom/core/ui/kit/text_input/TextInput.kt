@@ -1,5 +1,7 @@
 package ru.dezerom.core.ui.kit.text_input
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -18,27 +20,42 @@ fun TextInput(
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    isError: Boolean = false,
+    error: String? = null,
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChanged,
-        textStyle = TS.bodyMedium,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Colors.darkSurface,
-            unfocusedContainerColor = Colors.darkSurface,
-            cursorColor = Colors.accent,
-            focusedIndicatorColor = Colors.accent,
-            unfocusedIndicatorColor = Colors.darkSurface,
-        ),
-        shape = RoundedCornerShape(Dimens.CornerRadius.Default),
-        label = {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(Dimens.Padding.VerySmall)
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChanged,
+            textStyle = TS.bodyMedium,
+            isError = isError,
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Colors.darkSurface,
+                unfocusedContainerColor = Colors.darkSurface,
+                cursorColor = Colors.accent,
+                focusedIndicatorColor = Colors.accent,
+                unfocusedIndicatorColor = Colors.darkSurface,
+                errorContainerColor = Colors.darkSurface,
+                errorIndicatorColor = Colors.error,
+            ),
+            shape = RoundedCornerShape(Dimens.CornerRadius.Default),
+            label = {
+                Text(
+                    text = labelText,
+                    style = TS.bodySmall,
+                    color = Colors.secondaryText,
+                )
+            },
+            visualTransformation = visualTransformation,
+            modifier = modifier,
+        )
+        if (isError && !error.isNullOrBlank()) {
             Text(
-                text = labelText,
-                style = TS.bodySmall,
-                color = Colors.secondaryText,
+                text = error,
+                style = TS.bodySmall.copy(color = Colors.error)
             )
-        },
-        visualTransformation = visualTransformation,
-        modifier = modifier,
-    )
+        }
+    }
 }

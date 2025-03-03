@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
+import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.text_input.PasswordInput
 import ru.dezerom.core.ui.kit.text_input.TextInput
@@ -84,6 +85,8 @@ internal fun AuthScreenContent(
             TextInput(
                 value = state.login,
                 labelText = stringResource(id = R.string.login),
+                isError = state.loginError != null,
+                error = state.loginError?.getString(),
                 onValueChanged = { onEvent(AuthScreenEvent.LoginChanged(it)) },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -91,6 +94,8 @@ internal fun AuthScreenContent(
             PasswordInput(
                 value = state.password,
                 labelText = stringResource(id = R.string.password),
+                isError = state.passwordError != null,
+                error = state.passwordError?.getString(),
                 onValueChanged = { onEvent(AuthScreenEvent.PasswordChanged(it)) },
                 modifier = Modifier.fillMaxWidth()
             )
