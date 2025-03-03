@@ -6,18 +6,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.ui.kit.text_style.TS
 
 @Composable
-fun TextInput(
+fun PasswordInput(
     value: String,
     labelText: String,
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     OutlinedTextField(
         value = value,
@@ -38,7 +37,8 @@ fun TextInput(
                 color = Colors.secondaryText,
             )
         },
-        visualTransformation = visualTransformation,
+        visualTransformation = PasswordVisualTransformation('*'),
         modifier = modifier,
     )
 }
+

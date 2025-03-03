@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,20 +19,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
+import ru.dezerom.core.ui.kit.text_input.PasswordInput
 import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
+import ru.dezerom.navigation.api.destinations.RegistrationDestination
 import ru.dezerom.navigation.api.tools.LocalNavController
 
 @Composable
 fun AuthScreen() {
     val viewModel: AuthViewModel = hiltViewModel()
     val navController = LocalNavController.current
+
+    LaunchedEffect(viewModel.sideEffect) {
+        launch {
+            viewModel.sideEffect.collect { sideEffect ->
+                when (sideEffect) {
+                    AuthScreenSideEffect.GoToRegistration ->
+                        navController.navigate(RegistrationDestination)
+                }
+            }
+        }
+    }
 
     val state = viewModel.state.collectAsState()
 
@@ -67,16 +82,16 @@ internal fun AuthScreenContent(
             )
             VSpacer(height = Dimens.Padding.Big)
             TextInput(
-                value = "",
+                value = state.login,
                 labelText = stringResource(id = R.string.login),
-                onValueChanged = {},
+                onValueChanged = { onEvent(AuthScreenEvent.LoginChanged(it)) },
                 modifier = Modifier.fillMaxWidth()
             )
             VSpacer(height = Dimens.Padding.Medium)
-            TextInput(
-                value = "",
+            PasswordInput(
+                value = state.password,
                 labelText = stringResource(id = R.string.password),
-                onValueChanged = {},
+                onValueChanged = { onEvent(AuthScreenEvent.PasswordChanged(it)) },
                 modifier = Modifier.fillMaxWidth()
             )
             VSpacer(height = Dimens.Padding.Small)
@@ -86,11 +101,11 @@ internal fun AuthScreenContent(
                 style = TS.bodySmall,
                 modifier = Modifier
                     .align(Alignment.Start)
-                    .clickable { }
+                    .clickable { onEvent(AuthScreenEvent.OnCreateAccClicked) }
             )
             Spacer(modifier = Modifier.weight(1f))
             WhiteButton(
-                onClick = {},
+                onClick = { onEvent(AuthScreenEvent.OnAuthorizeClicked) },
                 text = stringResource(id = R.string.authorize),
                 modifier = Modifier.fillMaxWidth()
             )
