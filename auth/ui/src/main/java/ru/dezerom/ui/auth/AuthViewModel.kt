@@ -1,9 +1,12 @@
 package ru.dezerom.ui.auth
 
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -11,6 +14,7 @@ import kotlinx.coroutines.launch
 import ru.dezerom.auth.domain.interactor.AuthInteractor
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.StringContainer
+import ru.dezerom.core.ui.kit.snackbars.KitSnackbarVisuals
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +27,8 @@ internal class AuthViewModel @Inject constructor(
 
     private val _sideEffects = Channel<AuthScreenSideEffect>(Channel.BUFFERED)
     val sideEffect = _sideEffects.receiveAsFlow()
+
+    val snackBarHost = SnackbarHostState()
 
     fun onEvent(event: AuthScreenEvent) {
         when (event) {
@@ -63,7 +69,14 @@ internal class AuthViewModel @Inject constructor(
         if (!validate()) return@launch
 
         _state.value = state.value.copy(isLoading = true)
-//        delay(3000) //todo
+        delay(3000) //todo
+
+        snackBarHost.showSnackbar(KitSnackbarVisuals.Success(
+            message = "qwerty",
+            actionLabel = null,
+            withDismissAction = false,
+            duration = SnackbarDuration.Short
+        ))
 
 //        val result = authInteractor.authorize(
 //            login = state.value.login,
@@ -83,7 +96,7 @@ internal class AuthViewModel @Inject constructor(
 //            }
 //        )
 
-//        _state.value = state.value.copy(isLoading = false)
+        _state.value = state.value.copy(isLoading = false)
     }
 
     private fun validate(): Boolean {

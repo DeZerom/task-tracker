@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +26,7 @@ import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
+import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.text_input.PasswordInput
 import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
@@ -53,7 +55,8 @@ fun AuthScreen() {
 
     AuthScreenContent(
         onEvent = viewModel::onEvent,
-        state = state.value
+        state = state.value,
+        viewModel.snackBarHost,
     )
 }
 
@@ -61,8 +64,11 @@ fun AuthScreen() {
 internal fun AuthScreenContent(
     onEvent: (AuthScreenEvent) -> Unit,
     state: AuthScreenState,
+    snackbarHostState: SnackbarHostState,
 ) {
-    Scaffold { innerPadding ->
+    Scaffold(
+        snackbarHost = { KitSnackbarHost(snackbarHostState) }
+    ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -125,7 +131,8 @@ private fun AuthScreenPreview() {
     TaskTrackerTheme {
         AuthScreenContent(
             onEvent = {},
-            state = AuthScreenState()
+            state = AuthScreenState(),
+            snackbarHostState = SnackbarHostState()
         )
     }
 }
