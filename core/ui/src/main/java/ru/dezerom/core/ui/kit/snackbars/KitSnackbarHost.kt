@@ -14,9 +14,9 @@ fun KitSnackbarHost(
     SnackbarHost(
         hostState = hostState,
         snackbar = { data ->
-            when (data.visuals) {
-                is KitSnackbarVisuals.Success -> SuccessSnackbar(data.visuals.message)
-                is KitSnackbarVisuals.Error -> ErrorSnackbar(data.visuals.message)
+            when (val vis = data.visuals) {
+                is KitSnackbarVisuals.Success -> SuccessSnackbar(vis.messageContainer)
+                is KitSnackbarVisuals.Error -> ErrorSnackbar(vis.messageContainer)
                 else -> Snackbar(data)
             }
         },

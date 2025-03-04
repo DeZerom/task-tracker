@@ -19,12 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
+import ru.dezerom.core.tools.string_container.StringContainer
+import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.text_style.TS
 
 @Composable
 fun BaseSnackbar(
     icon: ImageVector,
-    message: String,
+    messageContainer: StringContainer,
     bgColor: Color,
 ) {
     Card(
@@ -46,7 +48,7 @@ fun BaseSnackbar(
                 tint = Colors.white,
             )
             Text(
-                text = message,
+                text = messageContainer.getString(),
                 style = TS.bodyMedium,
             )
         }
@@ -55,22 +57,22 @@ fun BaseSnackbar(
 
 @Composable
 fun SuccessSnackbar(
-    message: String
+    messageContainer: StringContainer
 ) {
     BaseSnackbar(
         icon = Icons.Outlined.CheckCircle,
-        message = message,
+        messageContainer = messageContainer,
         bgColor = Colors.success,
     )
 }
 
 @Composable
 fun ErrorSnackbar(
-    message: String
+    messageContainer: StringContainer
 ) {
     BaseSnackbar(
         icon = Icons.Outlined.Close,
-        message = message,
+        messageContainer = messageContainer,
         bgColor = Colors.error
     )
 }

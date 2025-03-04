@@ -56,7 +56,7 @@ fun AuthScreen() {
     AuthScreenContent(
         onEvent = viewModel::onEvent,
         state = state.value,
-        viewModel.snackBarHost,
+        viewModel.snackbarHostState,
     )
 }
 

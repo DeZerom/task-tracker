@@ -1,12 +1,8 @@
 package ru.dezerom.ui.auth
 
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -14,21 +10,20 @@ import kotlinx.coroutines.launch
 import ru.dezerom.auth.domain.interactor.AuthInteractor
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.StringContainer
-import ru.dezerom.core.ui.kit.snackbars.KitSnackbarVisuals
+import ru.dezerom.core.tools.string_container.toStringContainer
+import ru.dezerom.core.ui.view_models.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 internal class AuthViewModel @Inject constructor(
     private val authInteractor: AuthInteractor,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _state = MutableStateFlow(AuthScreenState())
     val state = _state.asStateFlow()
 
     private val _sideEffects = Channel<AuthScreenSideEffect>(Channel.BUFFERED)
     val sideEffect = _sideEffects.receiveAsFlow()
-
-    val snackBarHost = SnackbarHostState()
 
     fun onEvent(event: AuthScreenEvent) {
         when (event) {
@@ -69,32 +64,24 @@ internal class AuthViewModel @Inject constructor(
         if (!validate()) return@launch
 
         _state.value = state.value.copy(isLoading = true)
-        delay(3000) //todo
 
-        snackBarHost.showSnackbar(KitSnackbarVisuals.Success(
-            message = "qwerty",
-            actionLabel = null,
-            withDismissAction = false,
-            duration = SnackbarDuration.Short
-        ))
+        val result = authInteractor.authorize(
+            login = state.value.login,
+            pass = state.value.password
+        )
 
-//        val result = authInteractor.authorize(
-//            login = state.value.login,
-//            pass = state.value.password
-//        )
-//
-//        result.fold(
-//            onSuccess = {
-//                if (it) {
-//                    //todo
-//                } else {
-//                    //todo
-//                }
-//            },
-//            onFailure = {
-//                //todo
-//            }
-//        )
+        result.fold(
+            onSuccess = {
+                if (it) {
+                    showSuccess("Успех".toStringContainer())
+                } else {
+                    showError(R.string.unknown_error.toStringContainer())
+                }
+            },
+            onFailure = {
+                showError(it)
+            }
+        )
 
         _state.value = state.value.copy(isLoading = false)
     }
