@@ -30,6 +30,7 @@ class FeatureDataConventionPlugin: Plugin<Project> {
             }
 
             dependencies {
+                implementation(project(":core:tools"))
                 implementation(project(":core:data"))
 
                 testDependencies(libs)

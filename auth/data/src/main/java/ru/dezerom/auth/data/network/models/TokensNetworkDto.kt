@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName
 internal data class TokensNetworkDto(
     @Expose
     @SerializedName("accessToken")
-    val accessToken: String?,
+    val accessToken: String? = null,
 
     @Expose
     @SerializedName("refreshToken")
-    val refreshTokens: String?
+    val refreshTokens: String? = null
 )

@@ -14,5 +14,5 @@ data class ResponseDto<T>(
 
     @Expose
     @SerializedName("error")
-    val error: String
+    val error: String? = null
 )
