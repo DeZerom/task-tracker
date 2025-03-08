@@ -5,12 +5,12 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import ru.dezerom.auth.data.network.AuthMockApi
+import ru.dezerom.auth.data.network.MockAuthApi
 import ru.dezerom.auth.data.sources.AuthNetworkSource
 import ru.dezerom.core.tools.errors.NetworkError
 
 internal class AuthNetworkSourceTest {
-    private val source = AuthNetworkSource(AuthMockApi())
+    private val source = AuthNetworkSource(MockAuthApi())
 
     @Test
     fun testValidCredentials() = runBlocking {
