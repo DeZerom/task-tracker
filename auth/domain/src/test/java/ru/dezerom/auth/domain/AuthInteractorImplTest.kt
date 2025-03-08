@@ -5,10 +5,10 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.dezerom.auth.data.repositories.MockAuthRepository
-import ru.dezerom.auth.domain.interactor.AuthInteractor
+import ru.dezerom.auth.domain.interactor.AuthInteractorImpl
 
-internal class AuthInteractorTest {
-    private val interactor = AuthInteractor(MockAuthRepository())
+internal class AuthInteractorImplTest {
+    private val interactor = AuthInteractorImpl(MockAuthRepository())
 
     @Test
     fun testAuth() = runBlocking {

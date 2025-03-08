@@ -13,7 +13,8 @@ import ru.dezerom.core.ui.kit.snackbars.showSuccess
 open class BaseViewModel: ViewModel() {
     val snackbarHostState = SnackbarHostState()
 
-    private val snackbarScope = CoroutineScope(SupervisorJob() + viewModelScope.coroutineContext)
+    private val snackbarScope =
+        CoroutineScope(SupervisorJob() + viewModelScope.coroutineContext)
 
     protected fun showSuccess(message: StringContainer) = snackbarScope.launch {
         snackbarHostState.showSuccess(message)

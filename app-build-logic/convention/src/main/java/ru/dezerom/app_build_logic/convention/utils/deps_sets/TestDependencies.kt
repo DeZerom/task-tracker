@@ -7,6 +7,7 @@ import ru.dezerom.app_build_logic.convention.utils.testImplementation
 
 fun DependencyHandlerScope.testDependencies(libs: VersionCatalog) {
     testImplementation(libs.findLibrary("junit").get())
+    testImplementation(libs.findLibrary("kotlinx-coroutines-test").get())
 }
 
 fun DependencyHandlerScope.androidTestDependencies(libs: VersionCatalog) {
