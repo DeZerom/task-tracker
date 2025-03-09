@@ -12,6 +12,7 @@ fun PasswordInput(
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     error: String? = null,
+    testTag: String = "",
 ) {
     TextInput(
         value = value,
@@ -21,6 +22,7 @@ fun PasswordInput(
         error = error,
         visualTransformation = PasswordVisualTransformation('*'),
         modifier = modifier,
+        testTag = testTag,
     )
 }
 

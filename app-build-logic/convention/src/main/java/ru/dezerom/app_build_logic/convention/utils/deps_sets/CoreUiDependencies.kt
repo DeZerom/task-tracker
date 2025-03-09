@@ -6,9 +6,6 @@ import ru.dezerom.app_build_logic.convention.utils.debugImplementation
 import ru.dezerom.app_build_logic.convention.utils.implementation
 
 internal fun DependencyHandlerScope.coreUiDependencies(libs: VersionCatalog) {
-    //test
-    androidTestDependencies(libs)
-
     //debug
     debugImplementation(libs.findLibrary("androidx-ui-tooling").get())
     debugImplementation(libs.findLibrary("androidx-ui-test-manifest").get())
@@ -24,4 +21,8 @@ internal fun DependencyHandlerScope.coreUiDependencies(libs: VersionCatalog) {
     implementation(libs.findLibrary("androidx-ui-tooling-preview").get())
     implementation(libs.findLibrary("androidx-material3").get())
     implementation(libs.findLibrary("androidx-navigation-compose").get())
+
+    //test
+    androidTestDependencies(libs)
+    androidUiTestDependencies(libs)
 }

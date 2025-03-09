@@ -3,6 +3,7 @@ package ru.dezerom.app_build_logic.convention.utils.deps_sets
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import ru.dezerom.app_build_logic.convention.utils.androidTestImplementation
+import ru.dezerom.app_build_logic.convention.utils.debugImplementation
 import ru.dezerom.app_build_logic.convention.utils.testImplementation
 
 fun DependencyHandlerScope.testDependencies(libs: VersionCatalog) {
@@ -14,4 +15,9 @@ fun DependencyHandlerScope.androidTestDependencies(libs: VersionCatalog) {
     testDependencies(libs)
     androidTestImplementation(libs.findLibrary("androidx-junit").get())
     androidTestImplementation(libs.findLibrary("androidx-espresso-core").get())
+}
+
+fun DependencyHandlerScope.androidUiTestDependencies(libs: VersionCatalog) {
+    androidTestImplementation(libs.findLibrary("androidx-ui-test-junit4").get())
+    debugImplementation(libs.findLibrary("androidx-ui-test-manifest").get())
 }

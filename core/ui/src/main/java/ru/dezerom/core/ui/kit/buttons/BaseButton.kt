@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.ui.kit.text_style.TS
+import ru.dezerom.core.ui.test_tools.TestTags
 
 @Composable
 fun BaseButton(
@@ -22,6 +24,7 @@ fun BaseButton(
     modifier: Modifier = Modifier,
     textColor: Color = Colors.white,
     isLoading: Boolean = false,
+    testTag: String = "",
 ) {
     Button(
         onClick = { if (!isLoading) onClick() },
@@ -29,13 +32,17 @@ fun BaseButton(
             if (isLoading) {
                 CircularProgressIndicator(
                     color = Colors.darkSurface,
-                    modifier = Modifier.size(Dimens.Sizes.ButtonLoaderSize)
+                    modifier = Modifier
+                        .size(Dimens.Sizes.ButtonLoaderSize)
+                        .testTag("$testTag${TestTags.Button.BUTTON_LOADER_POSTFIX}")
                 )
             } else {
                 Text(
                     text = text,
                     style = TS.bodyLarge,
-                    color = textColor
+                    color = textColor,
+                    modifier = Modifier
+                        .testTag("$testTag${TestTags.Button.BUTTON_TEXT_POSTFIX}")
                 )
             }
         },
@@ -46,5 +53,6 @@ fun BaseButton(
         modifier = Modifier
             .height(Dimens.Sizes.ButtonHeight)
             .then(modifier)
+            .testTag(testTag)
     )
 }

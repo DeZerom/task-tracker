@@ -8,10 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.VisualTransformation
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.ui.kit.text_style.TS
+import ru.dezerom.core.ui.test_tools.TestTags
 
 @Composable
 fun TextInput(
@@ -22,6 +24,7 @@ fun TextInput(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     isError: Boolean = false,
     error: String? = null,
+    testTag: String = "",
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.VerySmall)
@@ -49,12 +52,13 @@ fun TextInput(
                 )
             },
             visualTransformation = visualTransformation,
-            modifier = modifier,
+            modifier = modifier.testTag(testTag),
         )
         if (isError && !error.isNullOrBlank()) {
             Text(
                 text = error,
-                style = TS.bodySmall.copy(color = Colors.error)
+                style = TS.bodySmall.copy(color = Colors.error),
+                modifier = Modifier.testTag("$testTag${TestTags.TextInput.ERROR_HINT_POSTFIX}")
             )
         }
     }

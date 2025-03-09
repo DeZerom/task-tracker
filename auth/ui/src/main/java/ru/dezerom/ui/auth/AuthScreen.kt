@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,7 @@ import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
+import ru.dezerom.core.ui.test_tools.TestTags
 import ru.dezerom.navigation.api.destinations.RegistrationDestination
 import ru.dezerom.navigation.api.tools.LocalNavController
 
@@ -81,6 +83,7 @@ internal fun AuthScreenContent(
             Image(
                 painter = painterResource(id = R.drawable.app_icon),
                 contentDescription = null,
+                modifier = Modifier.testTag(TestTags.Image.APP_ICON),
             )
             VSpacer(height = Dimens.Padding.MediumPlus)
             Text(
@@ -94,7 +97,8 @@ internal fun AuthScreenContent(
                 isError = state.loginError != null,
                 error = state.loginError?.getString(),
                 onValueChanged = { onEvent(AuthScreenEvent.LoginChanged(it)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                testTag = TestTags.TextInput.LOGIN,
             )
             VSpacer(height = Dimens.Padding.Medium)
             PasswordInput(
@@ -103,7 +107,8 @@ internal fun AuthScreenContent(
                 isError = state.passwordError != null,
                 error = state.passwordError?.getString(),
                 onValueChanged = { onEvent(AuthScreenEvent.PasswordChanged(it)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                testTag = TestTags.TextInput.PASSWORD,
             )
             VSpacer(height = Dimens.Padding.Small)
             Text(
@@ -113,6 +118,7 @@ internal fun AuthScreenContent(
                 modifier = Modifier
                     .align(Alignment.Start)
                     .clickable { onEvent(AuthScreenEvent.OnCreateAccClicked) }
+                    .testTag(TestTags.Button.CREATE_ACC_BUTTON)
             )
             Spacer(modifier = Modifier.weight(1f))
             WhiteButton(
@@ -120,6 +126,7 @@ internal fun AuthScreenContent(
                 text = stringResource(id = R.string.authorize),
                 isLoading = state.isLoading,
                 modifier = Modifier.fillMaxWidth(),
+                testTag = TestTags.Button.AUTH_BUTTON,
             )
         }
     }

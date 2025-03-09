@@ -17,17 +17,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.text_style.TS
+import ru.dezerom.core.ui.test_tools.TestTags
 
 @Composable
 fun BaseSnackbar(
     icon: ImageVector,
     messageContainer: StringContainer,
     bgColor: Color,
+    testTag: String = "",
 ) {
     Card(
         colors = CardDefaults.cardColors().copy(containerColor = bgColor),
@@ -36,6 +39,7 @@ fun BaseSnackbar(
             .padding(bottom = Dimens.Padding.Big)
             .padding(horizontal = Dimens.Padding.Medium)
             .imePadding()
+            .testTag(testTag)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.Small),
@@ -50,6 +54,8 @@ fun BaseSnackbar(
             Text(
                 text = messageContainer.getString(),
                 style = TS.bodyMedium,
+                modifier = Modifier
+                    .testTag("$testTag${TestTags.Snackbar.SNACKBAR_TEXT_POSTFIX}")
             )
         }
     }
@@ -63,6 +69,7 @@ fun SuccessSnackbar(
         icon = Icons.Outlined.CheckCircle,
         messageContainer = messageContainer,
         bgColor = Colors.success,
+        testTag = TestTags.Snackbar.SUCCESS_SNACKBAR,
     )
 }
 
@@ -73,6 +80,7 @@ fun ErrorSnackbar(
     BaseSnackbar(
         icon = Icons.Outlined.Close,
         messageContainer = messageContainer,
-        bgColor = Colors.error
+        bgColor = Colors.error,
+        testTag = TestTags.Snackbar.ERROR_SNACKBAR,
     )
 }

@@ -10,6 +10,7 @@ fun WhiteButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
+    testTag: String = "",
 ) {
     BaseButton(
         onClick = onClick,
@@ -17,6 +18,7 @@ fun WhiteButton(
         textColor = Colors.darkSurface,
         backgroundColor = Colors.white,
         modifier = modifier,
-        isLoading = isLoading
+        isLoading = isLoading,
+        testTag = testTag,
     )
 }
