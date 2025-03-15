@@ -8,4 +8,7 @@ class MockAuthRepository: AuthRepository {
 
     override suspend fun authorize(login: String, password: String): Result<Boolean> =
         impl.authorize(login, password)
+
+    override suspend fun register(login: String, password: String): Result<Boolean> =
+        impl.register(login, password)
 }

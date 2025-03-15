@@ -11,4 +11,8 @@ internal class AuthRepositoryImpl @Inject constructor(
             it.accessToken.isNotEmpty() && it.refreshToken.isNotEmpty()
         }
     }
+
+    override suspend fun register(login: String, password: String): Result<Boolean> {
+        return networkSource.register(login, password)
+    }
 }
