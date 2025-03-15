@@ -7,4 +7,7 @@ class MockAuthInteractor: AuthInteractor {
 
     override suspend fun authorize(login: String, pass: String): Result<Boolean> =
         impl.authorize(login, pass)
+
+    override suspend fun register(login: String, pass: String): Result<Boolean> =
+        impl.register(login, pass)
 }
