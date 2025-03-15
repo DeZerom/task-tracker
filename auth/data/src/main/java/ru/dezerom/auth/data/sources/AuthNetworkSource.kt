@@ -15,4 +15,10 @@ internal class AuthNetworkSource @Inject constructor(private val api: AuthApi) {
         }.map { it.toModel() }
     }
 
+    suspend fun register(login: String, password: String): Result<Boolean> {
+        return safeApiCall {
+            api.register(CredentialsDto(login, password))
+        }.map { it.response == true }
+    }
+
 }

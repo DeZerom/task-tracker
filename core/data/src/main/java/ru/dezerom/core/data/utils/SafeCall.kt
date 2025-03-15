@@ -11,12 +11,15 @@ import ru.dezerom.core.tools.string_container.toStringContainer
 
 suspend fun <T> safeApiCall(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    call: suspend () -> ResponseDto<T>
+    call: suspend () -> ResponseDto<T?>
 ): Result<T> = withContext(dispatcher) {
     try {
         val result = call()
         if (result.success) {
-            Result.success(result.body)
+            if (result.body != null)
+                Result.success(result.body)
+            else
+                Result.failure(NetworkError(R.string.unknown_error.toStringContainer()))
         } else {
             val err = result.error
             val errorMessage = err?.toStringContainer()
