@@ -31,14 +31,18 @@ import ru.dezerom.core.ui.test_tools.TestTags
 
 @Composable
 fun RegistrationScreen() {
-
+    RegistrationContent(
+        state = RegistrationScreenState(),
+        onEvent = {},
+        snackbarHostState = SnackbarHostState()
+    )
 }
 
 @Composable
-private fun RegistrationContent(
+internal fun RegistrationContent(
     state: RegistrationScreenState,
-    snackbarHostState: SnackbarHostState,
     onEvent: (RegistrationScreenEvent) -> Unit,
+    snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
         snackbarHost = { KitSnackbarHost(snackbarHostState) }
