@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import ru.dezerom.auth.domain.interactor.AuthInteractor
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.toStringContainer
-import ru.dezerom.core.ui.kit.snackbars.showError
 import ru.dezerom.core.ui.view_models.BaseViewModel
 import javax.inject.Inject
 
@@ -54,23 +53,27 @@ class RegistrationScreenViewModel @Inject constructor(
     }
 
     private fun onRegisterClicked() = viewModelScope.launch {
+        if (state.value.isLoading) return@launch
+
         if (!validateData()) return@launch
 
-        val s = state.value
+        _state.value = state.value.copy(isLoading = true)
 
-        _state.value = s.copy(isLoading = true)
+        val s = state.value
 
         authInteractor.register(s.login, s.password).fold(
             onSuccess = {
                 if (it) {
-                    showSuccess(R.string.success_reg.toStringContainer())
-                    delay(500)
-                    _sideEffects.send(RegistrationScreenSideEffect.GoBack)
+                    launch {
+                        showSuccess(R.string.success_reg.toStringContainer())
+                        delay(500)
+                        _sideEffects.send(RegistrationScreenSideEffect.GoBack)
+                    }
                 } else {
                     showError(R.string.unknown_error.toStringContainer())
                 }
             },
-            onFailure = { snackbarHostState.showError(it) }
+            onFailure = { showError(it) }
         )
 
         _state.value = s.copy(isLoading = false)

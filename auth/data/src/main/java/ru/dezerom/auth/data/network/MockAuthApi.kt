@@ -26,6 +26,8 @@ internal class MockAuthApi: AuthApi {
     }
 
     override suspend fun register(credentialsDto: CredentialsDto): ResponseDto<BooleanResponse?> {
+        delay(1000)
+
         if (credentialsDto.login.isBlank() || credentialsDto.password.isBlank())
             return ResponseDto(
                 success = false,
