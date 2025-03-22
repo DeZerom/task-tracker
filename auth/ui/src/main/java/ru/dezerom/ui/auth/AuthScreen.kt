@@ -12,7 +12,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
@@ -34,6 +32,7 @@ import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.navigation.api.destinations.RegistrationDestination
 import ru.dezerom.navigation.api.tools.LocalNavController
 
@@ -42,14 +41,10 @@ fun AuthScreen() {
     val viewModel: AuthViewModel = hiltViewModel()
     val navController = LocalNavController.current
 
-    LaunchedEffect(viewModel.sideEffect) {
-        launch {
-            viewModel.sideEffect.collect { sideEffect ->
-                when (sideEffect) {
-                    AuthScreenSideEffect.GoToRegistration ->
-                        navController.navigate(RegistrationDestination)
-                }
-            }
+    ProcessSideEffects(viewModel.sideEffect) {
+        when (it) {
+            AuthScreenSideEffect.GoToRegistration ->
+                navController.navigate(RegistrationDestination)
         }
     }
 

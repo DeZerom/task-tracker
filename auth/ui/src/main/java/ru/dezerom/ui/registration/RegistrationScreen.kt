@@ -11,12 +11,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.getString
@@ -28,13 +30,20 @@ import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 
 @Composable
 fun RegistrationScreen() {
+    val viewModel: RegistrationScreenViewModel = hiltViewModel()
+
+    ProcessSideEffects(viewModel.sideEffects) {}
+
+    val state = viewModel.state.collectAsState()
+
     RegistrationContent(
-        state = RegistrationScreenState(),
-        onEvent = {},
-        snackbarHostState = SnackbarHostState()
+        state = state.value,
+        onEvent = viewModel::onEvent,
+        snackbarHostState = viewModel.snackbarHostState
     )
 }
 
