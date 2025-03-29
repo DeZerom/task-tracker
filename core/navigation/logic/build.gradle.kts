@@ -10,4 +10,5 @@ dependencies {
     implementation(project(":core:navigation:api"))
 
     implementation(project(":auth:ui"))
+    implementation(project(":tasks:ui"))
 }

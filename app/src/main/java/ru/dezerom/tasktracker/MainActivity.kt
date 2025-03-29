@@ -10,9 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import dagger.hilt.android.AndroidEntryPoint
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
-import ru.dezerom.navigation.api.destinations.AuthDestination
+import ru.dezerom.navigation.api.destinations.AuthGraph
 import ru.dezerom.navigation.api.tools.LocalNavController
-import ru.dezerom.navigation.logic.auth.authNavGraph
+import ru.dezerom.navigation.logic.rootNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -29,8 +29,8 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         graph = navController.createGraph(
-                            startDestination = AuthDestination,
-                            builder = { authNavGraph() }
+                            startDestination = AuthGraph,
+                            builder = { rootNavGraph() }
                         )
                     )
                 }

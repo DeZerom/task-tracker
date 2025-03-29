@@ -73,7 +73,7 @@ internal class AuthViewModel @Inject constructor(
         result.fold(
             onSuccess = {
                 if (it) {
-                    showSuccess("Успех".toStringContainer())
+                    _sideEffects.send(AuthScreenSideEffect.GoToTasks)
                 } else {
                     showError(R.string.unknown_error.toStringContainer())
                 }

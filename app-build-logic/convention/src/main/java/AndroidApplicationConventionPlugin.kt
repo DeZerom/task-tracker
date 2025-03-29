@@ -5,6 +5,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiDependencies
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreUiDependencies
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.timberDependencies
 import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
 
@@ -24,6 +25,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
                 coreUiDependencies(libs)
                 coreDiDependencies(libs)
+                timberDependencies(libs)
             }
 
             extensions.configure<KaptExtension> {

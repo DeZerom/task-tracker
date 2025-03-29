@@ -19,9 +19,6 @@
       <SelectionState runConfigName="data">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="regScreenTest_writeLoginAndPassword()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="regScreenTest_emptyRegWithEmptyFields()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -32,6 +29,9 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="AuthScreenTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="RegistrationScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

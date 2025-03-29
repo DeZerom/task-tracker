@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavOptions
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
@@ -33,7 +34,9 @@ import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
 import ru.dezerom.core.ui.tools.ProcessSideEffects
+import ru.dezerom.navigation.api.destinations.AuthGraph
 import ru.dezerom.navigation.api.destinations.RegistrationDestination
+import ru.dezerom.navigation.api.destinations.TasksGraph
 import ru.dezerom.navigation.api.tools.LocalNavController
 
 @Composable
@@ -45,6 +48,15 @@ fun AuthScreen() {
         when (it) {
             AuthScreenSideEffect.GoToRegistration ->
                 navController.navigate(RegistrationDestination)
+
+            AuthScreenSideEffect.GoToTasks -> {
+                navController.navigate(
+                    route = TasksGraph,
+                    navOptions = NavOptions.Builder()
+                        .setPopUpTo<AuthGraph>(true)
+                        .build()
+                )
+            }
         }
     }
 

@@ -36,6 +36,8 @@
             <option value="$PROJECT_DIR$/core/navigation/logic" />
             <option value="$PROJECT_DIR$/core/tools" />
             <option value="$PROJECT_DIR$/core/ui" />
+            <option value="$PROJECT_DIR$/tasks" />
+            <option value="$PROJECT_DIR$/tasks/ui" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

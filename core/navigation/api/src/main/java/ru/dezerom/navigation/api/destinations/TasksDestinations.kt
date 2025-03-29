@@ -3,10 +3,7 @@ package ru.dezerom.navigation.api.destinations
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object AuthGraph
+data object TasksGraph
 
 @Serializable
-data object AuthDestination
-
-@Serializable
-data object RegistrationDestination
+data object TasksListDestination
