@@ -13,4 +13,7 @@ class InMemoryKeyValueCache: KeyValueCache {
         return if (data is String) data else null
     }
 
+    override suspend fun clearAll() {
+        storedData.clear()
+    }
 }

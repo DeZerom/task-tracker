@@ -19,12 +19,6 @@
       <SelectionState runConfigName="data">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="regScreenTest_emptyRegWithEmptyFields()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="authScreenTest_emptyFieldAfterFull()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="regScreenTest_hasCredentials()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

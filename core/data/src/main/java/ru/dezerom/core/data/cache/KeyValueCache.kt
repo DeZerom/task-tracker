@@ -6,4 +6,6 @@ interface KeyValueCache {
 
     suspend fun readString(key: String): String?
 
+    suspend fun clearAll()
+
 }

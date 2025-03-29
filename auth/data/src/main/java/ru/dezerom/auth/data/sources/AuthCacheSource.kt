@@ -21,6 +21,10 @@ internal class AuthCacheSource @Inject constructor(
         return cache.readString(REFRESH_TOKEN_KEY)
     }
 
+    suspend fun clear() {
+        cache.clearAll()
+    }
+
     companion object {
         private const val ACCESS_TOKEN_KEY = "access_token_key"
         private const val REFRESH_TOKEN_KEY = "refresh_token_key"

@@ -21,4 +21,7 @@ class DataStoreKeyValueCache(
         return store.data.map { it[stringPreferencesKey(key)] }.firstOrNull()
     }
 
+    override suspend fun clearAll() {
+        store.edit { it.clear() }
+    }
 }

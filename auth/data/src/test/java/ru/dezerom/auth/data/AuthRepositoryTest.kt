@@ -6,11 +6,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.dezerom.auth.data.network.MockAuthApi
 import ru.dezerom.auth.data.repositories.AuthRepositoryImpl
+import ru.dezerom.auth.data.sources.AuthCacheSource
 import ru.dezerom.auth.data.sources.AuthNetworkSource
+import ru.dezerom.core.data.cache.InMemoryKeyValueCache
 import ru.dezerom.core.tools.errors.NetworkError
 
 internal class AuthRepositoryTest {
-    private val repo = AuthRepositoryImpl(AuthNetworkSource(MockAuthApi()))
+    private val repo = AuthRepositoryImpl(
+        networkSource = AuthNetworkSource(MockAuthApi()),
+        cacheSource = AuthCacheSource(InMemoryKeyValueCache())
+    )
 
     @Test
     fun authorization_testValidCredentials() = runBlocking {

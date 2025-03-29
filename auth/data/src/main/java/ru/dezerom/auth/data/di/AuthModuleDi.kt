@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.create
 import ru.dezerom.auth.data.network.AuthApi
@@ -17,7 +16,6 @@ import ru.dezerom.auth.data.repositories.AuthRepositoryImpl
 import ru.dezerom.auth.data.sources.AuthCacheSource
 import ru.dezerom.core.data.cache.DataStoreKeyValueCache
 import javax.inject.Named
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -27,23 +25,22 @@ object AuthModuleDi {
 }
 
 @Module
-@InstallIn(SingletonComponent::class)
-internal object InternalAuthModuleDi {
-    @Provides
-    @Singleton
-    fun provideAuthApi(retrofit: Retrofit): AuthApi {
-        return retrofit.create()
-    }
+@InstallIn(ViewModelComponent::class)
+internal abstract class InternalAuthScopedModuleDi {
+    @Binds
+    @Named("Internal")
+    abstract fun bindRepo(impl: AuthRepositoryImpl): AuthRepository
 }
 
 @Module
 @InstallIn(ViewModelComponent::class)
-internal abstract class InternalAuthScopedModuleDi {
+internal class InternalAuthProvidesScopedModuleDi {
     private val Context.store by preferencesDataStore("auth_prefs")
 
-    @Binds
-    @Named("Internal")
-    abstract fun bindRepo(impl: AuthRepositoryImpl): AuthRepository
+    @Provides
+    fun provideAuthApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create()
+    }
 
     @Provides
     fun provideAuthCacheSource(@ApplicationContext context: Context): AuthCacheSource {
