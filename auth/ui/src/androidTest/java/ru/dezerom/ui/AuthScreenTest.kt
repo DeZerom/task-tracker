@@ -23,7 +23,9 @@ import ru.dezerom.auth.domain.interactor.MockAuthInteractor
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.test_tools.TestTags
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.ui.auth.AuthScreenContent
+import ru.dezerom.ui.auth.AuthScreenSideEffect
 import ru.dezerom.ui.auth.AuthScreenState
 import ru.dezerom.ui.auth.AuthViewModel
 
@@ -215,10 +217,15 @@ internal class AuthScreenTest {
     fun authScreenTest_successAuthorization() {
         val viewModel = AuthViewModel(MockAuthInteractor())
         val context = InstrumentationRegistry.getInstrumentation().targetContext
+        var navigated = false
 
         testRule.setContent {
             TaskTrackerTheme {
                 val state = viewModel.state.collectAsState()
+
+                ProcessSideEffects(viewModel.sideEffect) {
+                    if (it is AuthScreenSideEffect.GoToTasks) navigated = true
+                }
 
                 AuthScreenContent(
                     state = state.value,
@@ -247,19 +254,7 @@ internal class AuthScreenTest {
                         && it.joinedText == context.getString(R.string.authorize)
             }
         )
-        testRule.waitUntilExactlyOneExists(
-            timeoutMillis = 1100,
-            matcher = SemanticsMatcher("has snackbar") {
-                it.testTag == TestTags.Snackbar.SUCCESS_SNACKBAR
-            }
-        )
-        testRule.waitUntilExactlyOneExists(
-            timeoutMillis = 1150,
-            matcher = SemanticsMatcher("snackbar text is not empty") {
-                it.testTag == TestTags.Snackbar.textFor { SUCCESS_SNACKBAR }
-                        && it.joinedText.isNullOrEmpty().not()
-            }
-        )
+        testRule.waitUntil(timeoutMillis = 1100) { navigated }
     }
 
     private val SemanticsNode.testTag: String?
