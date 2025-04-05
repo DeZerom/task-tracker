@@ -72,4 +72,23 @@ internal class AuthNetworkSourceTest {
         assertTrue(authBody.accessToken.isNotBlank())
         assertTrue(authBody.refreshToken.isNotBlank())
     }
+
+    @Test
+    fun refreshTokens_wrongToken() = runBlocking {
+        val result = source.refreshTokens("asdas")
+        assertFalse(result.isSuccess)
+        assertNotNull((result.exceptionOrNull() as? NetworkError)?.messageRes)
+    }
+
+    @Test
+    fun refreshTokens_success() = runBlocking {
+        val result = source.refreshTokens("qwerty")
+        assertTrue(result.isSuccess)
+        assertNotNull(result.getOrNull())
+
+        val tokens = result.getOrNull()
+
+        assertFalse(tokens?.accessToken.isNullOrBlank())
+        assertFalse(tokens?.refreshToken.isNullOrBlank())
+    }
 }

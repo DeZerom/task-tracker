@@ -15,7 +15,7 @@ internal class MockAuthApi: AuthApi {
         return if (storage[credentialsDto.login] == credentialsDto.password)
             ResponseDto(
                 true,
-                TokensNetworkDto("qwe", "qwe")
+                TokensNetworkDto("qwe", "qwerty")
             )
         else
             ResponseDto(
@@ -48,6 +48,21 @@ internal class MockAuthApi: AuthApi {
             success = true,
             body = BooleanResponse(true),
             error = null
+        )
+    }
+
+    override suspend fun refreshTokens(refreshToken: String): ResponseDto<TokensNetworkDto?> {
+        delay(1000)
+        return if (refreshToken == "qwerty") return ResponseDto(
+            success = true,
+            body = TokensNetworkDto(
+                accessToken = "qwerty",
+                refreshTokens = "asdfgh",
+            )
+        ) else ResponseDto(
+            success = false,
+            body = null,
+            error = "Wrong refresh"
         )
     }
 }

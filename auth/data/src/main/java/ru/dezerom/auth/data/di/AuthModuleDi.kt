@@ -15,6 +15,7 @@ import ru.dezerom.auth.data.repositories.AuthRepository
 import ru.dezerom.auth.data.repositories.AuthRepositoryImpl
 import ru.dezerom.auth.data.sources.AuthCacheSource
 import ru.dezerom.core.data.cache.DataStoreKeyValueCache
+import ru.dezerom.core.data.di.DefaultRetrofit
 import javax.inject.Named
 
 @Module
@@ -38,7 +39,7 @@ internal class InternalAuthProvidesScopedModuleDi {
     private val Context.store by preferencesDataStore("auth_prefs")
 
     @Provides
-    fun provideAuthApi(retrofit: Retrofit): AuthApi {
+    fun provideAuthApi(@DefaultRetrofit retrofit: Retrofit): AuthApi {
         return retrofit.create()
     }
 

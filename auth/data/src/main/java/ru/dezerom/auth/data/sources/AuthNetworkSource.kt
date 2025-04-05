@@ -21,4 +21,9 @@ internal class AuthNetworkSource @Inject constructor(private val api: AuthApi) {
         }.map { it.response == true }
     }
 
+    suspend fun refreshTokens(refreshToken: String): Result<TokensModel> {
+        return safeApiCall {
+            api.refreshTokens(refreshToken)
+        }.map { it.toModel() }
+    }
 }

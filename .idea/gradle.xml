@@ -31,6 +31,7 @@
             <option value="$PROJECT_DIR$/auth/ui" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/data" />
+            <option value="$PROJECT_DIR$/core/interceptors" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/navigation/api" />
             <option value="$PROJECT_DIR$/core/navigation/logic" />
@@ -38,6 +39,7 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/tasks" />
             <option value="$PROJECT_DIR$/tasks/data" />
+            <option value="$PROJECT_DIR$/tasks/domain" />
             <option value="$PROJECT_DIR$/tasks/ui" />
           </set>
         </option>

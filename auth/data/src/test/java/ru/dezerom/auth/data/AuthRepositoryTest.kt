@@ -2,8 +2,11 @@ package ru.dezerom.auth.data
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import ru.dezerom.auth.data.models.TokensModel
 import ru.dezerom.auth.data.network.MockAuthApi
 import ru.dezerom.auth.data.repositories.AuthRepositoryImpl
 import ru.dezerom.auth.data.sources.AuthCacheSource
@@ -57,4 +60,83 @@ internal class AuthRepositoryTest {
         assertTrue(authResult.isSuccess)
         assertTrue(authResult.getOrNull() == true)
     }
+
+    @Test
+    fun getAuthToken_notAuthorized() = runBlocking {
+        val repo = AuthRepositoryImpl(
+            AuthNetworkSource(MockAuthApi()),
+            AuthCacheSource(InMemoryKeyValueCache())
+        )
+
+        assertNull(repo.getAuthToken())
+    }
+
+    @Test
+    fun getAuthToken_authorized() = runBlocking {
+        val repo = createRepo()
+        repo.authorize("qwe", "qwe")
+
+        assertNotNull(repo.getAuthToken())
+    }
+
+    @Test
+    fun unAuthorize_afterAuth_success() = runBlocking {
+        val repo = createRepo()
+        repo.authorize("qwe", "qwe")
+        assertNotNull(repo.getAuthToken())
+
+        repo.unAuthorize()
+        assertNull(repo.getAuthToken())
+    }
+
+    @Test
+    fun refreshTokens_notAuthorized() = runBlocking {
+        val repo = createRepo()
+        val result = repo.refreshTokens()
+
+        assertFalse(result.isSuccess)
+        assertTrue(result.exceptionOrNull() is NetworkError)
+    }
+
+    @Test
+    fun refreshTokens_wrongToken() = runBlocking {
+        val source = AuthCacheSource(InMemoryKeyValueCache())
+        source.rememberTokens(TokensModel("", ""))
+
+        val repo = createRepo(source)
+        val result = repo.refreshTokens()
+
+        assertFalse(result.isSuccess)
+        assertTrue(result.exceptionOrNull() is NetworkError)
+    }
+
+    @Test
+    fun refreshTokens_success() = runBlocking {
+        val source = AuthCacheSource(InMemoryKeyValueCache())
+        source.rememberTokens(TokensModel("qwerty", "qwerty"))
+
+        val repo = createRepo(source)
+        val result = repo.refreshTokens()
+
+        assertTrue(result.isSuccess)
+        assertTrue(result.getOrNull() == true)
+    }
+
+    @Test
+    fun refreshTokens_successAfterLogin() = runBlocking {
+        val repo = createRepo()
+
+        repo.authorize("qwe", "qwe")
+        val result = repo.refreshTokens()
+
+        assertTrue(result.isSuccess)
+        assertTrue(result.getOrNull() == true)
+    }
+
+    private fun createRepo(
+        cacheSource: AuthCacheSource = AuthCacheSource(InMemoryKeyValueCache())
+    ) = AuthRepositoryImpl(
+        AuthNetworkSource(MockAuthApi()),
+        cacheSource
+    )
 }

@@ -1,6 +1,7 @@
 package ru.dezerom.auth.data.network
 
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 import ru.dezerom.auth.data.network.models.CredentialsDto
 import ru.dezerom.auth.data.network.models.TokensNetworkDto
@@ -14,4 +15,9 @@ internal interface AuthApi {
 
     @POST("auth/register")
     suspend fun register(@Body credentialsDto: CredentialsDto): ResponseDto<BooleanResponse?>
+
+    @POST("auth/refresh")
+    suspend fun refreshTokens(
+        @Header("Authorization") refreshToken: String
+    ): ResponseDto<TokensNetworkDto?>
 }
