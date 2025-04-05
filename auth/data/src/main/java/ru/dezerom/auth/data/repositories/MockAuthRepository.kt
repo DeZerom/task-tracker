@@ -4,11 +4,8 @@ import ru.dezerom.auth.data.network.MockAuthApi
 import ru.dezerom.auth.data.sources.AuthCacheSource
 import ru.dezerom.auth.data.sources.AuthNetworkSource
 import ru.dezerom.core.data.cache.InMemoryKeyValueCache
-import ru.dezerom.core.data.cache.KeyValueCache
 
-class MockAuthRepository(
-    cache: KeyValueCache = InMemoryKeyValueCache()
-): AuthRepository {
+class MockAuthRepository: AuthRepository {
     private val impl = AuthRepositoryImpl(
         networkSource = AuthNetworkSource(MockAuthApi()),
         cacheSource = AuthCacheSource(InMemoryKeyValueCache())

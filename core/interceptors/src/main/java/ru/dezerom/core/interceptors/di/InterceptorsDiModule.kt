@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.dezerom.core.interceptors.AuthInterceptor
+import ru.dezerom.core.tools.consts.Web
 import javax.inject.Named
 
 private const val INTERNAL_AUTH_RETROFIT = "internal_auth_retrofit"
@@ -37,7 +38,7 @@ internal object InterceptorsInternalDiModule {
     @Named(INTERNAL_AUTH_RETROFIT)
     fun provideAuthorizedRetrofit(@AuthorizedClient client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080/")
+            .baseUrl(Web.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
