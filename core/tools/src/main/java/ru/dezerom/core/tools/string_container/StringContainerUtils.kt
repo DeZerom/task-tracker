@@ -8,7 +8,7 @@ fun StringContainer.getString(): String {
 }
 
 @Composable
-fun stringResource(container: StringContainer): String {
+private fun stringResource(container: StringContainer): String {
     return when (container) {
         is StringContainer.RawString -> container.str
         is StringContainer.StringRes -> androidx.compose.ui.res.stringResource(container.res)

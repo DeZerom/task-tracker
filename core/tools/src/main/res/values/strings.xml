@@ -16,4 +16,6 @@
     <string name="registration">Регистрация</string>
     <string name="register">Зарегистрироваться</string>
     <string name="success_reg">Успешная регистрация</string>
+
+    <string name="tasks_empty">У вас нет задач</string>
 </resources>

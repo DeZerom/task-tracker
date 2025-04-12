@@ -28,6 +28,9 @@
       <SelectionState runConfigName="Tests in 'ru.dezerom.core.ui'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="EmptyComponentTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

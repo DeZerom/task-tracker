@@ -8,13 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
+import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 
 @Composable
 fun TasksListScreen() {
@@ -45,15 +48,19 @@ internal fun TasksListComponent(
                 TasksListState.Loading -> Loading()
                 is TasksListState.Error ->
                     ErrorComponent(state.error) { onEvent(TasksListEvent.OnTryAgainClicked) }
-                is TasksListState.Loaded -> TODO()
+                is TasksListState.Loaded -> TasksListContent(state)
             }
         }
     }
 }
 
 @Composable
-internal fun TasksListContent() {
-
+private fun TasksListContent(
+    state: TasksListState.Loaded
+) {
+    if (state.tasks.isEmpty()) {
+        EmptyListComponent(stringResource(R.string.tasks_empty))
+    }
 }
 
 @Composable
@@ -70,7 +77,20 @@ private fun ErrorComponent(err: StringContainer, onTryAgain: () -> Unit) {
 @Preview
 private fun Preview() {
 //    val state = TasksListState.Error("Some error".repeat(10).toStringContainer())
-    val state = TasksListState.Loading
+//    val state = TasksListState.Loading
+    val state = TasksListState.Loaded(
+        tasks = listOf(
+//            TaskModel(
+//                id = "",
+//                name = "qwe",
+//                description = "asd",
+//                createdAt = 1000,
+//                isCompleted = false,
+//                deadline = null,
+//                completedAt = null,
+//            )
+        )
+    )
 
     TaskTrackerTheme {
         TasksListComponent(
