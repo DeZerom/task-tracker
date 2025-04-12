@@ -13,7 +13,7 @@ import retrofit2.create
 import ru.dezerom.auth.data.network.AuthApi
 import ru.dezerom.auth.data.repositories.AuthRepository
 import ru.dezerom.auth.data.repositories.AuthRepositoryImpl
-import ru.dezerom.auth.data.sources.AuthCachedSource
+import ru.dezerom.auth.data.sources.AuthCacheSource
 import ru.dezerom.core.data.cache.DataStoreKeyValueCache
 import ru.dezerom.core.data.di.DefaultRetrofit
 import javax.inject.Named
@@ -44,8 +44,8 @@ internal class InternalAuthProvidesScopedModuleDi {
     }
 
     @Provides
-    fun provideAuthCacheSource(@ApplicationContext context: Context): AuthCachedSource {
-        return AuthCachedSource(
+    fun provideAuthCacheSource(@ApplicationContext context: Context): AuthCacheSource {
+        return AuthCacheSource(
             DataStoreKeyValueCache(store = context.store)
         )
     }

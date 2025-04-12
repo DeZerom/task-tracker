@@ -3,7 +3,7 @@ package ru.dezerom.auth.data.sources
 import ru.dezerom.auth.data.models.TokensModel
 import ru.dezerom.core.data.cache.KeyValueCache
 
-internal class AuthCachedSource (
+internal class AuthCacheSource (
     private val cache: KeyValueCache
 ) {
 
