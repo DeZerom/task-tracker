@@ -1,7 +1,7 @@
 package ru.dezerom.tasks.data.sources
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import ru.dezerom.core.data.di.IODispatcher
 import ru.dezerom.core.data.utils.safeApiCall
 import ru.dezerom.tasks.data.mappers.toDomainList
 import ru.dezerom.tasks.data.models.TaskDataModel
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 internal class TasksNetworkSource @Inject constructor(
     private val api: TasksApi,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend fun getAllTasks(): Result<List<TaskDataModel>> {

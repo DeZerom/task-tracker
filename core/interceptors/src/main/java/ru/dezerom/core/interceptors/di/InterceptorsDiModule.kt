@@ -15,7 +15,7 @@ private const val INTERNAL_AUTH_RETROFIT = "internal_auth_retrofit"
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class InterceptorsDiModule {
+object InterceptorsDiModule {
 
     @Provides
     @AuthorizedRetrofit

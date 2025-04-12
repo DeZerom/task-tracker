@@ -1,13 +1,13 @@
 package ru.dezerom.auth.data.repositories
 
-import ru.dezerom.auth.data.sources.AuthCacheSource
+import ru.dezerom.auth.data.sources.AuthCachedSource
 import ru.dezerom.auth.data.sources.AuthNetworkSource
 import ru.dezerom.core.tools.errors.unAuthorizedNetworkError
 import javax.inject.Inject
 
 internal class AuthRepositoryImpl @Inject constructor(
     private val networkSource: AuthNetworkSource,
-    private val cacheSource: AuthCacheSource,
+    private val cacheSource: AuthCachedSource,
 ) : AuthRepository {
     override suspend fun authorize(login: String, password: String): Result<Boolean> {
         val tokens = networkSource.authorize(login, password).fold(

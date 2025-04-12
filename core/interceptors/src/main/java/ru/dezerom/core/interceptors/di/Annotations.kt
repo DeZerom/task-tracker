@@ -1,7 +1,11 @@
 package ru.dezerom.core.interceptors.di
 
-@Retention(AnnotationRetention.SOURCE)
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class AuthorizedClient
 
-@Retention(AnnotationRetention.SOURCE)
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class AuthorizedRetrofit

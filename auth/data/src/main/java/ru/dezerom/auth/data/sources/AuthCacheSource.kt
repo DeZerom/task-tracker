@@ -2,9 +2,8 @@ package ru.dezerom.auth.data.sources
 
 import ru.dezerom.auth.data.models.TokensModel
 import ru.dezerom.core.data.cache.KeyValueCache
-import javax.inject.Inject
 
-internal class AuthCacheSource @Inject constructor(
+internal class AuthCachedSource (
     private val cache: KeyValueCache
 ) {
 
