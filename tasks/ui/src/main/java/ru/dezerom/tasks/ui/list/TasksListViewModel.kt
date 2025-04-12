@@ -27,6 +27,10 @@ class TasksListViewModel @Inject constructor(
         fetchTasks()
     }
 
+    fun onEvent(event: TasksListEvent) {
+
+    }
+
     private suspend fun fetchTasks() {
         tasksInteractor.getAllTasks().fold(
             onSuccess = {

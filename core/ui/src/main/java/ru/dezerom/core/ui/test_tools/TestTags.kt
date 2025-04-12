@@ -13,11 +13,14 @@ object TestTags {
 
     object Image {
         const val APP_ICON = "app_icon"
+        const val WARNING_ICON = "warning_icon"
     }
 
     object Button {
         const val CREATE_ACC_BUTTON = "create_acc_button"
         const val AUTH_BUTTON = "auth_button"
+
+        const val TRY_AGAIN_BUTTON = "try_again_button"
 
         const val BUTTON_LOADER_POSTFIX = "_btn_loader"
         const val BUTTON_TEXT_POSTFIX = "_btn_text"

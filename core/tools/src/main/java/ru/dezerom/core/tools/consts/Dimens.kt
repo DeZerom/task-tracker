@@ -19,5 +19,8 @@ object Dimens {
     object Sizes {
         val ButtonHeight = 50.dp
         val ButtonLoaderSize = 36.dp
+
+        val IconExtraBig = 192.dp
+        val IconVeryBig = 96.dp
     }
 }
