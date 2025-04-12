@@ -22,5 +22,7 @@ object Dimens {
 
         val IconExtraBig = 192.dp
         val IconVeryBig = 96.dp
+
+        val LoaderSize = 48.dp
     }
 }

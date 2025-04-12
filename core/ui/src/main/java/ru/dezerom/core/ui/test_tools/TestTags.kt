@@ -41,4 +41,13 @@ object TestTags {
         fun textFor(fieldFactory: Snackbar.() -> String) =
             "${fieldFactory(Snackbar)}$SNACKBAR_TEXT_POSTFIX"
     }
+
+    object Objects {
+        const val LOADER = "loader"
+    }
+
+    object Components {
+        const val LOADER_COMPONENT = "loader_component"
+        const val ERROR_COMPONENT = "error_component"
+    }
 }

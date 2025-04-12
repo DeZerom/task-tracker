@@ -1,6 +1,5 @@
-package ru.dezerom.tasks.ui
+package ru.dezerom.core.ui
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -16,12 +15,11 @@ import org.junit.runner.RunWith
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.toStringContainer
+import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.test_tools.TestTags
-import ru.dezerom.tasks.ui.list.TasksListComponent
-import ru.dezerom.tasks.ui.list.TasksListState
 
 @RunWith(AndroidJUnit4::class)
-class TasksListErrorTest {
+class ErrorComponentTest {
     @get:Rule
     val testRule = createComposeRule()
 
@@ -30,10 +28,9 @@ class TasksListErrorTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
 
         testRule.setContent {
-            TasksListComponent(
-                state = TasksListState.Error("Err".toStringContainer()),
-                snackbarHostState = SnackbarHostState(),
-                onEvent = {}
+            DefaultErrorComponent(
+                err = "Err".toStringContainer(),
+                onTryAgain = {}
             )
         }
 
