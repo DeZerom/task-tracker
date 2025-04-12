@@ -1,4 +1,4 @@
-package ru.dezerom.tasks.data.models
+package ru.dezerom.tasks.domain.models
 
 data class TaskModel(
     val id: String,

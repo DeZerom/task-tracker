@@ -1,13 +1,16 @@
 package ru.dezerom.tasks.data.repositories
 
-import ru.dezerom.tasks.data.models.TaskModel
+import kotlinx.coroutines.CoroutineDispatcher
+import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksMockApi
 import ru.dezerom.tasks.data.sources.TasksNetworkSource
 
-class TasksRepositoryMock: TasksRepository {
-    private val impl = TasksRepositoryImpl(TasksNetworkSource(TasksMockApi()))
+class TasksRepositoryMock(
+    dispatcher: CoroutineDispatcher,
+): TasksRepository {
+    private val impl = TasksRepositoryImpl(TasksNetworkSource(TasksMockApi(), dispatcher))
 
-    override suspend fun getAll(): Result<List<TaskModel>> {
+    override suspend fun getAll(): Result<List<TaskDataModel>> {
         return impl.getAll()
     }
 }

@@ -5,7 +5,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import ru.dezerom.tasks.data.mappers.toDomain
+import ru.dezerom.tasks.data.mappers.toDataModel
 import ru.dezerom.tasks.data.network.models.TaskNetworkDto
 
 class TaskDtoMapperTest {
@@ -22,7 +22,7 @@ class TaskDtoMapperTest {
             completedAt = 1000
         )
 
-        val model = dto.toDomain()
+        val model = dto.toDataModel()
 
         assertEquals(dto.id, model.id)
         assertEquals(dto.name, model.name)
@@ -43,7 +43,7 @@ class TaskDtoMapperTest {
             createdAt = 1000,
         )
 
-        val model = dto.toDomain()
+        val model = dto.toDataModel()
 
         assertEquals(dto.id, model.id)
         assertEquals(dto.name, model.name)
@@ -59,7 +59,7 @@ class TaskDtoMapperTest {
     fun mapTaskDto_nulls() {
         val dto = TaskNetworkDto()
 
-        val model = dto.toDomain()
+        val model = dto.toDataModel()
 
         assertTrue(model.id.isEmpty())
         assertTrue(model.name.isEmpty())

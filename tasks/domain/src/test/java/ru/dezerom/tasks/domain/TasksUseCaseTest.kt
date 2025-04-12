@@ -7,7 +7,7 @@ import org.junit.Test
 import ru.dezerom.tasks.data.repositories.TasksRepositoryMock
 
 class TasksUseCaseTest {
-    private val useCase = TasksListUseCase(TasksRepositoryMock())
+    private val useCase = TasksListInteractor(TasksRepositoryMock())
 
     @Test
     fun getAll_success() = runBlocking {

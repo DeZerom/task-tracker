@@ -5,7 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.dezerom.tasks.data.mappers.toDomainList
-import ru.dezerom.tasks.data.models.TaskModel
+import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksMockApi
 import ru.dezerom.tasks.data.network.models.TaskNetworkDto
 import ru.dezerom.tasks.data.network.models.TasksListNetworkDto
@@ -32,7 +32,7 @@ class TasksListDtoMapperTest {
         assertTrue(model.isEmpty())
     }
 
-    private fun eq(dto: TaskNetworkDto, model: TaskModel): Boolean {
+    private fun eq(dto: TaskNetworkDto, model: TaskDataModel): Boolean {
         return strEqOrEmptyIfNull(dto.id, model.id)
                 && strEqOrEmptyIfNull(dto.name, model.name)
                 && strEqOrEmptyIfNull(dto.description, model.description)
