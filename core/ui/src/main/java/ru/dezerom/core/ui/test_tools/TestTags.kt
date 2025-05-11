@@ -44,6 +44,8 @@ object TestTags {
 
     object Objects {
         const val LOADER = "loader"
+
+        const val CHECK_BOX = "check_box"
     }
 
     object Components {

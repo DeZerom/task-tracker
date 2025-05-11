@@ -18,4 +18,9 @@
     <string name="success_reg">Успешная регистрация</string>
 
     <string name="tasks_empty">У вас нет задач</string>
+    <string name="expand">Развернуть</string>
+    <string name="collapse">Свернуть</string>
+    <string name="created_at">Создано: %s</string>
+    <string name="deadline_at">Дедлайн: %s</string>
+    <string name="completed_at">Выполнено: %s</string>
 </resources>

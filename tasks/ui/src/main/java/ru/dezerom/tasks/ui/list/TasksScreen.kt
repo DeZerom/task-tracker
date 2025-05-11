@@ -1,7 +1,12 @@
 package ru.dezerom.tasks.ui.list
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -12,12 +17,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
+import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
+import ru.dezerom.tasks.domain.models.TaskModel
 
 @Composable
 fun TasksListScreen() {
@@ -48,7 +55,12 @@ internal fun TasksListComponent(
                 TasksListState.Loading -> Loading()
                 is TasksListState.Error ->
                     ErrorComponent(state.error) { onEvent(TasksListEvent.OnTryAgainClicked) }
-                is TasksListState.Loaded -> TasksListContent(state)
+                is TasksListState.Loaded ->
+                    if (state.tasks.isEmpty()) {
+                        EmptyListComponent(stringResource(R.string.tasks_empty))
+                    } else {
+                        TasksListContent(state)
+                    }
             }
         }
     }
@@ -58,10 +70,26 @@ internal fun TasksListComponent(
 private fun TasksListContent(
     state: TasksListState.Loaded
 ) {
-    if (state.tasks.isEmpty()) {
-        EmptyListComponent(stringResource(R.string.tasks_empty))
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Dimens.Padding.Medium)
+    ) {
+        items(
+            items = state.tasks,
+            key = { it.id }
+        ) {
+            TaskComponent(
+                it,
+                onCompleted = {},
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
+
+
 
 @Composable
 private fun Loading() {
@@ -80,15 +108,33 @@ private fun Preview() {
 //    val state = TasksListState.Loading
     val state = TasksListState.Loaded(
         tasks = listOf(
-//            TaskModel(
-//                id = "",
-//                name = "qwe",
-//                description = "asd",
-//                createdAt = 1000,
-//                isCompleted = false,
-//                deadline = null,
-//                completedAt = null,
-//            )
+            TaskModel(
+                id = "1",
+                name = "Task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = false,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "12",
+                name = "Long long long long task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = true,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "123",
+                name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = true,
+                deadline = null,
+                completedAt = null,
+            )
         )
     )
 
