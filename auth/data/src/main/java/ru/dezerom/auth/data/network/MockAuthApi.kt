@@ -53,7 +53,7 @@ internal class MockAuthApi: AuthApi {
 
     override suspend fun refreshTokens(refreshToken: String): ResponseDto<TokensNetworkDto?> {
         delay(1000)
-        return if (refreshToken == "qwerty") return ResponseDto(
+        return if (refreshToken == "Bearer qwerty") return ResponseDto(
             success = true,
             body = TokensNetworkDto(
                 accessToken = "qwerty",
