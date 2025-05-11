@@ -51,5 +51,6 @@ object TestTags {
     object Components {
         const val LOADER_COMPONENT = "loader_component"
         const val ERROR_COMPONENT = "error_component"
+        const val EXPAND_COMPONENT = "expand_component"
     }
 }

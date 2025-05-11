@@ -103,7 +103,7 @@ private fun ErrorComponent(err: StringContainer, onTryAgain: () -> Unit) {
 
 @Composable
 @Preview
-private fun Preview() {
+private fun TasksListScreenPreview() {
 //    val state = TasksListState.Error("Some error".repeat(10).toStringContainer())
 //    val state = TasksListState.Loading
     val state = TasksListState.Loaded(

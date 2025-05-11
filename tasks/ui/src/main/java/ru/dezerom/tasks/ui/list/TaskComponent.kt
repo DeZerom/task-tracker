@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -16,6 +17,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
@@ -46,7 +49,12 @@ internal fun TaskComponent(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var isLong by remember { mutableStateOf(false) }
+
+    var isLongName by remember { mutableStateOf(false) }
+    var isLongDescription by remember { mutableStateOf(false) }
+    val isLong = remember(isLongName, isLongDescription) {
+        derivedStateOf { isLongName || isLongDescription }
+    }
 
     Card(
         shape = RoundedCornerShape(Dimens.CornerRadius.Default),
@@ -66,7 +74,7 @@ internal fun TaskComponent(
                         checkmarkColor = Colors.white,
                     ),
                     modifier = Modifier
-                        .alignByBaseline()
+                        .size(24.dp)
                         .testTag(TestTags.Objects.CHECK_BOX)
                 )
                 HSpacer(Dimens.Padding.Small)
@@ -75,7 +83,7 @@ internal fun TaskComponent(
                     style = TS.titleLarge,
                     maxLines = if (expanded) Int.MAX_VALUE else 2,
                     overflow = TextOverflow.Ellipsis,
-                    onTextLayout = { isLong = isLong(it) },
+                    onTextLayout = { isLongName = isLongName(it) },
                     modifier = Modifier.animateContentSize()
                 )
             }
@@ -86,11 +94,11 @@ internal fun TaskComponent(
                     style = TS.bodyMedium.copy(color = Colors.secondaryText),
                     maxLines = if (expanded) Int.MAX_VALUE else 3,
                     overflow = TextOverflow.Ellipsis,
-                    onTextLayout = { isLong = isLong(it) },
+                    onTextLayout = { isLongDescription = isLongDescription(it) },
                     modifier = Modifier.animateContentSize()
                 )
             }
-            if (isLong) {
+            if (isLong.value) {
                 VSpacer(Dimens.Padding.Small)
                 ExpandComponent(
                     expanded = expanded,
@@ -139,7 +147,7 @@ private fun ExpandComponent(
         shape = RoundedCornerShape(Dimens.CornerRadius.Default),
         colors = CardDefaults.cardColors(containerColor = Colors.background),
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier.testTag(TestTags.Components.EXPAND_COMPONENT)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -166,9 +174,14 @@ private fun ExpandComponent(
     }
 }
 
-private fun isLong(textResult: TextLayoutResult): Boolean {
+private fun isLongDescription(textResult: TextLayoutResult): Boolean {
     return textResult.lineCount > 3
             || textResult.isLineEllipsized(2.coerceAtMost(textResult.lineCount - 1))
+}
+
+private fun isLongName(textResult: TextLayoutResult): Boolean {
+    return textResult.lineCount > 2
+            || textResult.isLineEllipsized(1.coerceAtMost(textResult.lineCount - 1))
 }
 
 @Preview
@@ -185,6 +198,15 @@ private fun TaskComponentPreview() {
                 deadline = 1000000000000,
                 completedAt = 100000000,
             ),
+//            task = TaskModel(
+//                id = "123",
+//                name = "qwe",
+//                description = "asd",
+//                createdAt = 1000,
+//                isCompleted = true,
+//                deadline = 1000000000000,
+//                completedAt = 100000000,
+//            ),
             onCompleted = {}
         )
     }

@@ -16,7 +16,7 @@ import ru.dezerom.core.ui.test_tools.TestTags
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.list.TaskComponent
 
-class TaskItemTest {
+class TaskComponentTest {
 
     @get:Rule val testRule = createComposeRule()
 
@@ -52,5 +52,30 @@ class TaskItemTest {
             .performClick()
             .assertIsDisplayed()
             .assertIsOff()
+    }
+
+    @Test
+    fun taskComponent_expandButtonDoesNotDisappear() {
+        testRule.setContent {
+            TaskComponent(
+                task = TaskModel(
+                    id = "",
+                    name = "12345\n12345\n12345",
+                    description = "123",
+                    deadline = null,
+                    createdAt = 1,
+                    isCompleted = false,
+                    completedAt = null,
+                ),
+                onCompleted = {}
+            )
+        }
+
+        testRule.onNodeWithTag(TestTags.Components.EXPAND_COMPONENT)
+            .assertIsDisplayed()
+            .performClick()
+            .assertIsDisplayed()
+            .performClick()
+            .assertIsDisplayed()
     }
 }
