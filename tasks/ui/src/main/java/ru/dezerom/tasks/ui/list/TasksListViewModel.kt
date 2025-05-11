@@ -28,7 +28,9 @@ class TasksListViewModel @Inject constructor(
     }
 
     fun onEvent(event: TasksListEvent) {
-
+        when (event) {
+            TasksListEvent.OnTryAgainClicked -> initialize()
+        }
     }
 
     private suspend fun fetchTasks() {

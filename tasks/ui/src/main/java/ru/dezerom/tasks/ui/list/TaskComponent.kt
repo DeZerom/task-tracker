@@ -62,7 +62,7 @@ internal fun TaskComponent(
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.padding(Dimens.Padding.Small)
+            modifier = Modifier.padding(Dimens.Padding.Medium)
         ) {
             Row {
                 Checkbox(

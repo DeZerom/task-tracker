@@ -37,7 +37,7 @@ internal class AuthInterceptor @Inject constructor(
         val token = authRepository.getAuthToken() ?: return createUnAuthResponse()
 
         val headers = chain.request().headers().newBuilder()
-            .add(AUTH_HEADER, token)
+            .add(AUTH_HEADER, "Bearer $token")
             .build()
 
         val request = chain.request().newBuilder()
