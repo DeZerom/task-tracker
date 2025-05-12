@@ -10,4 +10,5 @@ internal data class AuthScreenState(
     val password: String = "",
     val loginError: StringContainer? = null,
     val passwordError: StringContainer? = null,
+    val isInitializing: Boolean = false
 )

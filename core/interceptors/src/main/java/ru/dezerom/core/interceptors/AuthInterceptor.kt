@@ -14,6 +14,8 @@ internal class AuthInterceptor @Inject constructor(
 
         if (response.code() != 401) {
             return response
+        } else {
+            response.close()
         }
 
         val result = runBlocking { authRepository.refreshTokens() }

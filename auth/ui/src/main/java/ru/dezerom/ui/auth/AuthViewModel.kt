@@ -25,12 +25,28 @@ internal class AuthViewModel @Inject constructor(
     private val _sideEffects = Channel<AuthScreenSideEffect>(Channel.BUFFERED)
     val sideEffect = _sideEffects.receiveAsFlow()
 
+    init {
+        viewModelScope.launch { checkLoggedIn() }
+    }
+
     fun onEvent(event: AuthScreenEvent) {
         when (event) {
             is AuthScreenEvent.LoginChanged -> onLoginChanged(event.newLogin)
             is AuthScreenEvent.PasswordChanged -> onPasswordChanged(event.newPassword)
             AuthScreenEvent.OnAuthorizeClicked -> onAuthorizeClicked()
             AuthScreenEvent.OnCreateAccClicked -> onCreateAccountClicked()
+        }
+    }
+
+    private suspend fun checkLoggedIn() {
+        _state.value = state.value.copy(isInitializing = true)
+
+        val authorized = authInteractor.isAuthorized()
+
+        _state.value = state.value.copy(isInitializing = false)
+
+        if (authorized) {
+            _sideEffects.send(AuthScreenSideEffect.GoToTasks)
         }
     }
 

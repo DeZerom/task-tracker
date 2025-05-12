@@ -50,4 +50,21 @@ internal class AuthInteractorImplTest {
         assertTrue(authResult.isSuccess)
         assertTrue(authResult.getOrNull() == true)
     }
+
+    @Test
+    fun isAuthorized_testNoTokens() = runBlocking {
+        val interactor = AuthInteractorImpl(MockAuthRepository())
+
+        assertFalse(interactor.isAuthorized())
+    }
+
+    @Test
+    fun isAuthorized_testHasTokens() = runBlocking {
+        val interactor = AuthInteractorImpl(MockAuthRepository())
+
+        val (login, pass) = "qwe" to "qwe"
+        interactor.authorize(login, pass)
+
+        assertTrue(interactor.isAuthorized())
+    }
 }

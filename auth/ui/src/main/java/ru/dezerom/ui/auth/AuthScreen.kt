@@ -2,12 +2,14 @@ package ru.dezerom.ui.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -62,11 +64,35 @@ fun AuthScreen() {
 
     val state = viewModel.state.collectAsState()
 
-    AuthScreenContent(
-        onEvent = viewModel::onEvent,
-        state = state.value,
-        viewModel.snackbarHostState,
-    )
+    if (state.value.isInitializing) {
+        AuthScreenInit()
+    } else {
+        AuthScreenContent(
+            onEvent = viewModel::onEvent,
+            state = state.value,
+            viewModel.snackbarHostState,
+        )
+    }
+}
+
+@Composable
+private fun AuthScreenInit() {
+    Scaffold { innerPadding ->
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.app_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(Dimens.Sizes.IconExtraBig)
+                    .testTag(TestTags.Image.APP_ICON),
+            )
+        }
+    }
 }
 
 @Composable

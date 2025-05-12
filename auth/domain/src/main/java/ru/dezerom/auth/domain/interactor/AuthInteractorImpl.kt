@@ -6,6 +6,10 @@ import javax.inject.Inject
 internal class AuthInteractorImpl @Inject constructor(
     private val authRepository: AuthRepository
 ) : AuthInteractor {
+
+    override suspend fun isAuthorized(): Boolean =
+        !authRepository.getAuthToken().isNullOrBlank()
+
     override suspend fun authorize(login: String, pass: String): Result<Boolean> {
         return authRepository.authorize(login, pass)
     }
