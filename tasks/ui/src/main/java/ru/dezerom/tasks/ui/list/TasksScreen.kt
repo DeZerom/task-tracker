@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -23,12 +27,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.StringContainer
+import ru.dezerom.core.ui.kit.buttons.AccentExpandableFAB
 import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
+import ru.dezerom.core.ui.tools.isScrolledToBottom
 import ru.dezerom.tasks.domain.models.TaskModel
 
 @Composable
@@ -52,12 +58,21 @@ internal fun TasksListComponent(
     onEvent: (TasksListEvent) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
             TopLevelTopBar(
                 title = stringResource(R.string.tasks),
                 scrollBehavior = scrollBehavior
+            )
+        },
+        floatingActionButton = {
+            AccentExpandableFAB(
+                icon = Icons.Default.Add,
+                expandedText = stringResource(R.string.add_task),
+                isExpanded = isScrolledToBottom(listState),
+                onClick = {}
             )
         },
         snackbarHost = { KitSnackbarHost(snackbarHostState) }
@@ -74,7 +89,7 @@ internal fun TasksListComponent(
                     if (state.tasks.isEmpty()) {
                         EmptyListComponent(stringResource(R.string.tasks_empty))
                     } else {
-                        TasksListContent(state, scrollBehavior)
+                        TasksListContent(state, scrollBehavior, listState)
                     }
             }
         }
@@ -85,10 +100,12 @@ internal fun TasksListComponent(
 @Composable
 private fun TasksListContent(
     state: TasksListState.Loaded,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior,
+    listState: LazyListState
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
+        state = listState,
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection)
@@ -107,7 +124,10 @@ private fun TasksListContent(
                     .fillMaxWidth()
                     .padding(
                         top = if (i == 0) Dimens.Padding.Medium else 0.dp,
-                        bottom = if (i >= state.tasks.size - 1) Dimens.Padding.Medium else 0.dp
+                        bottom = if (i >= state.tasks.size - 1)
+                            Dimens.Padding.Medium * 2 + 56.dp
+                        else
+                            0.dp
                     )
             )
         }

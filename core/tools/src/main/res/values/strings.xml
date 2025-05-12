@@ -26,4 +26,5 @@
     <string name="deadline_at">Дедлайн: %s</string>
     <string name="completed_at">Выполнено: %s</string>
     <string name="tasks">Задачи</string>
+    <string name="add_task">Добавить задачу</string>
 </resources>
