@@ -7,6 +7,11 @@ import androidx.compose.ui.unit.sp
 import ru.dezerom.core.tools.consts.Colors
 
 val TS = Typography(
+    headlineMedium = TextStyle(
+        color = Colors.white,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold
+    ),
     titleLarge = TextStyle(
         color = Colors.white,
         fontSize = 18.sp,

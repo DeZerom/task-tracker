@@ -6,15 +6,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
@@ -24,6 +28,7 @@ import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
+import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
 import ru.dezerom.tasks.domain.models.TaskModel
 
 @Composable
@@ -39,13 +44,22 @@ fun TasksListScreen() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TasksListComponent(
     state: TasksListState,
     snackbarHostState: SnackbarHostState,
     onEvent: (TasksListEvent) -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(
+        topBar = {
+            TopLevelTopBar(
+                title = stringResource(R.string.tasks),
+                scrollBehavior = scrollBehavior
+            )
+        },
         snackbarHost = { KitSnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(
@@ -55,40 +69,50 @@ internal fun TasksListComponent(
                 TasksListState.Loading -> Loading()
                 is TasksListState.Error ->
                     ErrorComponent(state.error) { onEvent(TasksListEvent.OnTryAgainClicked) }
+
                 is TasksListState.Loaded ->
                     if (state.tasks.isEmpty()) {
                         EmptyListComponent(stringResource(R.string.tasks_empty))
                     } else {
-                        TasksListContent(state)
+                        TasksListContent(state, scrollBehavior)
                     }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TasksListContent(
-    state: TasksListState.Loaded
+    state: TasksListState.Loaded,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
         modifier = Modifier
             .fillMaxSize()
-            .padding(Dimens.Padding.Medium)
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .padding(horizontal = Dimens.Padding.Medium)
     ) {
         items(
-            items = state.tasks,
-            key = { it.id }
-        ) {
+            count = state.tasks.size,
+            key = { i -> state.tasks[i].id }
+        ) { i ->
+            val task = state.tasks[i]
+
             TaskComponent(
-                it,
+                task,
                 onCompleted = {},
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = if (i == 0) Dimens.Padding.Medium else 0.dp,
+                        bottom = if (i >= state.tasks.size - 1) Dimens.Padding.Medium else 0.dp
+                    )
             )
         }
     }
 }
-
 
 
 @Composable
@@ -128,6 +152,61 @@ private fun TasksListScreenPreview() {
             ),
             TaskModel(
                 id = "123",
+                name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = true,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "2",
+                name = "Task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = false,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "3",
+                name = "Long long long long task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = true,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "4",
+                name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = true,
+                deadline = null,
+                completedAt = null,
+            ),
+
+            TaskModel(
+                id = "21",
+                name = "Task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = false,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "31",
+                name = "Long long long long task name",
+                description = "asd",
+                createdAt = 1000,
+                isCompleted = true,
+                deadline = null,
+                completedAt = null,
+            ),
+            TaskModel(
+                id = "41",
                 name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
                 description = "asd",
                 createdAt = 1000,

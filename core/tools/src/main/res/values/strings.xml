@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="back">Назад</string>
+
     <string name="error_while_loading">Ошибка при загрузке</string>
     <string name="try_again">Попробовать снова</string>
     <string name="loading">Загрузка…</string>
@@ -23,4 +25,5 @@
     <string name="created_at">Создано: %s</string>
     <string name="deadline_at">Дедлайн: %s</string>
     <string name="completed_at">Выполнено: %s</string>
+    <string name="tasks">Задачи</string>
 </resources>
