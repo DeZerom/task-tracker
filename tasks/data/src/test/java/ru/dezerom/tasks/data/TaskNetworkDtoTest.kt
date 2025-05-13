@@ -57,5 +57,4 @@ class TaskNetworkDtoTest {
         assertEquals(true, task.isCompleted)
         assertEquals(950L, task.completedAt)
     }
-
 }

@@ -11,4 +11,12 @@ internal class TasksRepositoryImpl @Inject constructor(
     override suspend fun getAll(): Result<List<TaskDataModel>> {
         return networkSource.getAllTasks()
     }
+
+    override suspend fun createTask(
+        name: String,
+        description: String?,
+        deadline: Long?
+    ): Result<Boolean> {
+        return networkSource.createTask(name, description, deadline)
+    }
 }

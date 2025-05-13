@@ -1,7 +1,9 @@
 package ru.dezerom.tasks.data.network
 
 import kotlinx.coroutines.delay
+import ru.dezerom.core.data.models.BooleanResponse
 import ru.dezerom.core.data.models.ResponseDto
+import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
 import ru.dezerom.tasks.data.network.models.TaskNetworkDto
 import ru.dezerom.tasks.data.network.models.TasksListNetworkDto
 
@@ -34,6 +36,21 @@ class TasksMockApi: TasksApi {
                     ),
                 )
             )
+        )
+    }
+
+    override suspend fun createTask(dto: CreateTaskNetworkDto): ResponseDto<BooleanResponse?> {
+        delay(1000)
+
+        if (dto.name.isBlank()) return ResponseDto(
+            success = false,
+            body = null,
+            error = "unknownNetworkError()"
+        )
+
+        return ResponseDto(
+            success = true,
+            body = BooleanResponse(true)
         )
     }
 }

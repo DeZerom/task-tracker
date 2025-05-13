@@ -6,6 +6,7 @@ import ru.dezerom.core.data.utils.safeApiCall
 import ru.dezerom.tasks.data.mappers.toDomainList
 import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksApi
+import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
 import javax.inject.Inject
 
 internal class TasksNetworkSource @Inject constructor(
@@ -21,4 +22,19 @@ internal class TasksNetworkSource @Inject constructor(
         }.map { it.toDomainList() }
     }
 
+    suspend fun createTask(
+        name: String,
+        description: String?,
+        deadline: Long?,
+    ): Result<Boolean> {
+        return safeApiCall(dispatcher = dispatcher) {
+            api.createTask(
+                CreateTaskNetworkDto(
+                    name = name,
+                    description = description,
+                    deadline = deadline
+                )
+            )
+        }.map { it.response == true }
+    }
 }

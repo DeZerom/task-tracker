@@ -14,4 +14,12 @@ class TasksRepositoryMock(
     override suspend fun getAll(): Result<List<TaskDataModel>> {
         return impl.getAll()
     }
+
+    override suspend fun createTask(
+        name: String,
+        description: String?,
+        deadline: Long?
+    ): Result<Boolean> {
+        return impl.createTask(name, description, deadline)
+    }
 }

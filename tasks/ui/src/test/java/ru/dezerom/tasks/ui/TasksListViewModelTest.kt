@@ -11,7 +11,7 @@ import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import ru.dezerom.tasks.domain.TasksListUseCaseMock
+import ru.dezerom.tasks.domain.TasksListInteractorMock
 import ru.dezerom.tasks.ui.list.TasksListState
 import ru.dezerom.tasks.ui.list.TasksListViewModel
 
@@ -51,5 +51,5 @@ class TasksList {
     }
 
     private fun createViewModel(dispatcher: CoroutineDispatcher) =
-        TasksListViewModel(TasksListUseCaseMock(dispatcher).impl)
+        TasksListViewModel(TasksListInteractorMock(dispatcher).impl)
 }
