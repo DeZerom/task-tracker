@@ -10,6 +10,7 @@ import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiDependencies
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.coreDiPlugins
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.dataStoreDependencies
 import ru.dezerom.app_build_logic.convention.utils.deps_sets.testDependencies
+import ru.dezerom.app_build_logic.convention.utils.deps_sets.timberDependencies
 import ru.dezerom.app_build_logic.convention.utils.implementation
 import ru.dezerom.app_build_logic.convention.utils.libs
 
@@ -37,6 +38,8 @@ class CoreDataConventionPlugin: Plugin<Project> {
                 apiDependencies(libs)
                 coreDiDependencies(libs)
                 dataStoreDependencies(libs)
+
+                timberDependencies(libs)
             }
         }
     }

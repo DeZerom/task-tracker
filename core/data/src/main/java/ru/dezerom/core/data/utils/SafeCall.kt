@@ -8,6 +8,7 @@ import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.core.tools.errors.unknownNetworkError
 import ru.dezerom.core.tools.string_container.toStringContainer
+import timber.log.Timber
 
 suspend fun <T> safeApiCall(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -28,6 +29,7 @@ suspend fun <T> safeApiCall(
             Result.failure(NetworkError(errorMessage))
         }
     } catch (e: Exception) {
+        Timber.e(e)
         Result.failure(unknownNetworkError())
     }
 }

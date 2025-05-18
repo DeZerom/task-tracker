@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
+import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.text_input.MultilineTextInput
 import ru.dezerom.core.ui.kit.text_input.TextInput
@@ -15,11 +16,11 @@ import ru.dezerom.core.ui.kit.widgets.BottomSheetTopBar
 import ru.dezerom.core.ui.kit.widgets.DatePickerWidget
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
-import ru.dezerom.tasks.ui.models.TaskUiModel
+import ru.dezerom.tasks.ui.models.TaskEdidtingState
 
 @Composable
 internal fun TaskEditingForm(
-    task: TaskUiModel,
+    task: TaskEdidtingState,
     onNewName: (String) -> Unit,
     onNewDescription: (String) -> Unit,
     onNewDeadline: (Long?) -> Unit,
@@ -38,7 +39,9 @@ internal fun TaskEditingForm(
             labelText = stringResource(R.string.task_name),
             onValueChanged = { onNewName(it) },
             testTag = TestTags.TextInput.TASK_NAME,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = task.nameError != null,
+            error = task.nameError?.getString()
         )
         VSpacer(Dimens.Padding.Medium)
         MultilineTextInput(
@@ -60,7 +63,7 @@ internal fun TaskEditingForm(
             testTag = TestTags.Button.CREATE_TASK_BUTTON,
             onClick = { onCreate() },
             isLoading = isLoading,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

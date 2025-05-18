@@ -13,7 +13,7 @@ fun TaskTrackerTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = darkColorScheme(
-        background = Colors.background
+        background = Colors.background,
     )
 
     MaterialTheme(

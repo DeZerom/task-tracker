@@ -2,6 +2,7 @@ package ru.dezerom.core.interceptors
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import okhttp3.Request
 import okhttp3.Response
 import ru.dezerom.auth.data.repositories.AuthRepository
 import javax.inject.Inject
@@ -25,18 +26,18 @@ internal class AuthInterceptor @Inject constructor(
                     runBlocking { sendRequest(chain) }
                 } else {
                     runBlocking { authRepository.unAuthorize() }
-                    createUnAuthResponse()
+                    createUnAuthResponse(chain.request())
                 }
             },
             onFailure = {
                 runBlocking { authRepository.unAuthorize() }
-                createUnAuthResponse()
+                createUnAuthResponse(chain.request())
             }
         )
     }
 
     private suspend fun sendRequest(chain: Interceptor.Chain): Response {
-        val token = authRepository.getAuthToken() ?: return createUnAuthResponse()
+        val token = authRepository.getAuthToken() ?: return createUnAuthResponse(chain.request())
 
         val headers = chain.request().headers().newBuilder()
             .add(AUTH_HEADER, "Bearer $token")
@@ -49,7 +50,8 @@ internal class AuthInterceptor @Inject constructor(
         return chain.proceed(request)
     }
 
-    private fun createUnAuthResponse() = Response.Builder()
+    private fun createUnAuthResponse(request: Request) = Response.Builder()
+        .request(request)
         .code(401)
         .build()
 

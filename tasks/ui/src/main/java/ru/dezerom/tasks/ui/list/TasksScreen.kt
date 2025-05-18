@@ -18,6 +18,9 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -36,6 +39,7 @@ import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
 import ru.dezerom.core.ui.tools.isScrolledToBottom
 import ru.dezerom.tasks.domain.models.TaskModel
+import ru.dezerom.tasks.ui.create.CreateTaskBottomSheet
 
 @Composable
 fun TasksListScreen() {
@@ -43,10 +47,19 @@ fun TasksListScreen() {
 
     val state by viewModel.state.collectAsState()
 
+    var showAddTask by remember { mutableStateOf(false) }
+
     TasksListComponent(
         state = state,
         snackbarHostState = viewModel.snackbarHostState,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        onAddTaskClicked = { showAddTask = true },
+        addTaskBuilder = {
+            CreateTaskBottomSheet(
+                showAddTask,
+                onDismiss = { showAddTask = false }
+            )
+        }
     )
 }
 
@@ -55,7 +68,9 @@ fun TasksListScreen() {
 internal fun TasksListComponent(
     state: TasksListState,
     snackbarHostState: SnackbarHostState,
-    onEvent: (TasksListEvent) -> Unit
+    onEvent: (TasksListEvent) -> Unit,
+    onAddTaskClicked: () -> Unit,
+    addTaskBuilder: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
@@ -68,18 +83,22 @@ internal fun TasksListComponent(
             )
         },
         floatingActionButton = {
-            AccentExpandableFAB(
-                icon = Icons.Default.Add,
-                expandedText = stringResource(R.string.add_task),
-                isExpanded = isScrolledToBottom(listState),
-                onClick = {}
-            )
+            if (state is TasksListState.Loaded) {
+                AccentExpandableFAB(
+                    icon = Icons.Default.Add,
+                    expandedText = stringResource(R.string.add_task),
+                    isExpanded = isScrolledToBottom(listState),
+                    onClick = { onAddTaskClicked() }
+                )
+            }
         },
         snackbarHost = { KitSnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(
             modifier = Modifier.padding(innerPadding)
         ) {
+            addTaskBuilder()
+
             when (state) {
                 TasksListState.Loading -> Loading()
                 is TasksListState.Error ->
@@ -241,7 +260,9 @@ private fun TasksListScreenPreview() {
         TasksListComponent(
             state = state,
             snackbarHostState = SnackbarHostState(),
-            onEvent = {}
+            onEvent = {},
+            onAddTaskClicked = {},
+            addTaskBuilder = {}
         )
     }
 }

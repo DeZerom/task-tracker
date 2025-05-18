@@ -1,11 +1,15 @@
 package ru.dezerom.core.ui.kit.widgets
 
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -13,13 +17,23 @@ fun BottomSheet(
     show: Boolean,
     onDismiss: () -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(),
-    content: @Composable ColumnScope.() -> Unit
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
+    content: @Composable () -> Unit
 ) {
     if (show) {
         ModalBottomSheet(
             sheetState = sheetState,
             onDismissRequest = onDismiss,
-            content = content,
+            content = {
+                Box {
+                    content()
+
+                    KitSnackbarHost(
+                        snackbarHostState,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
+                }
+            },
         )
     }
 }
