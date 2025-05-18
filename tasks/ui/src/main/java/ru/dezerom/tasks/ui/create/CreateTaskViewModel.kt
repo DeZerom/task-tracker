@@ -30,7 +30,8 @@ internal class CreateTaskViewModel @Inject constructor(
             is CreateTaskEvent.OnNameChanged -> onNameChanged(event.newName)
             is CreateTaskEvent.OnDescriptionChanged -> onDescriptionChanged(event.newDescription)
             is CreateTaskEvent.OnDeadlineChanged -> onDeadlineChanged(event.newDeadline)
-            CreateTaskEvent.OnCreateTaskClicked -> createTask()
+            CreateTaskEvent.OnCreateTaskClicked -> viewModelScope.launch { createTask() }
+            CreateTaskEvent.OnDismissRequest -> viewModelScope.launch { clearAndClose() }
         }
     }
 
@@ -58,10 +59,16 @@ internal class CreateTaskViewModel @Inject constructor(
         )
     }
 
-    private fun createTask() = viewModelScope.launch {
-        if (state.value.task.name.isBlank()) return@launch
-
-        _state.value = state.value.copy(isLoading = true)
+    private suspend fun createTask() {
+        _state.value = state.value.copy(
+            isLoading = true,
+            task = state.value.task.copy(
+                nameError = if (state.value.task.name.isBlank())
+                    R.string.field_must_not_be_empty.toStringContainer()
+                else
+                    null
+            )
+        )
 
         val result = interactor.createTask(
             name = state.value.task.name,
@@ -69,16 +76,23 @@ internal class CreateTaskViewModel @Inject constructor(
             deadline = state.value.task.deadline
         )
 
+        var success = false
         result.fold(
             onSuccess = {
                 TasksChangeListenersHolder.triggerChange(
                     TasksChangedPayload.TaskAdded(it)
                 )
+                success = true
             },
             onFailure = { showError(it) }
         )
 
         _state.value = state.value.copy(isLoading = false)
+        if (success) clearAndClose()
+    }
+
+    private suspend fun clearAndClose() {
+        _state.value = CreateTaskState()
         _sideEffects.send(CreateTaskSideEffect.DismissDialog)
     }
 }

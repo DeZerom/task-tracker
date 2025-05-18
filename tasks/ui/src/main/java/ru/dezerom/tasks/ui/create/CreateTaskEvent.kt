@@ -5,4 +5,5 @@ internal sealed class CreateTaskEvent {
     class OnDescriptionChanged(val newDescription: String): CreateTaskEvent()
     class OnDeadlineChanged(val newDeadline: Long?): CreateTaskEvent()
     data object OnCreateTaskClicked: CreateTaskEvent()
+    data object OnDismissRequest: CreateTaskEvent()
 }

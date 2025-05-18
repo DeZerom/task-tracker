@@ -2,8 +2,10 @@ package ru.dezerom.tasks.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.dezerom.tasks.data.network.TasksMockApi
@@ -28,7 +30,8 @@ internal class TasksNetworkSourceTest {
         val result = source.createTask("", null, null)
 
         assertFalse(result.isSuccess)
-        assertFalse(result.getOrNull() == true)
+        assertNotNull(result.exceptionOrNull())
+        assertNull(result.getOrNull())
     }
 
     @Test
@@ -39,6 +42,8 @@ internal class TasksNetworkSourceTest {
         assertNotNull(result.getOrNull())
         val body = result.getOrNull()!!
 
-        assertTrue(body)
+        assertEquals("qwe", body.name)
+        assertEquals("asd", body.description)
+        assertEquals(1000L, body.deadline)
     }
 }

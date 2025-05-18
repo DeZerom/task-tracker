@@ -2,6 +2,7 @@ package ru.dezerom.tasks.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -35,6 +36,11 @@ class TasksRepositoryTest {
         val result = repo.createTask("qwe", "asd", 1000L)
 
         assertTrue(result.isSuccess)
-        assertTrue(result.getOrNull() == true)
+        assertNotNull(result.getOrNull())
+        val body = result.getOrNull()!!
+
+        assertEquals("qwe", body.name)
+        assertEquals("asd", body.description)
+        assertEquals(1000L, body.deadline)
     }
 }

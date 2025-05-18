@@ -51,9 +51,9 @@ class TasksMockApi: TasksApi {
             success = true,
             body = TaskNetworkDto(
                 id = "3",
-                name = "qwe3",
-                completedAt = 1300,
-                isCompleted = true
+                name = dto.name,
+                description = dto.description,
+                deadline = dto.deadline
             ),
         )
     }

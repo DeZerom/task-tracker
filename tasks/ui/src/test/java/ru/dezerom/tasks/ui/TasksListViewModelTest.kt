@@ -16,7 +16,7 @@ import ru.dezerom.tasks.ui.list.TasksListState
 import ru.dezerom.tasks.ui.list.TasksListViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TasksList {
+class TasksListViewModelTest {
     private val testMain = StandardTestDispatcher()
 
     @Before

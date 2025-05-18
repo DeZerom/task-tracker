@@ -28,13 +28,15 @@ internal fun CreateTaskBottomSheet(
 
     ProcessSideEffects(viewModel.sideEffects) {
         when (it) {
-            CreateTaskSideEffect.DismissDialog -> onDismiss()
+            CreateTaskSideEffect.DismissDialog -> {
+                onDismiss()
+            }
         }
     }
 
     CreateTaskContent(
         show = show,
-        onDismiss = onDismiss,
+        onDismiss = { viewModel.onEvent(CreateTaskEvent.OnDismissRequest) },
         onEvent = viewModel::onEvent,
         state = viewModel.state.collectAsState().value,
         snackbarHostState = viewModel.snackbarHostState

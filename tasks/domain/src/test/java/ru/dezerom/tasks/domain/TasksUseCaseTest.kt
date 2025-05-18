@@ -10,6 +10,7 @@ import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.tasks.data.repositories.TasksRepositoryMock
+import ru.dezerom.tasks.domain.models.TaskModel
 
 class TasksUseCaseTest {
     private val useCase = TasksListInteractor(TasksRepositoryMock())
@@ -45,10 +46,12 @@ class TasksUseCaseTest {
         assertNotNull(result.getOrNull())
         val body = result.getOrNull()!!
 
-        assertTrue(body)
+        assertEquals("qwe", body.name)
+        assertEquals("asd", body.description)
+        assertEquals(null, body.deadline)
     }
 
-    private fun emptyNameTaskAssertions(result: Result<Boolean>) {
+    private fun emptyNameTaskAssertions(result: Result<TaskModel>) {
         assertFalse(result.isSuccess)
         assertNotNull(result.exceptionOrNull())
         val exception = result.exceptionOrNull()!!
