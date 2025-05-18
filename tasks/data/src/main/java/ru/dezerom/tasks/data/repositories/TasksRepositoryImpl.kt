@@ -16,7 +16,7 @@ internal class TasksRepositoryImpl @Inject constructor(
         name: String,
         description: String?,
         deadline: Long?
-    ): Result<Boolean> {
+    ): Result<TaskDataModel> {
         return networkSource.createTask(name, description, deadline)
     }
 }

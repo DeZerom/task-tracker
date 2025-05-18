@@ -19,7 +19,7 @@ class TasksRepositoryMock(
         name: String,
         description: String?,
         deadline: Long?
-    ): Result<Boolean> {
+    ): Result<TaskDataModel> {
         return impl.createTask(name, description, deadline)
     }
 }

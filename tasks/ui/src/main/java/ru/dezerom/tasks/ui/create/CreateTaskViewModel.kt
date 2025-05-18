@@ -2,13 +2,17 @@ package ru.dezerom.tasks.ui.create
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.view_models.BaseViewModel
 import ru.dezerom.tasks.domain.TasksListInteractor
+import ru.dezerom.tasks.ui.notifiers.TasksChangeListenersHolder
+import ru.dezerom.tasks.ui.notifiers.TasksChangedPayload
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +21,9 @@ internal class CreateTaskViewModel @Inject constructor(
 ): BaseViewModel() {
     private val _state = MutableStateFlow(CreateTaskState())
     val state = _state.asStateFlow()
+
+    private val _sideEffects = Channel<CreateTaskSideEffect>(Channel.BUFFERED)
+    val sideEffects = _sideEffects.receiveAsFlow()
 
     fun onEvent(event: CreateTaskEvent) {
         when (event) {
@@ -64,11 +71,14 @@ internal class CreateTaskViewModel @Inject constructor(
 
         result.fold(
             onSuccess = {
-                if (!it) showError(R.string.unknown_error.toStringContainer())
+                TasksChangeListenersHolder.triggerChange(
+                    TasksChangedPayload.TaskAdded(it)
+                )
             },
             onFailure = { showError(it) }
         )
 
         _state.value = state.value.copy(isLoading = false)
+        _sideEffects.send(CreateTaskSideEffect.DismissDialog)
     }
 }

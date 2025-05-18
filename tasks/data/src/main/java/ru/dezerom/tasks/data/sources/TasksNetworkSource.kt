@@ -3,6 +3,7 @@ package ru.dezerom.tasks.data.sources
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.dezerom.core.data.di.IODispatcher
 import ru.dezerom.core.data.utils.safeApiCall
+import ru.dezerom.tasks.data.mappers.toDataModel
 import ru.dezerom.tasks.data.mappers.toDomainList
 import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksApi
@@ -26,7 +27,7 @@ internal class TasksNetworkSource @Inject constructor(
         name: String,
         description: String?,
         deadline: Long?,
-    ): Result<Boolean> {
+    ): Result<TaskDataModel> {
         return safeApiCall(dispatcher = dispatcher) {
             api.createTask(
                 CreateTaskNetworkDto(
@@ -35,6 +36,6 @@ internal class TasksNetworkSource @Inject constructor(
                     deadline = deadline
                 )
             )
-        }.map { it.response == true }
+        }.map { it.toDataModel() }
     }
 }

@@ -10,5 +10,5 @@ interface TasksRepository {
         name: String,
         description: String?,
         deadline: Long?
-    ): Result<Boolean>
+    ): Result<TaskDataModel>
 }

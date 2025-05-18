@@ -5,6 +5,7 @@ import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.tasks.data.repositories.TasksRepository
 import ru.dezerom.tasks.domain.mappers.toDomain
+import ru.dezerom.tasks.domain.models.TaskModel
 import javax.inject.Inject
 
 class TasksListInteractor @Inject constructor(
@@ -18,11 +19,11 @@ class TasksListInteractor @Inject constructor(
         name: String,
         description: String?,
         deadline: Long?
-    ): Result<Boolean> {
+    ): Result<TaskModel> {
         if (name.isBlank())
             return Result.failure(NetworkError(R.string.name_field_is_required.toStringContainer()))
 
-        return repository.createTask(name, description, deadline)
+        return repository.createTask(name, description, deadline).map { it.toDomain() }
     }
 
 }

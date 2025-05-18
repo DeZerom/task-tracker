@@ -15,6 +15,7 @@ import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.BottomSheet
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.tasks.ui.models.TaskEdidtingState
 import ru.dezerom.tasks.ui.widgets.TaskEditingForm
 
@@ -24,6 +25,12 @@ internal fun CreateTaskBottomSheet(
     onDismiss: () -> Unit,
 ) {
     val viewModel: CreateTaskViewModel = hiltViewModel()
+
+    ProcessSideEffects(viewModel.sideEffects) {
+        when (it) {
+            CreateTaskSideEffect.DismissDialog -> onDismiss()
+        }
+    }
 
     CreateTaskContent(
         show = show,
