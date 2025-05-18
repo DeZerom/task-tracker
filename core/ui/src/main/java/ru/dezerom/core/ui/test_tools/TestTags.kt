@@ -4,6 +4,8 @@ object TestTags {
     object TextInput {
         const val LOGIN = "login_input"
         const val PASSWORD = "password_input"
+        const val TASK_NAME = "task_name_input"
+        const val TASK_DESCRIPTION = "task_description_input"
 
         const val ERROR_HINT_POSTFIX = "_error_hint"
 
@@ -21,6 +23,8 @@ object TestTags {
         const val AUTH_BUTTON = "auth_button"
 
         const val TRY_AGAIN_BUTTON = "try_again_button"
+
+        const val CREATE_TASK_BUTTON = "create_task_button"
 
         const val BUTTON_LOADER_POSTFIX = "_btn_loader"
         const val BUTTON_TEXT_POSTFIX = "_btn_text"

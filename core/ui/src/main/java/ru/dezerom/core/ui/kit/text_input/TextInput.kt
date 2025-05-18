@@ -25,6 +25,8 @@ fun TextInput(
     isError: Boolean = false,
     error: String? = null,
     testTag: String = "",
+    singleLine: Boolean = true,
+    minLines: Int = 1,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.VerySmall)
@@ -52,6 +54,8 @@ fun TextInput(
                 )
             },
             visualTransformation = visualTransformation,
+            singleLine = singleLine,
+            minLines = minLines,
             modifier = modifier.testTag(testTag),
         )
         if (isError && !error.isNullOrBlank()) {
