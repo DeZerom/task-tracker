@@ -25,5 +25,5 @@ object CoreDataDiModule {
 
     private fun baseRetrofitBuilder() = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(Web.BASE_URL)
+        .baseUrl(Web.url)
 }

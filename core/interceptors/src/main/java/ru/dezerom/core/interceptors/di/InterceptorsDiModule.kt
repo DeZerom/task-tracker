@@ -38,7 +38,7 @@ internal object InterceptorsInternalDiModule {
     @Named(INTERNAL_AUTH_RETROFIT)
     fun provideAuthorizedRetrofit(@AuthorizedClient client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl(Web.BASE_URL)
+            .baseUrl(Web.url)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
