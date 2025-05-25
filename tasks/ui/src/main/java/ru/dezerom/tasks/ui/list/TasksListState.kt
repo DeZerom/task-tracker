@@ -7,7 +7,8 @@ sealed class TasksListState {
     data object Loading: TasksListState()
 
     data class Loaded(
-        val tasks: List<TaskModel>
+        val tasks: List<TaskModel>,
+        val isRefreshing: Boolean,
     ): TasksListState()
 
     data class Error(

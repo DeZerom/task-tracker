@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -108,7 +109,12 @@ internal fun TasksListComponent(
                     if (state.tasks.isEmpty()) {
                         EmptyListComponent(stringResource(R.string.tasks_empty))
                     } else {
-                        TasksListContent(state, scrollBehavior, listState)
+                        TasksListContent(
+                            state = state,
+                            onRefresh = { onEvent(TasksListEvent.OnRefresh) },
+                            scrollBehavior = scrollBehavior,
+                            listState = listState
+                        )
                     }
             }
         }
@@ -119,36 +125,42 @@ internal fun TasksListComponent(
 @Composable
 private fun TasksListContent(
     state: TasksListState.Loaded,
+    onRefresh: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     listState: LazyListState
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
-        state = listState,
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .padding(horizontal = Dimens.Padding.Medium)
+    PullToRefreshBox(
+        isRefreshing = state.isRefreshing,
+        onRefresh = onRefresh,
     ) {
-        items(
-            count = state.tasks.size,
-            key = { i -> state.tasks[i].id }
-        ) { i ->
-            val task = state.tasks[i]
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(Dimens.Padding.Medium),
+            state = listState,
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .padding(horizontal = Dimens.Padding.Medium)
+        ) {
+            items(
+                count = state.tasks.size,
+                key = { i -> state.tasks[i].id }
+            ) { i ->
+                val task = state.tasks[i]
 
-            TaskComponent(
-                task,
-                onCompleted = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = if (i == 0) Dimens.Padding.Medium else 0.dp,
-                        bottom = if (i >= state.tasks.size - 1)
-                            Dimens.Padding.Medium * 2 + 56.dp
-                        else
-                            0.dp
-                    )
-            )
+                TaskComponent(
+                    task,
+                    onCompleted = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = if (i == 0) Dimens.Padding.Medium else 0.dp,
+                            bottom = if (i >= state.tasks.size - 1)
+                                Dimens.Padding.Medium * 2 + 56.dp
+                            else
+                                0.dp
+                        )
+                )
+            }
         }
     }
 }
@@ -253,7 +265,8 @@ private fun TasksListScreenPreview() {
                 deadline = null,
                 completedAt = null,
             )
-        )
+        ),
+        isRefreshing = false
     )
 
     TaskTrackerTheme {

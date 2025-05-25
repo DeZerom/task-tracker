@@ -48,13 +48,22 @@ class TasksListViewModel @Inject constructor(
     fun onEvent(event: TasksListEvent) {
         when (event) {
             TasksListEvent.OnTryAgainClicked -> initialize()
+            TasksListEvent.OnRefresh -> refresh()
         }
+    }
+
+    private fun refresh() = viewModelScope.launch {
+        val s = state.value
+        if (s !is TasksListState.Loaded || s.isRefreshing) return@launch
+
+        _state.value = s.copy(isRefreshing = true)
+        fetchTasks()
     }
 
     private suspend fun fetchTasks() {
         tasksInteractor.getAllTasks().fold(
             onSuccess = {
-                _state.value = TasksListState.Loaded(it)
+                _state.value = TasksListState.Loaded(it, false)
             },
             onFailure = {
                 val err = it as? NetworkError ?: unknownNetworkError()
