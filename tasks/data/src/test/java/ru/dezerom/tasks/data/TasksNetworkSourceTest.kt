@@ -8,6 +8,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.tasks.data.network.TasksMockApi
 import ru.dezerom.tasks.data.sources.TasksNetworkSource
 
@@ -45,5 +46,21 @@ internal class TasksNetworkSourceTest {
         assertEquals("qwe", body.name)
         assertEquals("asd", body.description)
         assertEquals(1000L, body.deadline)
+    }
+
+    @Test
+    fun changeComplete_success() = runBlocking {
+        val result = source.changeCompleteStatus("1")
+
+        assertTrue(result.isSuccess)
+        assertTrue(result.getOrNull() == true)
+    }
+
+    @Test
+    fun changeComplete_failure() = runBlocking {
+        val result = source.changeCompleteStatus("2")
+
+        assertFalse(result.isSuccess)
+        assertTrue(result.exceptionOrNull() is NetworkError)
     }
 }

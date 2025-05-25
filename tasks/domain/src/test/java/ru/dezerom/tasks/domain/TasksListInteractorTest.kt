@@ -12,12 +12,12 @@ import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.tasks.data.repositories.TasksRepositoryMock
 import ru.dezerom.tasks.domain.models.TaskModel
 
-class TasksUseCaseTest {
-    private val useCase = TasksListInteractor(TasksRepositoryMock())
+class TasksListInteractorTest {
+    private val interactor = TasksListInteractor(TasksRepositoryMock())
 
     @Test
     fun getAll_success() = runBlocking {
-        val result = useCase.getAllTasks()
+        val result = interactor.getAllTasks()
 
         assertTrue(result.isSuccess)
         assertNotNull(result.getOrNull())
@@ -28,19 +28,19 @@ class TasksUseCaseTest {
 
     @Test
     fun createTask_emptyName() = runBlocking {
-        val result = useCase.createTask("", null, null)
+        val result = interactor.createTask("", null, null)
         emptyNameTaskAssertions(result)
     }
 
     @Test
     fun createTask_blankName() = runBlocking {
-        val result = useCase.createTask("  ", null, null)
+        val result = interactor.createTask("  ", null, null)
         emptyNameTaskAssertions(result)
     }
 
     @Test
     fun createTask_success() = runBlocking {
-        val result = useCase.createTask("qwe", "asd", null)
+        val result = interactor.createTask("qwe", "asd", null)
 
         assertTrue(result.isSuccess)
         assertNotNull(result.getOrNull())
@@ -63,5 +63,21 @@ class TasksUseCaseTest {
         val res = exception.messageRes as StringContainer.StringRes
 
         assertEquals(R.string.name_field_is_required, res.res)
+    }
+
+    @Test
+    fun changeComplete_success() = runBlocking {
+        val result = interactor.changeCompleteStatus("1")
+
+        assertTrue(result.isSuccess)
+        assertTrue(result.getOrNull() == true)
+    }
+
+    @Test
+    fun changeComplete_failure() = runBlocking {
+        val result = interactor.changeCompleteStatus("2")
+
+        assertFalse(result.isSuccess)
+        assertTrue(result.exceptionOrNull() is NetworkError)
     }
 }

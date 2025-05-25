@@ -39,7 +39,7 @@ class TaskComponentTest {
 
             TaskComponent(
                 task = task,
-                onCompleted = { task = task.copy(isCompleted = !task.isCompleted) }
+                onChangeCompleteStatus = { task = task.copy(isCompleted = !task.isCompleted) }
             )
         }
 
@@ -67,7 +67,7 @@ class TaskComponentTest {
                     isCompleted = false,
                     completedAt = null,
                 ),
-                onCompleted = {}
+                onChangeCompleteStatus = {}
             )
         }
 

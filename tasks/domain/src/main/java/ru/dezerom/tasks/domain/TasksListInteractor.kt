@@ -26,4 +26,8 @@ class TasksListInteractor @Inject constructor(
         return repository.createTask(name, description, deadline).map { it.toDomain() }
     }
 
+    suspend fun changeCompleteStatus(taskId: String): Result<Boolean> {
+        return repository.changeCompleteStatus(taskId)
+    }
+
 }

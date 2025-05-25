@@ -11,4 +11,6 @@ interface TasksRepository {
         description: String?,
         deadline: Long?
     ): Result<TaskDataModel>
+
+    suspend fun changeCompleteStatus(taskId: String): Result<Boolean>
 }

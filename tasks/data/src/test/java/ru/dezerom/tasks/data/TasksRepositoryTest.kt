@@ -7,6 +7,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.tasks.data.network.TasksMockApi
 import ru.dezerom.tasks.data.repositories.TasksRepositoryImpl
 import ru.dezerom.tasks.data.sources.TasksNetworkSource
@@ -42,5 +43,21 @@ class TasksRepositoryTest {
         assertEquals("qwe", body.name)
         assertEquals("asd", body.description)
         assertEquals(1000L, body.deadline)
+    }
+
+    @Test
+    fun changeComplete_success() = runBlocking {
+        val result = repo.changeCompleteStatus("1")
+
+        assertTrue(result.isSuccess)
+        assertTrue(result.getOrNull() == true)
+    }
+
+    @Test
+    fun changeComplete_failure() = runBlocking {
+        val result = repo.changeCompleteStatus("2")
+
+        assertFalse(result.isSuccess)
+        assertTrue(result.exceptionOrNull() is NetworkError)
     }
 }

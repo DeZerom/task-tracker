@@ -5,8 +5,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.core.tools.errors.unknownNetworkError
+import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.view_models.BaseViewModel
 import ru.dezerom.tasks.domain.TasksListInteractor
 import ru.dezerom.tasks.domain.models.TaskModel
@@ -49,6 +51,35 @@ class TasksListViewModel @Inject constructor(
         when (event) {
             TasksListEvent.OnTryAgainClicked -> initialize()
             TasksListEvent.OnRefresh -> refresh()
+            is TasksListEvent.OnChangeCompleteStatus -> changeCompleteStatus(event.taskId)
+        }
+    }
+
+    private fun changeCompleteStatus(taskId: String) {
+        val s = state.value
+        if (s !is TasksListState.Loaded) return
+
+        val task = findTask(taskId)
+        if (task == null) {
+            showError(R.string.unknown_error.toStringContainer())
+            return
+        }
+        val oldStatus: Boolean = task.isCompleted
+        changeTask(taskId) { copy(isCompleted = !oldStatus) }
+
+        viewModelScope.launch {
+            tasksInteractor.changeCompleteStatus(taskId).fold(
+                onSuccess = {
+                    if (!it) {
+                        showError(R.string.unknown_error.toStringContainer())
+                        changeTask(taskId) { copy(isCompleted = oldStatus) }
+                    }
+                },
+                onFailure = {
+                    showError(R.string.unknown_error.toStringContainer())
+                    changeTask(taskId) { copy(isCompleted = oldStatus) }
+                }
+            )
         }
     }
 
@@ -79,5 +110,24 @@ class TasksListViewModel @Inject constructor(
         _state.value = s.copy(
             tasks = s.tasks + task
         )
+    }
+
+    private fun changeTask(id: String, reducer: TaskModel.() -> TaskModel) {
+        val s = state.value
+        if (s !is TasksListState.Loaded) return
+
+        _state.value = s.copy(
+            tasks = s.tasks.map {
+                if (it.id == id) reducer(it)
+                else it
+            }
+        )
+    }
+
+    private fun findTask(id: String): TaskModel? {
+        val s = state.value
+        if (s !is TasksListState.Loaded) return null
+
+        return s.tasks.find { it.id == id }
     }
 }

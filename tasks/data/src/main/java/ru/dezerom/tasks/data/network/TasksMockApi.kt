@@ -1,6 +1,7 @@
 package ru.dezerom.tasks.data.network
 
 import kotlinx.coroutines.delay
+import ru.dezerom.core.data.models.BooleanResponse
 import ru.dezerom.core.data.models.ResponseDto
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
 import ru.dezerom.tasks.data.network.models.TaskNetworkDto
@@ -56,5 +57,22 @@ class TasksMockApi: TasksApi {
                 deadline = dto.deadline
             ),
         )
+    }
+
+    override suspend fun changeCompleteStatus(taskId: String): ResponseDto<BooleanResponse?> {
+        delay(1000)
+
+        if (taskId == "1") {
+            return ResponseDto(
+                success = true,
+                body = BooleanResponse(true)
+            )
+        } else {
+            return ResponseDto(
+                success = false,
+                body = null,
+                error = "qweqwe"
+            )
+        }
     }
 }

@@ -45,7 +45,7 @@ import ru.dezerom.tasks.domain.models.TaskModel
 @Composable
 internal fun TaskComponent(
     task: TaskModel,
-    onCompleted: (Boolean) -> Unit,
+    onChangeCompleteStatus: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -67,7 +67,7 @@ internal fun TaskComponent(
             Row {
                 Checkbox(
                     checked = task.isCompleted,
-                    onCheckedChange = onCompleted,
+                    onCheckedChange = onChangeCompleteStatus,
                     colors = CheckboxDefaults.colors(
                         checkedColor = Colors.accent,
                         uncheckedColor = Colors.accent,
@@ -207,7 +207,7 @@ private fun TaskComponentPreview() {
 //                deadline = 1000000000000,
 //                completedAt = 100000000,
 //            ),
-            onCompleted = {}
+            onChangeCompleteStatus = {}
         )
     }
 }

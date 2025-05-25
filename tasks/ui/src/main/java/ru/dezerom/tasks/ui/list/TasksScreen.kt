@@ -112,6 +112,7 @@ internal fun TasksListComponent(
                         TasksListContent(
                             state = state,
                             onRefresh = { onEvent(TasksListEvent.OnRefresh) },
+                            onChangeCompleteStatus = { onEvent(TasksListEvent.OnChangeCompleteStatus(it)) },
                             scrollBehavior = scrollBehavior,
                             listState = listState
                         )
@@ -126,6 +127,7 @@ internal fun TasksListComponent(
 private fun TasksListContent(
     state: TasksListState.Loaded,
     onRefresh: () -> Unit,
+    onChangeCompleteStatus: (String) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     listState: LazyListState
 ) {
@@ -149,7 +151,7 @@ private fun TasksListContent(
 
                 TaskComponent(
                     task,
-                    onCompleted = {},
+                    onChangeCompleteStatus = { onChangeCompleteStatus(task.id) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(

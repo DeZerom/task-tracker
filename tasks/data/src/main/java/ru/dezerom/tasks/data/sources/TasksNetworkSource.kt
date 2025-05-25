@@ -38,4 +38,10 @@ internal class TasksNetworkSource @Inject constructor(
             )
         }.map { it.toDataModel() }
     }
+
+    suspend fun changeCompleteStatus(taskId: String): Result<Boolean> {
+        return safeApiCall(dispatcher = dispatcher) {
+            api.changeCompleteStatus(taskId = taskId)
+        }.map { it.response == true }
+    }
 }

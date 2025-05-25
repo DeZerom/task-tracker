@@ -4,4 +4,6 @@ sealed class TasksListEvent {
     data object OnTryAgainClicked: TasksListEvent()
 
     data object OnRefresh: TasksListEvent()
+
+    class OnChangeCompleteStatus(val taskId: String): TasksListEvent()
 }
