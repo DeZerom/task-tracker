@@ -2,6 +2,7 @@ package ru.dezerom.tasks.data.repositories
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import ru.dezerom.tasks.data.models.ChangeCompletedStatusDto
 import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksMockApi
 import ru.dezerom.tasks.data.sources.TasksNetworkSource
@@ -23,7 +24,7 @@ class TasksRepositoryMock(
         return impl.createTask(name, description, deadline)
     }
 
-    override suspend fun changeCompleteStatus(taskId: String): Result<Boolean> {
+    override suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto> {
         return impl.changeCompleteStatus(taskId)
     }
 }

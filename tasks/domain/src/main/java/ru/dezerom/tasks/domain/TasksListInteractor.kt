@@ -5,6 +5,7 @@ import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.tasks.data.repositories.TasksRepository
 import ru.dezerom.tasks.domain.mappers.toDomain
+import ru.dezerom.tasks.domain.models.ChangeCompletedStatusModel
 import ru.dezerom.tasks.domain.models.TaskModel
 import javax.inject.Inject
 
@@ -26,8 +27,8 @@ class TasksListInteractor @Inject constructor(
         return repository.createTask(name, description, deadline).map { it.toDomain() }
     }
 
-    suspend fun changeCompleteStatus(taskId: String): Result<Boolean> {
-        return repository.changeCompleteStatus(taskId)
+    suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusModel> {
+        return repository.changeCompleteStatus(taskId).map { it.toDomain() }
     }
 
 }

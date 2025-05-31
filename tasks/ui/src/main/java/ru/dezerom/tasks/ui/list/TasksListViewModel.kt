@@ -69,18 +69,23 @@ internal class TasksListViewModel @Inject constructor(
         viewModelScope.launch {
             tasksInteractor.changeCompleteStatus(taskId).fold(
                 onSuccess = {
-                    if (!it) {
+                    if (!it.success) {
                         showError(R.string.unknown_error.toStringContainer())
-                        changeTaskState(taskId) { copy(isLoading = false) }
                     } else {
-                        changeInnerTask(taskId) { copy(isCompleted = !task.task.isCompleted) }
+                        changeInnerTask(taskId) {
+                            copy(
+                                isCompleted = !task.task.isCompleted,
+                                completedAt = it.completedAt
+                            )
+                        }
                     }
                 },
                 onFailure = {
                     showError(R.string.unknown_error.toStringContainer())
-                    changeTaskState(taskId) { copy(isLoading = false) }
                 }
             )
+
+            changeTaskState(taskId) { copy(isLoading = false) }
         }
     }
 

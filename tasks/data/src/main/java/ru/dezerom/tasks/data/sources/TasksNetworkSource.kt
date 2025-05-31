@@ -5,6 +5,8 @@ import ru.dezerom.core.data.di.IODispatcher
 import ru.dezerom.core.data.utils.safeApiCall
 import ru.dezerom.tasks.data.mappers.toDataModel
 import ru.dezerom.tasks.data.mappers.toDomainList
+import ru.dezerom.tasks.data.mappers.toDto
+import ru.dezerom.tasks.data.models.ChangeCompletedStatusDto
 import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksApi
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
@@ -39,9 +41,9 @@ internal class TasksNetworkSource @Inject constructor(
         }.map { it.toDataModel() }
     }
 
-    suspend fun changeCompleteStatus(taskId: String): Result<Boolean> {
+    suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto> {
         return safeApiCall(dispatcher = dispatcher) {
             api.changeCompleteStatus(taskId = taskId)
-        }.map { it.response == true }
+        }.map { it.toDto() }
     }
 }

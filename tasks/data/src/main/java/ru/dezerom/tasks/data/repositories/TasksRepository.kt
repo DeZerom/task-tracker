@@ -1,5 +1,6 @@
 package ru.dezerom.tasks.data.repositories
 
+import ru.dezerom.tasks.data.models.ChangeCompletedStatusDto
 import ru.dezerom.tasks.data.models.TaskDataModel
 
 interface TasksRepository {
@@ -12,5 +13,5 @@ interface TasksRepository {
         deadline: Long?
     ): Result<TaskDataModel>
 
-    suspend fun changeCompleteStatus(taskId: String): Result<Boolean>
+    suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto>
 }

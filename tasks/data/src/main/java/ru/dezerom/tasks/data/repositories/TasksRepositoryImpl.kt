@@ -1,5 +1,6 @@
 package ru.dezerom.tasks.data.repositories
 
+import ru.dezerom.tasks.data.models.ChangeCompletedStatusDto
 import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.sources.TasksNetworkSource
 import javax.inject.Inject
@@ -20,7 +21,7 @@ internal class TasksRepositoryImpl @Inject constructor(
         return networkSource.createTask(name, description, deadline)
     }
 
-    override suspend fun changeCompleteStatus(taskId: String): Result<Boolean> {
+    override suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto> {
         return networkSource.changeCompleteStatus(taskId)
     }
 }
