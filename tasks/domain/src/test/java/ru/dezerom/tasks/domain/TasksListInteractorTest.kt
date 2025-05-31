@@ -10,6 +10,7 @@ import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.errors.NetworkError
 import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.tasks.data.repositories.TasksRepositoryMock
+import ru.dezerom.tasks.domain.models.ChangeCompletedStatusModel
 import ru.dezerom.tasks.domain.models.TaskModel
 
 class TasksListInteractorTest {
@@ -70,7 +71,10 @@ class TasksListInteractorTest {
         val result = interactor.changeCompleteStatus("1")
 
         assertTrue(result.isSuccess)
-        assertTrue(result.getOrNull() == true)
+        assertTrue(result.getOrNull() is ChangeCompletedStatusModel)
+        val body = result.getOrNull() as ChangeCompletedStatusModel
+
+        assertEquals(true, body.success)
     }
 
     @Test

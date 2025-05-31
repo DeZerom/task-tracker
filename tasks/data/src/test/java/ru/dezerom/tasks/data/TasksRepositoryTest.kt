@@ -8,6 +8,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.dezerom.core.tools.errors.NetworkError
+import ru.dezerom.tasks.data.models.ChangeCompletedStatusDto
 import ru.dezerom.tasks.data.network.TasksMockApi
 import ru.dezerom.tasks.data.repositories.TasksRepositoryImpl
 import ru.dezerom.tasks.data.sources.TasksNetworkSource
@@ -50,7 +51,10 @@ class TasksRepositoryTest {
         val result = repo.changeCompleteStatus("1")
 
         assertTrue(result.isSuccess)
-        assertTrue(result.getOrNull() == true)
+        assertTrue(result.getOrNull() is ChangeCompletedStatusDto)
+        val body = result.getOrNull() as ChangeCompletedStatusDto
+
+        assertEquals(true, body.success)
     }
 
     @Test
