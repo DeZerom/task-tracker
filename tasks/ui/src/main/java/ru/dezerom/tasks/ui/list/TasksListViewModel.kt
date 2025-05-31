@@ -2,8 +2,10 @@ package ru.dezerom.tasks.ui.list
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.errors.NetworkError
@@ -12,6 +14,7 @@ import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.view_models.BaseViewModel
 import ru.dezerom.tasks.domain.TasksListInteractor
 import ru.dezerom.tasks.domain.models.TaskModel
+import ru.dezerom.tasks.ui.models.TaskEdidtingState
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListener
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListenersHolder
 import ru.dezerom.tasks.ui.notifiers.TasksChangedPayload
@@ -23,6 +26,9 @@ internal class TasksListViewModel @Inject constructor(
 ): BaseViewModel(), TasksChangeListener {
     private val _state = MutableStateFlow<TasksListState>(TasksListState.Loading)
     val state = _state.asStateFlow()
+
+    private val _sideEffect = Channel<TaskSideEffect>(Channel.BUFFERED)
+    val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
         TasksChangeListenersHolder.register(this)
@@ -52,6 +58,27 @@ internal class TasksListViewModel @Inject constructor(
             TasksListEvent.OnTryAgainClicked -> initialize()
             TasksListEvent.OnRefresh -> refresh()
             is TasksListEvent.OnChangeCompleteStatus -> changeCompleteStatus(event.taskId)
+            is TasksListEvent.OnEditClicked -> onEditClicked(event.taskId)
+            is TasksListEvent.OnDeleteClicked -> TODO()
+        }
+    }
+
+    private fun onEditClicked(taskId: String) {
+        val s = state.value
+        if (s !is TasksListState.Loaded) return
+
+        val task = findTask(taskId)
+        if (task == null) {
+            showError(R.string.unknown_error.toStringContainer())
+            return
+        }
+
+        viewModelScope.launch {
+            _sideEffect.send(TaskSideEffect.OpenEditTask(
+                TaskEdidtingState(
+                    name = task.task.name
+                )
+            ))
         }
     }
 

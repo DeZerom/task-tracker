@@ -2,6 +2,7 @@ package ru.dezerom.tasks.ui.list
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,6 +51,8 @@ internal fun TaskComponent(
     task: TaskModel,
     isLoading: Boolean,
     onChangeCompleteStatus: (Boolean) -> Unit,
+    onEditClicked: () -> Unit,
+    onDeleteClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -116,29 +121,44 @@ internal fun TaskComponent(
                 )
             }
             VSpacer(Dimens.Padding.Medium)
-             Row(
-                 verticalAlignment = Alignment.CenterVertically,
-                 modifier = Modifier.fillMaxWidth()
-             ) {
-                 Text(
-                     text = stringResource(R.string.created_at, task.createdAt.toYearMonthDay()),
-                     style = TS.bodyMedium,
-                     modifier = Modifier.weight(1f)
-                 )
-                 if (task.deadline != null) {
-                     Text(
-                         text = stringResource(
-                             R.string.deadline_at, task.deadline!!.toYearMonthDay()
-                         ),
-                         style = TS.bodyMedium,
-                     )
-                 }
-             }
-            if (task.isCompleted && task.completedAt != null) {
-                Text(
-                    text = stringResource(R.string.completed_at, task.completedAt!!.toYearMonthDay()),
-                    style = TS.bodyMedium.copy(color = Colors.secondaryText)
-                )
+            Row {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.created_at, task.createdAt.toYearMonthDay()),
+                        style = TS.bodyMedium,
+                    )
+                    VSpacer(Dimens.Padding.VerySmall)
+                    if (task.deadline != null) {
+                        Text(
+                            text = stringResource(
+                                R.string.deadline_at, task.deadline!!.toYearMonthDay()
+                            ),
+                            style = TS.bodyMedium,
+                        )
+                        VSpacer(Dimens.Padding.VerySmall)
+                    }
+                    if (task.isCompleted && task.completedAt != null) {
+                        Text(
+                            text = stringResource(R.string.completed_at, task.completedAt!!.toYearMonthDay()),
+                            style = TS.bodyMedium.copy(color = Colors.secondaryText)
+                        )
+                    }
+                }
+                Column {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        tint = Colors.white,
+                        contentDescription = stringResource(R.string.edit_task),
+                        modifier = Modifier.clickable { onEditClicked() }
+                    )
+                    VSpacer(Dimens.Padding.VerySmall)
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        tint = Colors.error,
+                        contentDescription = stringResource(R.string.delete_task),
+                        modifier = Modifier.clickable { onDeleteClicked() }
+                    )
+                }
             }
         }
     }
@@ -217,7 +237,9 @@ private fun TaskComponentPreview() {
 //                completedAt = 100000000,
 //            ),
             onChangeCompleteStatus = {},
-            isLoading = true
+            onDeleteClicked = {},
+            onEditClicked = {},
+            isLoading = true,
         )
     }
 }

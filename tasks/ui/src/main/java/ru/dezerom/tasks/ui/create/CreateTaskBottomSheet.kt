@@ -9,8 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
@@ -63,7 +65,8 @@ private fun CreateTaskContent(
             onNewName = { onEvent(CreateTaskEvent.OnNameChanged(it)) },
             onNewDescription = { onEvent(CreateTaskEvent.OnDescriptionChanged(it)) },
             onNewDeadline = { onEvent(CreateTaskEvent.OnDeadlineChanged(it)) },
-            onCreate = { onEvent(CreateTaskEvent.OnCreateTaskClicked) }
+            onCreate = { onEvent(CreateTaskEvent.OnCreateTaskClicked) },
+            title = stringResource(R.string.task)
         )
     }
 }

@@ -38,9 +38,11 @@ import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.core.ui.tools.isScrolledToBottom
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.create.CreateTaskBottomSheet
+import ru.dezerom.tasks.ui.edit.EditTaskBottomSheet
 
 @Composable
 fun TasksListScreen() {
@@ -49,6 +51,13 @@ fun TasksListScreen() {
     val state by viewModel.state.collectAsState()
 
     var showAddTask by remember { mutableStateOf(false) }
+    var showEditTask by remember { mutableStateOf(false) }
+
+    ProcessSideEffects(viewModel.sideEffect) {
+        when (it) {
+            is TaskSideEffect.OpenEditTask -> { showEditTask = true }
+        }
+    }
 
     TasksListComponent(
         state = state,
@@ -59,6 +68,12 @@ fun TasksListScreen() {
             CreateTaskBottomSheet(
                 showAddTask,
                 onDismiss = { showAddTask = false }
+            )
+        },
+        editTaskBuilder = {
+            EditTaskBottomSheet(
+                showEditTask,
+                onDismiss = { showEditTask = false }
             )
         }
     )
@@ -72,6 +87,7 @@ internal fun TasksListComponent(
     onEvent: (TasksListEvent) -> Unit,
     onAddTaskClicked: () -> Unit,
     addTaskBuilder: @Composable () -> Unit,
+    editTaskBuilder: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
@@ -99,6 +115,7 @@ internal fun TasksListComponent(
             modifier = Modifier.padding(innerPadding)
         ) {
             addTaskBuilder()
+            editTaskBuilder()
 
             when (state) {
                 TasksListState.Loading -> Loading()
@@ -113,6 +130,8 @@ internal fun TasksListComponent(
                             state = state,
                             onRefresh = { onEvent(TasksListEvent.OnRefresh) },
                             onChangeCompleteStatus = { onEvent(TasksListEvent.OnChangeCompleteStatus(it)) },
+                            onEditClicked = { onEvent(TasksListEvent.OnEditClicked(it)) },
+                            onDeleteClicked = { onEvent(TasksListEvent.OnDeleteClicked(it)) },
                             scrollBehavior = scrollBehavior,
                             listState = listState
                         )
@@ -128,6 +147,8 @@ private fun TasksListContent(
     state: TasksListState.Loaded,
     onRefresh: () -> Unit,
     onChangeCompleteStatus: (String) -> Unit,
+    onEditClicked: (String) -> Unit,
+    onDeleteClicked: (String) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     listState: LazyListState
 ) {
@@ -153,6 +174,8 @@ private fun TasksListContent(
                     task.task,
                     isLoading = task.isLoading,
                     onChangeCompleteStatus = { onChangeCompleteStatus(task.task.id) },
+                    onEditClicked = { onEditClicked(task.task.id) },
+                    onDeleteClicked = { onDeleteClicked(task.task.id) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -304,7 +327,8 @@ private fun TasksListScreenPreview() {
             snackbarHostState = SnackbarHostState(),
             onEvent = {},
             onAddTaskClicked = {},
-            addTaskBuilder = {}
+            addTaskBuilder = {},
+            editTaskBuilder = {}
         )
     }
 }

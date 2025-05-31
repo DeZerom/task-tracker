@@ -38,4 +38,6 @@
     <string name="task_name">Название</string>
     <string name="task_description">Описание</string>
     <string name="deadline">Дедлайн</string>
+    <string name="edit_task">Редактировать задачу</string>
+    <string name="delete_task">Удалить задачу</string>
 </resources>

@@ -25,6 +25,7 @@ internal fun TaskEditingForm(
     onNewDescription: (String) -> Unit,
     onNewDeadline: (Long?) -> Unit,
     onCreate: () -> Unit,
+    title: String,
     isLoading: Boolean,
 ) {
     Column(
@@ -32,7 +33,7 @@ internal fun TaskEditingForm(
             .padding(horizontal = Dimens.Padding.Medium)
             .padding(bottom = Dimens.Padding.Big)
     ) {
-        BottomSheetTopBar(stringResource(R.string.task))
+        BottomSheetTopBar(title)
         VSpacer(Dimens.Padding.MediumPlus)
         TextInput(
             value = task.name,
