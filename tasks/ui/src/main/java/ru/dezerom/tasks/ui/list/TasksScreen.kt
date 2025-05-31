@@ -145,13 +145,14 @@ private fun TasksListContent(
         ) {
             items(
                 count = state.tasks.size,
-                key = { i -> state.tasks[i].id }
+                key = { i -> state.tasks[i].task.id }
             ) { i ->
                 val task = state.tasks[i]
 
                 TaskComponent(
-                    task,
-                    onChangeCompleteStatus = { onChangeCompleteStatus(task.id) },
+                    task.task,
+                    isLoading = task.isLoading,
+                    onChangeCompleteStatus = { onChangeCompleteStatus(task.task.id) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -185,87 +186,113 @@ private fun TasksListScreenPreview() {
 //    val state = TasksListState.Loading
     val state = TasksListState.Loaded(
         tasks = listOf(
-            TaskModel(
-                id = "1",
-                name = "Task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = false,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "1",
+                    name = "Task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = false,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = false
             ),
-            TaskModel(
-                id = "12",
-                name = "Long long long long task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = true,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "12",
+                    name = "Long long long long task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = true,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = true
             ),
-            TaskModel(
-                id = "123",
-                name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = true,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "123",
+                    name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = true,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = false
             ),
-            TaskModel(
-                id = "2",
-                name = "Task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = false,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "2",
+                    name = "Task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = false,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = false
             ),
-            TaskModel(
-                id = "3",
-                name = "Long long long long task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = true,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "3",
+                    name = "Long long long long task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = true,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = true
             ),
-            TaskModel(
-                id = "4",
-                name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = true,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "4",
+                    name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = true,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = true
             ),
-
-            TaskModel(
-                id = "21",
-                name = "Task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = false,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "21",
+                    name = "Task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = false,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = false
             ),
-            TaskModel(
-                id = "31",
-                name = "Long long long long task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = true,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "31",
+                    name = "Long long long long task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = true,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = false
             ),
-            TaskModel(
-                id = "41",
-                name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
-                description = "asd",
-                createdAt = 1000,
-                isCompleted = true,
-                deadline = null,
-                completedAt = null,
+            TaskUiState(
+                task = TaskModel(
+                    id = "41",
+                    name = "Long long long long task name Long long long long task name Long long long long task name Long long long long task name",
+                    description = "asd",
+                    createdAt = 1000,
+                    isCompleted = true,
+                    deadline = null,
+                    completedAt = null,
+                ),
+                isLoading = false
             )
         ),
         isRefreshing = false

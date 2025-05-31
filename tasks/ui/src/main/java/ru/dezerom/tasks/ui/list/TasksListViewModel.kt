@@ -18,7 +18,7 @@ import ru.dezerom.tasks.ui.notifiers.TasksChangedPayload
 import javax.inject.Inject
 
 @HiltViewModel
-class TasksListViewModel @Inject constructor(
+internal class TasksListViewModel @Inject constructor(
     private val tasksInteractor: TasksListInteractor
 ): BaseViewModel(), TasksChangeListener {
     private val _state = MutableStateFlow<TasksListState>(TasksListState.Loading)
@@ -64,20 +64,21 @@ class TasksListViewModel @Inject constructor(
             showError(R.string.unknown_error.toStringContainer())
             return
         }
-        val oldStatus: Boolean = task.isCompleted
-        changeTask(taskId) { copy(isCompleted = !oldStatus) }
+        changeTaskState(taskId) { copy(isLoading = true) }
 
         viewModelScope.launch {
             tasksInteractor.changeCompleteStatus(taskId).fold(
                 onSuccess = {
                     if (!it) {
                         showError(R.string.unknown_error.toStringContainer())
-                        changeTask(taskId) { copy(isCompleted = oldStatus) }
+                        changeTaskState(taskId) { copy(isLoading = false) }
+                    } else {
+                        changeInnerTask(taskId) { copy(isCompleted = !task.task.isCompleted) }
                     }
                 },
                 onFailure = {
                     showError(R.string.unknown_error.toStringContainer())
-                    changeTask(taskId) { copy(isCompleted = oldStatus) }
+                    changeTaskState(taskId) { copy(isLoading = false) }
                 }
             )
         }
@@ -94,7 +95,7 @@ class TasksListViewModel @Inject constructor(
     private suspend fun fetchTasks() {
         tasksInteractor.getAllTasks().fold(
             onSuccess = {
-                _state.value = TasksListState.Loaded(it, false)
+                _state.value = TasksListState.Loaded(it.map(TaskModel::toUiState), false)
             },
             onFailure = {
                 val err = it as? NetworkError ?: unknownNetworkError()
@@ -108,26 +109,30 @@ class TasksListViewModel @Inject constructor(
         if (s !is TasksListState.Loaded) return
 
         _state.value = s.copy(
-            tasks = s.tasks + task
+            tasks = s.tasks + task.toUiState()
         )
     }
 
-    private fun changeTask(id: String, reducer: TaskModel.() -> TaskModel) {
+    private fun changeTaskState(id: String, reducer: TaskUiState.() -> TaskUiState) {
         val s = state.value
         if (s !is TasksListState.Loaded) return
 
         _state.value = s.copy(
             tasks = s.tasks.map {
-                if (it.id == id) reducer(it)
+                if (it.task.id == id) reducer(it)
                 else it
             }
         )
     }
 
-    private fun findTask(id: String): TaskModel? {
+    private fun changeInnerTask(id: String, reducer: TaskModel.() -> TaskModel) {
+        changeTaskState(id) { copy(task = reducer(task)) }
+    }
+
+    private fun findTask(id: String): TaskUiState? {
         val s = state.value
         if (s !is TasksListState.Loaded) return null
 
-        return s.tasks.find { it.id == id }
+        return s.tasks.find { it.task.id == id }
     }
 }

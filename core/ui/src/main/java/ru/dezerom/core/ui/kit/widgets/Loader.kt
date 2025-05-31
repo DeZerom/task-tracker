@@ -10,8 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.consts.Dimens
@@ -28,16 +30,24 @@ fun DefaultLoaderComponent() {
             .padding(Dimens.Padding.Medium)
             .testTag(TestTags.Components.LOADER_COMPONENT)
     ) {
-        CircularProgressIndicator(
-            color = Colors.white,
-            modifier = Modifier
-                .size(Dimens.Sizes.LoaderSize)
-                .testTag(TestTags.Objects.LOADER)
-        )
+        Loader()
         VSpacer(Dimens.Padding.Small)
         Text(
             text = stringResource(R.string.loading),
             style = TS.bodyLarge
         )
     }
+}
+
+@Composable
+fun Loader(
+    size: Dp = Dimens.Sizes.LoaderSize,
+    color: Color = Colors.white,
+) {
+    CircularProgressIndicator(
+        color = color,
+        modifier = Modifier
+            .size(size)
+            .testTag(TestTags.Objects.LOADER)
+    )
 }

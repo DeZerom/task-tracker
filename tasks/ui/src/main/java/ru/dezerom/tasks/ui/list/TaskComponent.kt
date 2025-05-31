@@ -38,6 +38,7 @@ import ru.dezerom.core.tools.extensions.toYearMonthDay
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.HSpacer
+import ru.dezerom.core.ui.kit.widgets.Loader
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
 import ru.dezerom.tasks.domain.models.TaskModel
@@ -45,6 +46,7 @@ import ru.dezerom.tasks.domain.models.TaskModel
 @Composable
 internal fun TaskComponent(
     task: TaskModel,
+    isLoading: Boolean,
     onChangeCompleteStatus: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -65,18 +67,25 @@ internal fun TaskComponent(
             modifier = Modifier.padding(Dimens.Padding.Medium)
         ) {
             Row {
-                Checkbox(
-                    checked = task.isCompleted,
-                    onCheckedChange = onChangeCompleteStatus,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Colors.accent,
-                        uncheckedColor = Colors.accent,
-                        checkmarkColor = Colors.white,
-                    ),
-                    modifier = Modifier
-                        .size(24.dp)
-                        .testTag(TestTags.Objects.CHECK_BOX)
-                )
+                if (!isLoading) {
+                    Checkbox(
+                        checked = task.isCompleted,
+                        onCheckedChange = onChangeCompleteStatus,
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = Colors.accent,
+                            uncheckedColor = Colors.accent,
+                            checkmarkColor = Colors.white,
+                        ),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .testTag(TestTags.Objects.CHECK_BOX)
+                    )
+                } else {
+                    Loader(
+                        color =  Colors.accent,
+                        size = 24.dp
+                    )
+                }
                 HSpacer(Dimens.Padding.Small)
                 Text(
                     text = task.name,
@@ -207,7 +216,8 @@ private fun TaskComponentPreview() {
 //                deadline = 1000000000000,
 //                completedAt = 100000000,
 //            ),
-            onChangeCompleteStatus = {}
+            onChangeCompleteStatus = {},
+            isLoading = true
         )
     }
 }
