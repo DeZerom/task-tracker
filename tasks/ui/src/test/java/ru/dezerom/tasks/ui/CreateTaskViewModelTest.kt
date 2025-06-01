@@ -22,8 +22,8 @@ import ru.dezerom.tasks.domain.TasksListInteractorMock
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.create.CreateTaskEvent
 import ru.dezerom.tasks.ui.create.CreateTaskSideEffect
-import ru.dezerom.tasks.ui.create.CreateTaskState
 import ru.dezerom.tasks.ui.create.CreateTaskViewModel
+import ru.dezerom.tasks.ui.models.TaskEditingState
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListener
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListenersHolder
 import ru.dezerom.tasks.ui.notifiers.TasksChangedPayload
@@ -45,13 +45,13 @@ class CreateTaskViewModelTest {
     @Test
     fun init_testInitState() {
         val vm = createViewModel(testMain)
-        assertEquals(CreateTaskState(), vm.state.value)
+        assertEquals(TaskEditingState(), vm.state.value)
     }
 
     @Test
     fun changeName_initiallyOk() {
         val vm = createViewModel(testMain)
-        assertEquals(null, vm.state.value.task.nameError)
+        assertEquals(null, vm.state.value.nameError)
     }
 
     @Test
@@ -59,8 +59,8 @@ class CreateTaskViewModelTest {
         val vm = createViewModel(testMain)
         vm.onEvent(CreateTaskEvent.OnNameChanged("qwe"))
 
-        assertEquals("qwe", vm.state.value.task.name)
-        assertNull(vm.state.value.task.nameError)
+        assertEquals("qwe", vm.state.value.name)
+        assertNull(vm.state.value.nameError)
     }
 
     @Test
@@ -69,8 +69,8 @@ class CreateTaskViewModelTest {
         vm.onEvent(CreateTaskEvent.OnNameChanged("qwe"))
         vm.onEvent(CreateTaskEvent.OnNameChanged(""))
 
-        assertTrue(vm.state.value.task.nameError is StringContainer.StringRes)
-        val err = vm.state.value.task.nameError as StringContainer.StringRes
+        assertTrue(vm.state.value.nameError is StringContainer.StringRes)
+        val err = vm.state.value.nameError as StringContainer.StringRes
 
         assertEquals(R.string.field_must_not_be_empty, err.res)
     }
@@ -82,14 +82,14 @@ class CreateTaskViewModelTest {
         vm.onEvent(CreateTaskEvent.OnNameChanged(""))
         vm.onEvent(CreateTaskEvent.OnNameChanged("asd"))
 
-        assertEquals("asd", vm.state.value.task.name)
-        assertNull(vm.state.value.task.nameError)
+        assertEquals("asd", vm.state.value.name)
+        assertNull(vm.state.value.nameError)
     }
 
     @Test
     fun changeDescription_initiallyEmpty() {
         val vm = createViewModel(testMain)
-        assertTrue(vm.state.value.task.description.isEmpty())
+        assertTrue(vm.state.value.description.isEmpty())
     }
 
     @Test
@@ -97,13 +97,13 @@ class CreateTaskViewModelTest {
         val vm = createViewModel(testMain)
         vm.onEvent(CreateTaskEvent.OnDescriptionChanged("qwe"))
 
-        assertEquals("qwe", vm.state.value.task.description)
+        assertEquals("qwe", vm.state.value.description)
     }
 
     @Test
     fun changeDeadline_initiallyEmpty() {
         val vm = createViewModel(testMain)
-        assertNull(vm.state.value.task.deadline)
+        assertNull(vm.state.value.deadline)
     }
 
     @Test
@@ -111,7 +111,7 @@ class CreateTaskViewModelTest {
         val vm = createViewModel(testMain)
         vm.onEvent(CreateTaskEvent.OnDeadlineChanged(10000L))
 
-        assertEquals(10000L, vm.state.value.task.deadline)
+        assertEquals(10000L, vm.state.value.deadline)
     }
 
     @Test
@@ -120,7 +120,7 @@ class CreateTaskViewModelTest {
         vm.onEvent(CreateTaskEvent.OnDeadlineChanged(10000L))
         vm.onEvent(CreateTaskEvent.OnDeadlineChanged(null))
 
-        assertNull(vm.state.value.task.deadline)
+        assertNull(vm.state.value.deadline)
     }
 
     @Test
@@ -135,8 +135,8 @@ class CreateTaskViewModelTest {
         vm.onEvent(CreateTaskEvent.OnCreateTaskClicked)
         advanceUntilIdle()
 
-        assertTrue(vm.state.value.task.nameError is StringContainer.StringRes)
-        val err = vm.state.value.task.nameError as StringContainer.StringRes
+        assertTrue(vm.state.value.nameError is StringContainer.StringRes)
+        val err = vm.state.value.nameError as StringContainer.StringRes
         assertEquals(R.string.field_must_not_be_empty, err.res)
     }
 
@@ -163,7 +163,7 @@ class CreateTaskViewModelTest {
         vm.onEvent(CreateTaskEvent.OnCreateTaskClicked)
         advanceUntilIdle()
 
-        assertEquals(CreateTaskState(), vm.state.value)
+        assertEquals(TaskEditingState(), vm.state.value)
         assertEquals(vm.sideEffects.first(), CreateTaskSideEffect.DismissDialog)
 
         assertEquals("qwe", changeListener.triggered.name)
