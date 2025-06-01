@@ -49,6 +49,7 @@ internal class TasksListViewModel @Inject constructor(
     override fun onTasksChanged(payload: TasksChangedPayload) {
         when (payload) {
             is TasksChangedPayload.TaskAdded -> addTask(payload.newTask)
+            is TasksChangedPayload.TaskEdited -> taskEdited(payload.newTask)
         }
     }
 
@@ -137,6 +138,10 @@ internal class TasksListViewModel @Inject constructor(
         _state.value = s.copy(
             tasks = s.tasks + task.toUiState()
         )
+    }
+
+    private fun taskEdited(task: TaskModel) {
+        changeInnerTask(task.id) { task }
     }
 
     private fun changeTaskState(id: String, reducer: TaskUiState.() -> TaskUiState) {

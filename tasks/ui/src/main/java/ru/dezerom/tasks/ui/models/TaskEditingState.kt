@@ -10,6 +10,7 @@ internal data class TaskEditingState(
     val nameError: StringContainer? = null,
     val description: String = "",
     val deadline: Long? = null,
+    val isLoading: Boolean = false,
 )
 
 internal fun TaskModel.toTaskEditingState() = TaskEditingState(

@@ -2,6 +2,7 @@ package ru.dezerom.tasks.ui.edit
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -10,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.BottomSheet
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.models.TaskEditingState
 import ru.dezerom.tasks.ui.widgets.TaskEditingForm
@@ -20,15 +22,23 @@ internal fun EditTaskBottomSheet(
     onDismiss: () -> Unit,
     task: TaskModel
 ) {
-    BottomSheet(
-        onDismiss = onDismiss
-    ) {
-        val viewModel: EditTaskViewModel = hiltViewModel<EditTaskViewModel, EditTaskViewModel.Factory> {
-            it.create(task)
+    val viewModel: EditTaskViewModel = hiltViewModel()
+
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(task) {
+        viewModel.initializeWith(task)
+    }
+
+    ProcessSideEffects(viewModel.sideEffects) {
+        when (it) {
+            EditTaskSideEffect.Close -> onDismiss()
         }
+    }
 
-        val state by viewModel.state.collectAsState()
-
+    BottomSheet(
+        onDismiss = { viewModel.close() }
+    ) {
         EditTaskContent(
             task = state,
             onEvent = viewModel::handleEvent
@@ -49,7 +59,7 @@ private fun EditTaskContent(
         onButtonClick = { onEvent(EditTaskEvent.ButtonClicked) },
         title = stringResource(R.string.edit_task),
         buttonText = stringResource(R.string.edit_task),
-        isLoading = false,
+        isLoading = task.isLoading,
     )
 }
 
