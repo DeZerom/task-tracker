@@ -27,4 +27,8 @@ class TasksRepositoryMock(
     override suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto> {
         return impl.changeCompleteStatus(taskId)
     }
+
+    override suspend fun editTask(id: String, name: String, description: String?, deadline: Long?): Result<TaskDataModel> {
+        return impl.editTask(id, name, description, deadline)
+    }
 }

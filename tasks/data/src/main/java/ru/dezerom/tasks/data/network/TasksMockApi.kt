@@ -4,6 +4,7 @@ import kotlinx.coroutines.delay
 import ru.dezerom.core.data.models.ResponseDto
 import ru.dezerom.tasks.data.network.models.ChangeCompletedStatusNetworkDto
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
+import ru.dezerom.tasks.data.network.models.EditTaskDto
 import ru.dezerom.tasks.data.network.models.TaskNetworkDto
 import ru.dezerom.tasks.data.network.models.TasksListNetworkDto
 
@@ -62,8 +63,8 @@ class TasksMockApi: TasksApi {
     override suspend fun changeCompleteStatus(taskId: String): ResponseDto<ChangeCompletedStatusNetworkDto?> {
         delay(1000)
 
-        if (taskId == "1") {
-            return ResponseDto(
+        return if (taskId == "1") {
+            ResponseDto(
                 success = true,
                 body = ChangeCompletedStatusNetworkDto(
                     success = true,
@@ -71,10 +72,32 @@ class TasksMockApi: TasksApi {
                 )
             )
         } else {
-            return ResponseDto(
+            ResponseDto(
                 success = false,
                 body = null,
                 error = "qweqwe"
+            )
+        }
+    }
+
+    override suspend fun editTask(dto: EditTaskDto): ResponseDto<TaskNetworkDto?> {
+        delay(1000)
+
+        return if (dto.id == "1") {
+            ResponseDto(
+                success = true,
+                body = TaskNetworkDto(
+                    id = "1",
+                    name = dto.name,
+                    description = dto.description,
+                    deadline = dto.deadline
+                ),
+            )
+        } else {
+            ResponseDto(
+                success = false,
+                error = "some err",
+                body = null
             )
         }
     }

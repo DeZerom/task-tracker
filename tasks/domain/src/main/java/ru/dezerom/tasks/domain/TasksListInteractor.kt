@@ -31,4 +31,7 @@ class TasksListInteractor @Inject constructor(
         return repository.changeCompleteStatus(taskId).map { it.toDomain() }
     }
 
+    suspend fun editTask(id: String, name: String, description: String?, deadline: Long?): Result<TaskModel> {
+        return repository.editTask(id, name, description, deadline).map { it.toDomain() }
+    }
 }

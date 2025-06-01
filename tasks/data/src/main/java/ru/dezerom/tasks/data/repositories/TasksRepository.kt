@@ -14,4 +14,11 @@ interface TasksRepository {
     ): Result<TaskDataModel>
 
     suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto>
+
+    suspend fun editTask(
+        id: String,
+        name: String,
+        description: String?,
+        deadline: Long?
+    ): Result<TaskDataModel>
 }

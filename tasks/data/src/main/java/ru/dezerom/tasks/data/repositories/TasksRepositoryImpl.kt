@@ -24,4 +24,8 @@ internal class TasksRepositoryImpl @Inject constructor(
     override suspend fun changeCompleteStatus(taskId: String): Result<ChangeCompletedStatusDto> {
         return networkSource.changeCompleteStatus(taskId)
     }
+
+    override suspend fun editTask(id: String, name: String, description: String?, deadline: Long?): Result<TaskDataModel> {
+        return networkSource.editTask(id, name, description, deadline)
+    }
 }

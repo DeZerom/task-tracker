@@ -10,6 +10,7 @@ import ru.dezerom.tasks.data.models.ChangeCompletedStatusDto
 import ru.dezerom.tasks.data.models.TaskDataModel
 import ru.dezerom.tasks.data.network.TasksApi
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
+import ru.dezerom.tasks.data.network.models.EditTaskDto
 import javax.inject.Inject
 
 internal class TasksNetworkSource @Inject constructor(
@@ -45,5 +46,18 @@ internal class TasksNetworkSource @Inject constructor(
         return safeApiCall(dispatcher = dispatcher) {
             api.changeCompleteStatus(taskId = taskId)
         }.map { it.toDto() }
+    }
+
+    suspend fun editTask(
+        id: String,
+        name: String,
+        description: String?,
+        deadline: Long?
+    ): Result<TaskDataModel> {
+        return safeApiCall(dispatcher = dispatcher) {
+            api.editTask(
+                EditTaskDto(id, name, description, deadline)
+            )
+        }.map { it.toDataModel() }
     }
 }

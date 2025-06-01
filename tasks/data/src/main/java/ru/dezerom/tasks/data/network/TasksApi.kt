@@ -8,6 +8,7 @@ import retrofit2.http.Path
 import ru.dezerom.core.data.models.ResponseDto
 import ru.dezerom.tasks.data.network.models.ChangeCompletedStatusNetworkDto
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
+import ru.dezerom.tasks.data.network.models.EditTaskDto
 import ru.dezerom.tasks.data.network.models.TaskNetworkDto
 import ru.dezerom.tasks.data.network.models.TasksListNetworkDto
 
@@ -23,4 +24,7 @@ internal interface TasksApi {
     suspend fun changeCompleteStatus(
         @Path("taskId") taskId: String
     ): ResponseDto<ChangeCompletedStatusNetworkDto?>
+
+    @POST("tasks/edit")
+    suspend fun editTask(@Body dto: EditTaskDto): ResponseDto<TaskNetworkDto?>
 }
