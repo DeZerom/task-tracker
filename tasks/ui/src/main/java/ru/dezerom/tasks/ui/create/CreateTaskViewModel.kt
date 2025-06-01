@@ -11,6 +11,7 @@ import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.view_models.BaseViewModel
 import ru.dezerom.tasks.domain.TasksListInteractor
+import ru.dezerom.tasks.ui.models.TaskEditingState
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListenersHolder
 import ru.dezerom.tasks.ui.notifiers.TasksChangedPayload
 import javax.inject.Inject
@@ -19,7 +20,7 @@ import javax.inject.Inject
 internal class CreateTaskViewModel @Inject constructor(
     private val interactor: TasksListInteractor
 ): BaseViewModel() {
-    private val _state = MutableStateFlow(CreateTaskState())
+    private val _state = MutableStateFlow(TaskEditingState())
     val state = _state.asStateFlow()
 
     private val _sideEffects = Channel<CreateTaskSideEffect>(Channel.BUFFERED)
@@ -37,43 +38,35 @@ internal class CreateTaskViewModel @Inject constructor(
 
     private fun onNameChanged(newName: String) {
         _state.value = state.value.copy(
-            task = state.value.task.copy(
-                name = newName,
-                nameError = if (newName.isBlank())
-                    R.string.field_must_not_be_empty.toStringContainer()
-                else
-                    null
-            ),
+            name = newName,
+            nameError = if (newName.isBlank())
+                R.string.field_must_not_be_empty.toStringContainer()
+            else
+                null
         )
     }
 
     private fun onDescriptionChanged(newDescription: String) {
-        _state.value = state.value.copy(
-            task = state.value.task.copy(description = newDescription)
-        )
+        _state.value = state.value.copy(description = newDescription)
     }
 
     private fun onDeadlineChanged(newDeadline: Long?) {
-        _state.value = state.value.copy(
-            task = state.value.task.copy(deadline = newDeadline)
-        )
+        _state.value = state.value.copy(deadline = newDeadline)
     }
 
     private suspend fun createTask() {
         _state.value = state.value.copy(
             isLoading = true,
-            task = state.value.task.copy(
-                nameError = if (state.value.task.name.isBlank())
-                    R.string.field_must_not_be_empty.toStringContainer()
-                else
-                    null
-            )
+            nameError = if (state.value.name.isBlank())
+                R.string.field_must_not_be_empty.toStringContainer()
+            else
+                null
         )
 
         val result = interactor.createTask(
-            name = state.value.task.name,
-            description = state.value.task.description,
-            deadline = state.value.task.deadline
+            name = state.value.name,
+            description = state.value.description,
+            deadline = state.value.deadline
         )
 
         var success = false
@@ -92,7 +85,7 @@ internal class CreateTaskViewModel @Inject constructor(
     }
 
     private suspend fun clearAndClose() {
-        _state.value = CreateTaskState()
+        _state.value = TaskEditingState()
         _sideEffects.send(CreateTaskSideEffect.DismissDialog)
     }
 }

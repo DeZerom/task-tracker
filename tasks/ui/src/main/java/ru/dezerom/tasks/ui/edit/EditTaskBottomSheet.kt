@@ -37,7 +37,8 @@ internal fun EditTaskBottomSheet(
     }
 
     BottomSheet(
-        onDismiss = { viewModel.close() }
+        onDismiss = { viewModel.close() },
+        snackbarHostState = viewModel.snackbarHostState
     ) {
         EditTaskContent(
             task = state,
@@ -52,14 +53,13 @@ private fun EditTaskContent(
     onEvent: (EditTaskEvent) -> Unit
 ) {
     TaskEditingForm(
-        task = task,
+        state = task,
         onNewName = { onEvent(EditTaskEvent.NewName(it)) },
         onNewDescription = { onEvent(EditTaskEvent.NewDescription(it)) },
         onNewDeadline = { onEvent(EditTaskEvent.NewDeadline(it)) },
         onButtonClick = { onEvent(EditTaskEvent.ButtonClicked) },
         title = stringResource(R.string.edit_task),
         buttonText = stringResource(R.string.edit_task),
-        isLoading = task.isLoading,
     )
 }
 
@@ -68,14 +68,13 @@ private fun EditTaskContent(
 private fun Preview() {
     TaskTrackerTheme {
         TaskEditingForm(
-            task = TaskEditingState(),
+            state = TaskEditingState(),
             onNewName = {},
             onNewDescription = {},
             onNewDeadline = {},
             onButtonClick = {},
             title = stringResource(R.string.edit_task),
             buttonText = stringResource(R.string.edit_task),
-            isLoading = false
         )
     }
 }

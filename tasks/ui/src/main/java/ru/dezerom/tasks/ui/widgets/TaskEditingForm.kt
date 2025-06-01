@@ -20,14 +20,13 @@ import ru.dezerom.tasks.ui.models.TaskEditingState
 
 @Composable
 internal fun TaskEditingForm(
-    task: TaskEditingState,
+    state: TaskEditingState,
     onNewName: (String) -> Unit,
     onNewDescription: (String) -> Unit,
     onNewDeadline: (Long?) -> Unit,
     onButtonClick: () -> Unit,
     title: String,
     buttonText: String,
-    isLoading: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -37,17 +36,17 @@ internal fun TaskEditingForm(
         BottomSheetTopBar(title)
         VSpacer(Dimens.Padding.MediumPlus)
         TextInput(
-            value = task.name,
+            value = state.name,
             labelText = stringResource(R.string.task_name),
             onValueChanged = { onNewName(it) },
             testTag = TestTags.TextInput.TASK_NAME,
             modifier = Modifier.fillMaxWidth(),
-            isError = task.nameError != null,
-            error = task.nameError?.getString()
+            isError = state.nameError != null,
+            error = state.nameError?.getString()
         )
         VSpacer(Dimens.Padding.Medium)
         MultilineTextInput(
-            value = task.description,
+            value = state.description,
             onValueChanged = { onNewDescription(it) },
             labelText = stringResource(R.string.task_description),
             testTag = TestTags.TextInput.TASK_DESCRIPTION,
@@ -55,7 +54,7 @@ internal fun TaskEditingForm(
         )
         VSpacer(Dimens.Padding.Medium)
         DatePickerWidget(
-            value = task.deadline,
+            value = state.deadline,
             onValueChanged = onNewDeadline,
             headingText = stringResource(R.string.deadline)
         )
@@ -64,7 +63,7 @@ internal fun TaskEditingForm(
             text = buttonText,
             testTag = TestTags.Button.CREATE_TASK_BUTTON,
             onClick = { onButtonClick() },
-            isLoading = isLoading,
+            isLoading = state.isLoading,
             modifier = Modifier.fillMaxWidth(),
         )
     }

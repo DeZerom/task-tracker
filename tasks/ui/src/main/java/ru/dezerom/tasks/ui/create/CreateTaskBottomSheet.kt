@@ -48,7 +48,7 @@ internal fun CreateTaskBottomSheet(
 private fun CreateTaskContent(
     onDismiss: () -> Unit,
     onEvent: (CreateTaskEvent) -> Unit,
-    state: CreateTaskState,
+    state: TaskEditingState,
     snackbarHostState: SnackbarHostState
 ) {
     BottomSheet(
@@ -56,8 +56,7 @@ private fun CreateTaskContent(
         snackbarHostState = snackbarHostState
     ) {
         TaskEditingForm(
-            task = state.task,
-            isLoading = state.isLoading,
+            state = state,
             onNewName = { onEvent(CreateTaskEvent.OnNameChanged(it)) },
             onNewDescription = { onEvent(CreateTaskEvent.OnDescriptionChanged(it)) },
             onNewDeadline = { onEvent(CreateTaskEvent.OnDeadlineChanged(it)) },
@@ -92,10 +91,7 @@ private fun CreateTaskBottomSheetPreview() {
         }
 
         CreateTaskContent(
-            state = CreateTaskState(
-                task = task,
-                isLoading = false,
-            ),
+            state = task,
             onDismiss = { show = false },
             onEvent = {
                 when (it) {
