@@ -100,8 +100,6 @@ internal fun TasksListComponent(
         Box(
             modifier = Modifier.padding(innerPadding)
         ) {
-            addTaskBuilder()
-
             when (state) {
                 TasksListState.Loading -> Loading()
 
@@ -112,9 +110,10 @@ internal fun TasksListComponent(
                     if (state.tasks.isEmpty()) {
                         EmptyListComponent(stringResource(R.string.tasks_empty))
                     } else {
+                        addTaskBuilder()
                         if (state.editingTask != null) {
                             EditTaskBottomSheet(
-                                onDismiss = {},
+                                onDismiss = { onEvent(TasksListEvent.OnEditTaskClosed) },
                                 task = state.editingTask
                             )
                         }

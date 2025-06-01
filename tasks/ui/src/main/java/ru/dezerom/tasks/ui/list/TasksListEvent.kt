@@ -5,6 +5,8 @@ sealed class TasksListEvent {
 
     data object OnRefresh: TasksListEvent()
 
+    data object OnEditTaskClosed: TasksListEvent()
+
     class OnChangeCompleteStatus(val taskId: String): TasksListEvent()
 
     class OnEditClicked(val taskId: String): TasksListEvent()

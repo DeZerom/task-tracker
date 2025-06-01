@@ -30,7 +30,8 @@ internal fun EditTaskBottomSheet(
         val state by viewModel.state.collectAsState()
 
         EditTaskContent(
-            task = state
+            task = state,
+            onEvent = viewModel::handleEvent
         )
     }
 }
@@ -38,13 +39,14 @@ internal fun EditTaskBottomSheet(
 @Composable
 private fun EditTaskContent(
     task: TaskEditingState,
+    onEvent: (EditTaskEvent) -> Unit
 ) {
     TaskEditingForm(
         task = task,
-        onNewName = {},
-        onNewDescription = {},
-        onNewDeadline = {},
-        onButtonClick = {},
+        onNewName = { onEvent(EditTaskEvent.NewName(it)) },
+        onNewDescription = { onEvent(EditTaskEvent.NewDescription(it)) },
+        onNewDeadline = { onEvent(EditTaskEvent.NewDeadline(it)) },
+        onButtonClick = { onEvent(EditTaskEvent.ButtonClicked) },
         title = stringResource(R.string.edit_task),
         buttonText = stringResource(R.string.edit_task),
         isLoading = false,

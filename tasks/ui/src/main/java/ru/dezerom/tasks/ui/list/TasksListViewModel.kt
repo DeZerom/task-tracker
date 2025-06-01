@@ -56,6 +56,7 @@ internal class TasksListViewModel @Inject constructor(
         when (event) {
             TasksListEvent.OnTryAgainClicked -> initialize()
             TasksListEvent.OnRefresh -> refresh()
+            TasksListEvent.OnEditTaskClosed -> reduceLoadedState { copy(editingTask = null) }
             is TasksListEvent.OnChangeCompleteStatus -> changeCompleteStatus(event.taskId)
             is TasksListEvent.OnEditClicked -> onEditClicked(event.taskId)
             is TasksListEvent.OnDeleteClicked -> TODO()
@@ -139,15 +140,14 @@ internal class TasksListViewModel @Inject constructor(
     }
 
     private fun changeTaskState(id: String, reducer: TaskUiState.() -> TaskUiState) {
-        val s = state.value
-        if (s !is TasksListState.Loaded) return
-
-        _state.value = s.copy(
-            tasks = s.tasks.map {
-                if (it.task.id == id) reducer(it)
-                else it
-            }
-        )
+        reduceLoadedState {
+            copy(
+                tasks = tasks.map {
+                    if (it.task.id == id) reducer(it)
+                    else it
+                }
+            )
+        }
     }
 
     private fun changeInnerTask(id: String, reducer: TaskModel.() -> TaskModel) {
@@ -159,5 +159,12 @@ internal class TasksListViewModel @Inject constructor(
         if (s !is TasksListState.Loaded) return null
 
         return s.tasks.find { it.task.id == id }
+    }
+
+    private fun reduceLoadedState(reducer: TasksListState.Loaded.() -> TasksListState) {
+        val s = state.value
+        if (s !is TasksListState.Loaded) return
+
+        _state.value = reducer(s)
     }
 }
