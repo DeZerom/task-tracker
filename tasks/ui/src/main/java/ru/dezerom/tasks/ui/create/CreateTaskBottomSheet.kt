@@ -18,12 +18,11 @@ import ru.dezerom.core.ui.kit.buttons.WhiteButton
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.BottomSheet
 import ru.dezerom.core.ui.tools.ProcessSideEffects
-import ru.dezerom.tasks.ui.models.TaskEdidtingState
+import ru.dezerom.tasks.ui.models.TaskEditingState
 import ru.dezerom.tasks.ui.widgets.TaskEditingForm
 
 @Composable
 internal fun CreateTaskBottomSheet(
-    show: Boolean,
     onDismiss: () -> Unit,
 ) {
     val viewModel: CreateTaskViewModel = hiltViewModel()
@@ -37,7 +36,6 @@ internal fun CreateTaskBottomSheet(
     }
 
     CreateTaskContent(
-        show = show,
         onDismiss = { viewModel.onEvent(CreateTaskEvent.OnDismissRequest) },
         onEvent = viewModel::onEvent,
         state = viewModel.state.collectAsState().value,
@@ -48,14 +46,12 @@ internal fun CreateTaskBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateTaskContent(
-    show: Boolean,
     onDismiss: () -> Unit,
     onEvent: (CreateTaskEvent) -> Unit,
     state: CreateTaskState,
     snackbarHostState: SnackbarHostState
 ) {
     BottomSheet(
-        show = show,
         onDismiss = onDismiss,
         snackbarHostState = snackbarHostState
     ) {
@@ -65,8 +61,9 @@ private fun CreateTaskContent(
             onNewName = { onEvent(CreateTaskEvent.OnNameChanged(it)) },
             onNewDescription = { onEvent(CreateTaskEvent.OnDescriptionChanged(it)) },
             onNewDeadline = { onEvent(CreateTaskEvent.OnDeadlineChanged(it)) },
-            onCreate = { onEvent(CreateTaskEvent.OnCreateTaskClicked) },
-            title = stringResource(R.string.task)
+            onButtonClick = { onEvent(CreateTaskEvent.OnCreateTaskClicked) },
+            title = stringResource(R.string.task),
+            buttonText = stringResource(R.string.add_task)
         )
     }
 }
@@ -77,7 +74,7 @@ private fun CreateTaskBottomSheetPreview() {
     var show by remember { mutableStateOf(false) }
     var task by remember {
         mutableStateOf(
-            TaskEdidtingState(
+            TaskEditingState(
                 name = "",
                 nameError = "".toStringContainer(),
                 description = "",
@@ -99,7 +96,6 @@ private fun CreateTaskBottomSheetPreview() {
                 task = task,
                 isLoading = false,
             ),
-            show = show,
             onDismiss = { show = false },
             onEvent = {
                 when (it) {

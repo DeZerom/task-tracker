@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import ru.dezerom.core.tools.string_container.StringContainer
 
 @Immutable
-internal data class TaskEdidtingState(
+internal data class TaskEditingState(
     val name: String = "",
     val nameError: StringContainer? = null,
     val description: String = "",

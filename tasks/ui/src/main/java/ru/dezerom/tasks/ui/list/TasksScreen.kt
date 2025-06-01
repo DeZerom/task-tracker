@@ -38,7 +38,6 @@ import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
-import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.core.ui.tools.isScrolledToBottom
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.create.CreateTaskBottomSheet
@@ -51,13 +50,6 @@ fun TasksListScreen() {
     val state by viewModel.state.collectAsState()
 
     var showAddTask by remember { mutableStateOf(false) }
-    var showEditTask by remember { mutableStateOf(false) }
-
-    ProcessSideEffects(viewModel.sideEffect) {
-        when (it) {
-            is TaskSideEffect.OpenEditTask -> { showEditTask = true }
-        }
-    }
 
     TasksListComponent(
         state = state,
@@ -65,17 +57,12 @@ fun TasksListScreen() {
         onEvent = viewModel::onEvent,
         onAddTaskClicked = { showAddTask = true },
         addTaskBuilder = {
-            CreateTaskBottomSheet(
-                showAddTask,
-                onDismiss = { showAddTask = false }
-            )
+            if (showAddTask) {
+                CreateTaskBottomSheet(
+                    onDismiss = { showAddTask = false }
+                )
+            }
         },
-        editTaskBuilder = {
-            EditTaskBottomSheet(
-                showEditTask,
-                onDismiss = { showEditTask = false }
-            )
-        }
     )
 }
 
@@ -87,7 +74,6 @@ internal fun TasksListComponent(
     onEvent: (TasksListEvent) -> Unit,
     onAddTaskClicked: () -> Unit,
     addTaskBuilder: @Composable () -> Unit,
-    editTaskBuilder: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
@@ -115,10 +101,10 @@ internal fun TasksListComponent(
             modifier = Modifier.padding(innerPadding)
         ) {
             addTaskBuilder()
-            editTaskBuilder()
 
             when (state) {
                 TasksListState.Loading -> Loading()
+
                 is TasksListState.Error ->
                     ErrorComponent(state.error) { onEvent(TasksListEvent.OnTryAgainClicked) }
 
@@ -126,6 +112,13 @@ internal fun TasksListComponent(
                     if (state.tasks.isEmpty()) {
                         EmptyListComponent(stringResource(R.string.tasks_empty))
                     } else {
+                        if (state.editingTask != null) {
+                            EditTaskBottomSheet(
+                                onDismiss = {},
+                                task = state.editingTask
+                            )
+                        }
+
                         TasksListContent(
                             state = state,
                             onRefresh = { onEvent(TasksListEvent.OnRefresh) },
@@ -328,7 +321,6 @@ private fun TasksListScreenPreview() {
             onEvent = {},
             onAddTaskClicked = {},
             addTaskBuilder = {},
-            editTaskBuilder = {}
         )
     }
 }

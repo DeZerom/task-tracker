@@ -16,16 +16,17 @@ import ru.dezerom.core.ui.kit.widgets.BottomSheetTopBar
 import ru.dezerom.core.ui.kit.widgets.DatePickerWidget
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
-import ru.dezerom.tasks.ui.models.TaskEdidtingState
+import ru.dezerom.tasks.ui.models.TaskEditingState
 
 @Composable
 internal fun TaskEditingForm(
-    task: TaskEdidtingState,
+    task: TaskEditingState,
     onNewName: (String) -> Unit,
     onNewDescription: (String) -> Unit,
     onNewDeadline: (Long?) -> Unit,
-    onCreate: () -> Unit,
+    onButtonClick: () -> Unit,
     title: String,
+    buttonText: String,
     isLoading: Boolean,
 ) {
     Column(
@@ -60,9 +61,9 @@ internal fun TaskEditingForm(
         )
         VSpacer(Dimens.Padding.Big)
         WhiteButton(
-            text = stringResource(R.string.add_task),
+            text = buttonText,
             testTag = TestTags.Button.CREATE_TASK_BUTTON,
-            onClick = { onCreate() },
+            onClick = { onButtonClick() },
             isLoading = isLoading,
             modifier = Modifier.fillMaxWidth(),
         )

@@ -14,26 +14,23 @@ import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(
-    show: Boolean,
     onDismiss: () -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(),
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
     content: @Composable () -> Unit
 ) {
-    if (show) {
-        ModalBottomSheet(
-            sheetState = sheetState,
-            onDismissRequest = onDismiss,
-            content = {
-                Box {
-                    content()
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = onDismiss,
+        content = {
+            Box {
+                content()
 
-                    KitSnackbarHost(
-                        snackbarHostState,
-                        modifier = Modifier.align(Alignment.BottomCenter)
-                    )
-                }
-            },
-        )
-    }
+                KitSnackbarHost(
+                    snackbarHostState,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
+            }
+        },
+    )
 }

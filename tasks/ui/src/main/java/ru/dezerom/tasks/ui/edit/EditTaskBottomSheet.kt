@@ -2,50 +2,53 @@ package ru.dezerom.tasks.ui.edit
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.BottomSheet
-import ru.dezerom.tasks.ui.models.TaskEdidtingState
+import ru.dezerom.tasks.domain.models.TaskModel
+import ru.dezerom.tasks.ui.models.TaskEditingState
 import ru.dezerom.tasks.ui.widgets.TaskEditingForm
-
-@Composable
-internal fun EditTaskBottomSheet(
-    show: Boolean,
-    onDismiss: () -> Unit
-) {
-    val viewModel: EditTaskViewModel = hiltViewModel()
-
-    EditTaskContent(
-        show = show,
-        onDismiss = onDismiss,
-        task = TaskEdidtingState()
-    )
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditTaskContent(
-    show: Boolean,
+internal fun EditTaskBottomSheet(
     onDismiss: () -> Unit,
-    task: TaskEdidtingState,
+    task: TaskModel
 ) {
     BottomSheet(
-        show = show,
         onDismiss = onDismiss
     ) {
-        TaskEditingForm(
-            task = task,
-            onNewName = {},
-            onNewDescription = {},
-            onNewDeadline = {},
-            onCreate = {},
-            title = stringResource(R.string.edit_task),
-            isLoading = false
+        val viewModel: EditTaskViewModel = hiltViewModel<EditTaskViewModel, EditTaskViewModel.Factory> {
+            it.create(task)
+        }
+
+        val state by viewModel.state.collectAsState()
+
+        EditTaskContent(
+            task = state
         )
     }
+}
+
+@Composable
+private fun EditTaskContent(
+    task: TaskEditingState,
+) {
+    TaskEditingForm(
+        task = task,
+        onNewName = {},
+        onNewDescription = {},
+        onNewDeadline = {},
+        onButtonClick = {},
+        title = stringResource(R.string.edit_task),
+        buttonText = stringResource(R.string.edit_task),
+        isLoading = false,
+    )
 }
 
 @Preview
@@ -53,12 +56,13 @@ private fun EditTaskContent(
 private fun Preview() {
     TaskTrackerTheme {
         TaskEditingForm(
-            task = TaskEdidtingState(),
+            task = TaskEditingState(),
             onNewName = {},
             onNewDescription = {},
             onNewDeadline = {},
-            onCreate = {},
+            onButtonClick = {},
             title = stringResource(R.string.edit_task),
+            buttonText = stringResource(R.string.edit_task),
             isLoading = false
         )
     }

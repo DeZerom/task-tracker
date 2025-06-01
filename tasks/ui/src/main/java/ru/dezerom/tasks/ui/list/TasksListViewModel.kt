@@ -14,7 +14,6 @@ import ru.dezerom.core.tools.string_container.toStringContainer
 import ru.dezerom.core.ui.view_models.BaseViewModel
 import ru.dezerom.tasks.domain.TasksListInteractor
 import ru.dezerom.tasks.domain.models.TaskModel
-import ru.dezerom.tasks.ui.models.TaskEdidtingState
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListener
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListenersHolder
 import ru.dezerom.tasks.ui.notifiers.TasksChangedPayload
@@ -73,13 +72,7 @@ internal class TasksListViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            _sideEffect.send(TaskSideEffect.OpenEditTask(
-                TaskEdidtingState(
-                    name = task.task.name
-                )
-            ))
-        }
+        _state.value = s.copy(editingTask = task.task)
     }
 
     private fun changeCompleteStatus(taskId: String) {
