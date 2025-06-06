@@ -144,19 +144,19 @@ internal fun TaskComponent(
                         )
                     }
                 }
-                Column {
+                Row {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        tint = Colors.red,
+                        contentDescription = stringResource(R.string.delete_task),
+                        modifier = Modifier.clickable { onDeleteClicked() }
+                    )
+                    HSpacer(Dimens.Padding.Small)
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         tint = Colors.white,
                         contentDescription = stringResource(R.string.edit_task),
                         modifier = Modifier.clickable { onEditClicked() }
-                    )
-                    VSpacer(Dimens.Padding.VerySmall)
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        tint = Colors.error,
-                        contentDescription = stringResource(R.string.delete_task),
-                        modifier = Modifier.clickable { onDeleteClicked() }
                     )
                 }
             }
