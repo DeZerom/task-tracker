@@ -28,4 +28,8 @@ internal class TasksRepositoryImpl @Inject constructor(
     override suspend fun editTask(id: String, name: String, description: String?, deadline: Long?): Result<TaskDataModel> {
         return networkSource.editTask(id, name, description, deadline)
     }
+
+    override suspend fun deleteTask(id: String): Result<Boolean> {
+        return networkSource.deleteTask(id)
+    }
 }

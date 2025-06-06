@@ -58,10 +58,41 @@ internal class TasksListViewModel @Inject constructor(
             TasksListEvent.OnTryAgainClicked -> initialize()
             TasksListEvent.OnRefresh -> refresh()
             TasksListEvent.OnEditTaskClosed -> reduceLoadedState { copy(editingTask = null) }
+            TasksListEvent.OnCancelDelete -> reduceLoadedState { copy(deleteTaskAlertState = null) }
             is TasksListEvent.OnChangeCompleteStatus -> changeCompleteStatus(event.taskId)
             is TasksListEvent.OnEditClicked -> onEditClicked(event.taskId)
-            is TasksListEvent.OnDeleteClicked -> TODO()
+            is TasksListEvent.OnDeleteClicked -> onDeleteClicked(event.taskId)
+            is TasksListEvent.OnConfirmDelete -> deleteTask(event.taskId)
         }
+    }
+
+    private fun deleteTask(taskId: String) = viewModelScope.launch {
+        reduceLoadedState { copy(deleteTaskAlertState = null) }
+        changeTaskState(taskId) { copy(isLoading = true) }
+
+        tasksInteractor.deleteTask(taskId).fold(
+            onSuccess = {
+                if (it) {
+                    reduceLoadedState { copy(tasks = tasks.filterNot { t-> t.task.id == taskId }) }
+                    showSuccess(R.string.task_successfully_deleted.toStringContainer())
+                } else {
+                    showError(R.string.unknown_error.toStringContainer())
+                }
+            },
+            onFailure = {
+                showError(it)
+            }
+        )
+    }
+
+    private fun onDeleteClicked(taskId: String) {
+        val task = findTask(taskId)
+        if (task == null) {
+            showError(R.string.unknown_error.toStringContainer())
+            return
+        }
+
+        reduceLoadedState { copy(deleteTaskAlertState = DeleteTaskAlertState(taskId, task.task.name)) }
     }
 
     private fun onEditClicked(taskId: String) {

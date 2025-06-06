@@ -21,4 +21,6 @@ interface TasksRepository {
         description: String?,
         deadline: Long?
     ): Result<TaskDataModel>
+
+    suspend fun deleteTask(id: String): Result<Boolean>
 }

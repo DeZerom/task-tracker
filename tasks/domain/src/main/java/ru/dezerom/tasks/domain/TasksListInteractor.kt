@@ -34,4 +34,8 @@ class TasksListInteractor @Inject constructor(
     suspend fun editTask(id: String, name: String, description: String?, deadline: Long?): Result<TaskModel> {
         return repository.editTask(id, name, description, deadline).map { it.toDomain() }
     }
+
+    suspend fun deleteTask(id: String): Result<Boolean> {
+        return repository.deleteTask(id)
+    }
 }

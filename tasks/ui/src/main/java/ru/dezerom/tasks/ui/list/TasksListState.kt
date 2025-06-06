@@ -10,9 +10,15 @@ internal sealed class TasksListState {
         val tasks: List<TaskUiState>,
         val isRefreshing: Boolean,
         val editingTask: TaskModel? = null,
+        val deleteTaskAlertState: DeleteTaskAlertState? = null,
     ): TasksListState()
 
     data class Error(
         val error: StringContainer
     ): TasksListState()
 }
+
+internal data class DeleteTaskAlertState(
+    val taskId: String,
+    val taskName: String
+)

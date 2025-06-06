@@ -152,7 +152,6 @@ class CreateTaskViewModelTest {
                     triggered = payload.newTask
                 }
             }
-
         }
 
         TasksChangeListenersHolder.register(changeListener)

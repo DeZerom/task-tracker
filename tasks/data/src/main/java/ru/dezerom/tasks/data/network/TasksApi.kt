@@ -1,10 +1,12 @@
 package ru.dezerom.tasks.data.network
 
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import ru.dezerom.core.data.models.BooleanResponse
 import ru.dezerom.core.data.models.ResponseDto
 import ru.dezerom.tasks.data.network.models.ChangeCompletedStatusNetworkDto
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
@@ -27,4 +29,7 @@ internal interface TasksApi {
 
     @POST("tasks/edit")
     suspend fun editTask(@Body dto: EditTaskDto): ResponseDto<TaskNetworkDto?>
+
+    @DELETE("tasks/delete/{taskId}")
+    suspend fun deleteTask(@Path("taskId") taskId: String): ResponseDto<BooleanResponse?>
 }

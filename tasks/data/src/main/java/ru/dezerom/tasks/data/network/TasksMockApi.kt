@@ -1,6 +1,7 @@
 package ru.dezerom.tasks.data.network
 
 import kotlinx.coroutines.delay
+import ru.dezerom.core.data.models.BooleanResponse
 import ru.dezerom.core.data.models.ResponseDto
 import ru.dezerom.tasks.data.network.models.ChangeCompletedStatusNetworkDto
 import ru.dezerom.tasks.data.network.models.CreateTaskNetworkDto
@@ -100,5 +101,9 @@ class TasksMockApi: TasksApi {
                 body = null
             )
         }
+    }
+
+    override suspend fun deleteTask(taskId: String): ResponseDto<BooleanResponse?> {
+        TODO("Not yet implemented")
     }
 }

@@ -34,6 +34,7 @@ import ru.dezerom.core.tools.string_container.StringContainer
 import ru.dezerom.core.ui.kit.buttons.AccentExpandableFAB
 import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
+import ru.dezerom.core.ui.kit.widgets.DefaultAlertDialog
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
@@ -111,10 +112,20 @@ internal fun TasksListComponent(
                         EmptyListComponent(stringResource(R.string.tasks_empty))
                     } else {
                         addTaskBuilder()
+
                         if (state.editingTask != null) {
                             EditTaskBottomSheet(
                                 onDismiss = { onEvent(TasksListEvent.OnEditTaskClosed) },
                                 task = state.editingTask
+                            )
+                        }
+
+                        if (state.deleteTaskAlertState != null) {
+                            DefaultAlertDialog(
+                                onDismiss = { onEvent(TasksListEvent.OnCancelDelete) },
+                                title = stringResource(R.string.are_you_sure),
+                                message = stringResource(R.string.task_name_will_be_deleted, state.deleteTaskAlertState.taskName),
+                                onPositiveButtonClick = { onEvent(TasksListEvent.OnConfirmDelete(state.deleteTaskAlertState.taskId)) },
                             )
                         }
 

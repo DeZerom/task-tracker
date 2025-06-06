@@ -31,4 +31,8 @@ class TasksRepositoryMock(
     override suspend fun editTask(id: String, name: String, description: String?, deadline: Long?): Result<TaskDataModel> {
         return impl.editTask(id, name, description, deadline)
     }
+
+    override suspend fun deleteTask(id: String): Result<Boolean> {
+        return impl.deleteTask(id)
+    }
 }

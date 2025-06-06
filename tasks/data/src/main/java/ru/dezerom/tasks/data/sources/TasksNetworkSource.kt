@@ -60,4 +60,10 @@ internal class TasksNetworkSource @Inject constructor(
             )
         }.map { it.toDataModel() }
     }
+
+    suspend fun deleteTask(id: String): Result<Boolean> {
+        return safeApiCall(dispatcher) {
+            api.deleteTask(id)
+        }.map { it.response == true }
+    }
 }
