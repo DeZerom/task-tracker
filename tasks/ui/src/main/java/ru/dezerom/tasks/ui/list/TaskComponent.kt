@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.material.icons.twotone.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -146,14 +146,14 @@ internal fun TaskComponent(
                 }
                 Row {
                     Icon(
-                        imageVector = Icons.Filled.Delete,
+                        imageVector = Icons.TwoTone.Delete,
                         tint = Colors.red,
                         contentDescription = stringResource(R.string.delete_task),
                         modifier = Modifier.clickable { onDeleteClicked() }
                     )
                     HSpacer(Dimens.Padding.Small)
                     Icon(
-                        imageVector = Icons.Filled.Edit,
+                        imageVector = Icons.TwoTone.Edit,
                         tint = Colors.white,
                         contentDescription = stringResource(R.string.edit_task),
                         modifier = Modifier.clickable { onEditClicked() }
