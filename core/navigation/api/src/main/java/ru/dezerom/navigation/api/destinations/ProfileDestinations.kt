@@ -3,10 +3,10 @@ package ru.dezerom.navigation.api.destinations
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object TasksGraph
+object ProfileGraph
 
 @Serializable
-sealed class TasksDestinations {
+sealed class ProfileDestinations {
     @Serializable
-    data object TasksListDestination
+    data object Profile: ProfileDestinations()
 }

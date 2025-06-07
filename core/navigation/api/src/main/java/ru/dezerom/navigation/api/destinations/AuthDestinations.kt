@@ -6,7 +6,10 @@ import kotlinx.serialization.Serializable
 data object AuthGraph
 
 @Serializable
-data object AuthDestination
+sealed class AuthDestinations {
+    @Serializable
+    data object AuthDestination
 
-@Serializable
-data object RegistrationDestination
+    @Serializable
+    data object RegistrationDestination
+}

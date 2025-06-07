@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -31,15 +28,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.StringContainer
-import ru.dezerom.core.ui.kit.buttons.AccentExpandableFAB
-import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.DefaultAlertDialog
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
-import ru.dezerom.core.ui.tools.isScrolledToBottom
+import ru.dezerom.core.ui.tools.ScaffoldState
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.create.CreateTaskBottomSheet
 import ru.dezerom.tasks.ui.edit.EditTaskBottomSheet
@@ -79,69 +74,78 @@ internal fun TasksListComponent(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
 
-    Scaffold(
-        topBar = {
-            TopLevelTopBar(
-                title = stringResource(R.string.tasks),
-                scrollBehavior = scrollBehavior
-            )
-        },
-        floatingActionButton = {
-            if (state is TasksListState.Loaded) {
-                AccentExpandableFAB(
-                    icon = Icons.Default.Add,
-                    expandedText = stringResource(R.string.add_task),
-                    isExpanded = isScrolledToBottom(listState),
-                    onClick = { onAddTaskClicked() }
-                )
-            }
-        },
-        snackbarHost = { KitSnackbarHost(snackbarHostState) }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            when (state) {
-                TasksListState.Loading -> Loading()
+    ScaffoldState.SetTopBar {
+        TopLevelTopBar(
+            title = stringResource(R.string.tasks),
+            scrollBehavior = scrollBehavior
+        )
+    }
 
-                is TasksListState.Error ->
-                    ErrorComponent(state.error) { onEvent(TasksListEvent.OnTryAgainClicked) }
+    Box(
+//        modifier = Modifier.padding(innerPadding)
+    ) {
+        when (state) {
+            TasksListState.Loading -> Loading()
 
-                is TasksListState.Loaded ->
-                    if (state.tasks.isEmpty()) {
-                        EmptyListComponent(stringResource(R.string.tasks_empty))
-                    } else {
-                        addTaskBuilder()
+            is TasksListState.Error ->
+                ErrorComponent(state.error) { onEvent(TasksListEvent.OnTryAgainClicked) }
 
-                        if (state.editingTask != null) {
-                            EditTaskBottomSheet(
-                                onDismiss = { onEvent(TasksListEvent.OnEditTaskClosed) },
-                                task = state.editingTask
-                            )
-                        }
+            is TasksListState.Loaded ->
+                if (state.tasks.isEmpty()) {
+                    EmptyListComponent(stringResource(R.string.tasks_empty))
+                } else {
+                    addTaskBuilder()
 
-                        if (state.deleteTaskAlertState != null) {
-                            DefaultAlertDialog(
-                                onDismiss = { onEvent(TasksListEvent.OnCancelDelete) },
-                                title = stringResource(R.string.are_you_sure),
-                                message = stringResource(R.string.task_name_will_be_deleted, state.deleteTaskAlertState.taskName),
-                                onPositiveButtonClick = { onEvent(TasksListEvent.OnConfirmDelete(state.deleteTaskAlertState.taskId)) },
-                            )
-                        }
-
-                        TasksListContent(
-                            state = state,
-                            onRefresh = { onEvent(TasksListEvent.OnRefresh) },
-                            onChangeCompleteStatus = { onEvent(TasksListEvent.OnChangeCompleteStatus(it)) },
-                            onEditClicked = { onEvent(TasksListEvent.OnEditClicked(it)) },
-                            onDeleteClicked = { onEvent(TasksListEvent.OnDeleteClicked(it)) },
-                            scrollBehavior = scrollBehavior,
-                            listState = listState
+                    if (state.editingTask != null) {
+                        EditTaskBottomSheet(
+                            onDismiss = { onEvent(TasksListEvent.OnEditTaskClosed) },
+                            task = state.editingTask
                         )
                     }
-            }
+
+                    if (state.deleteTaskAlertState != null) {
+                        DefaultAlertDialog(
+                            onDismiss = { onEvent(TasksListEvent.OnCancelDelete) },
+                            title = stringResource(R.string.are_you_sure),
+                            message = stringResource(R.string.task_name_will_be_deleted, state.deleteTaskAlertState.taskName),
+                            onPositiveButtonClick = { onEvent(TasksListEvent.OnConfirmDelete(state.deleteTaskAlertState.taskId)) },
+                        )
+                    }
+
+                    TasksListContent(
+                        state = state,
+                        onRefresh = { onEvent(TasksListEvent.OnRefresh) },
+                        onChangeCompleteStatus = { onEvent(TasksListEvent.OnChangeCompleteStatus(it)) },
+                        onEditClicked = { onEvent(TasksListEvent.OnEditClicked(it)) },
+                        onDeleteClicked = { onEvent(TasksListEvent.OnDeleteClicked(it)) },
+                        scrollBehavior = scrollBehavior,
+                        listState = listState
+                    )
+                }
         }
     }
+
+//    Scaffold(
+//        topBar = {
+//            TopLevelTopBar(
+//                title = stringResource(R.string.tasks),
+//                scrollBehavior = scrollBehavior
+//            )
+//        },
+//        floatingActionButton = {
+//            if (state is TasksListState.Loaded) {
+//                AccentExpandableFAB(
+//                    icon = Icons.Default.Add,
+//                    expandedText = stringResource(R.string.add_task),
+//                    isExpanded = isScrolledToBottom(listState),
+//                    onClick = { onAddTaskClicked() }
+//                )
+//            }
+//        },
+//        snackbarHost = { KitSnackbarHost(snackbarHostState) }
+//    ) { innerPadding ->
+//
+//    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

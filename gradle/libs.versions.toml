@@ -44,7 +44,8 @@ squareup-retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-g
 androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 jakewharton-timber = { group = "com.jakewharton.timber", name = "timber", version = "5.0.1" }
-androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version = "1.1.4" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version = "1.1.7" }
+androix-compose-material = { group = "androidx.compose.material", name = "material" }
 
 # for build logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

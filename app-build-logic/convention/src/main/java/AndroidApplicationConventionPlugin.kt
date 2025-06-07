@@ -26,6 +26,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 coreUiDependencies(libs)
                 coreDiDependencies(libs)
                 timberDependencies(libs)
+
+                implementation(libs.findLibrary("androix-compose-material").get())
             }
 
             extensions.configure<KaptExtension> {

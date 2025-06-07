@@ -44,4 +44,6 @@
     <string name="are_you_sure">Вы уверены?</string>
     <string name="task_name_will_be_deleted">Задача "%s" будет удалена. Это невозможно отменить</string>
     <string name="task_successfully_deleted">Задача успешно удалена</string>
+
+    <string name="profile">Профиль</string>
 </resources>

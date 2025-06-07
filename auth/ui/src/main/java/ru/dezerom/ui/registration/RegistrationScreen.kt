@@ -31,12 +31,19 @@ import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
 import ru.dezerom.core.ui.tools.ProcessSideEffects
+import ru.dezerom.navigation.api.navigators.AuthNavigator
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(
+    navigator: AuthNavigator
+) {
     val viewModel: RegistrationScreenViewModel = hiltViewModel()
 
-    ProcessSideEffects(viewModel.sideEffects) {}
+    ProcessSideEffects(viewModel.sideEffects) {
+        when (it) {
+            RegistrationScreenSideEffect.GoBack -> navigator.fromRegistrationToAuth()
+        }
+    }
 
     val state = viewModel.state.collectAsState()
 
