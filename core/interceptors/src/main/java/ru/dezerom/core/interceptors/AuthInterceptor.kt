@@ -24,7 +24,8 @@ internal class AuthInterceptor @Inject constructor(
             authRepository.refreshTokens().fold(
                 onSuccess = {
                     if (it) {
-                        return@runBlocking sendRequest(chain, token)
+                        val newToken = authRepository.getAuthToken() ?: throw unAuthorizedNetworkError()
+                        return@runBlocking sendRequest(chain, newToken)
                     } else {
                         authRepository.unAuthorize()
                         throw unAuthorizedNetworkError()

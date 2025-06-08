@@ -16,7 +16,7 @@ import ru.dezerom.core.ui.kit.text_style.TS
 @Composable
 fun TopLevelTopBar(
     title: String,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ) {
     MediumTopAppBar(
         title = {

@@ -46,4 +46,5 @@
     <string name="task_successfully_deleted">Задача успешно удалена</string>
 
     <string name="profile">Профиль</string>
+    <string name="logout">Выйти из аккаунта</string>
 </resources>
