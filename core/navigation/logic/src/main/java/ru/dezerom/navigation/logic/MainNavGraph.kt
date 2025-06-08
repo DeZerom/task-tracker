@@ -3,17 +3,18 @@ package ru.dezerom.navigation.logic
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigation
-import ru.dezerom.navigation.api.destinations.AuthGraph
 import ru.dezerom.navigation.api.destinations.MainDestinations
 import ru.dezerom.navigation.api.destinations.MainGraph
 import ru.dezerom.navigation.api.destinations.ProfileGraph
 import ru.dezerom.navigation.api.destinations.RootGraph
+import ru.dezerom.navigation.api.destinations.SplashGraph
 import ru.dezerom.navigation.api.destinations.TasksGraph
 
 fun NavGraphBuilder.rootNavGraph(navHost: NavHostController) {
     navigation<RootGraph>(
-        startDestination = AuthGraph,
+        startDestination = SplashGraph,
         builder = {
+            splashNavGraph(navHost)
             authNavGraph(navHost)
             mainNavGraph()
         }
