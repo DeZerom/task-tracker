@@ -2,43 +2,43 @@ package ru.dezerom.core.interceptors
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 import ru.dezerom.auth.data.repositories.AuthRepository
+import ru.dezerom.core.tools.errors.unAuthorizedNetworkError
 import javax.inject.Inject
 
 internal class AuthInterceptor @Inject constructor(
     private val authRepository: AuthRepository,
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val response = runBlocking { sendRequest(chain) }
+        return runBlocking {
+            val token = authRepository.getAuthToken() ?: throw unAuthorizedNetworkError()
 
-        if (response.code() != 401) {
-            return response
-        } else {
-            response.close()
-        }
-
-        val result = runBlocking { authRepository.refreshTokens() }
-        return result.fold(
-            onSuccess = {
-                if (it) {
-                    runBlocking { sendRequest(chain) }
-                } else {
-                    runBlocking { authRepository.unAuthorize() }
-                    createUnAuthResponse(chain.request())
-                }
-            },
-            onFailure = {
-                runBlocking { authRepository.unAuthorize() }
-                createUnAuthResponse(chain.request())
+            val response = sendRequest(chain, token)
+            if (response.code() == 401) {
+                response.close()
+            } else {
+                return@runBlocking response
             }
-        )
+
+            authRepository.refreshTokens().fold(
+                onSuccess = {
+                    if (it) {
+                        return@runBlocking sendRequest(chain, token)
+                    } else {
+                        authRepository.unAuthorize()
+                        throw unAuthorizedNetworkError()
+                    }
+                },
+                onFailure = {
+                    authRepository.unAuthorize()
+                    throw unAuthorizedNetworkError()
+                }
+            )
+        }
     }
 
-    private suspend fun sendRequest(chain: Interceptor.Chain): Response {
-        val token = authRepository.getAuthToken() ?: return createUnAuthResponse(chain.request())
-
+    private fun sendRequest(chain: Interceptor.Chain, token: String): Response {
         val headers = chain.request().headers().newBuilder()
             .add(AUTH_HEADER, "Bearer $token")
             .build()
@@ -49,11 +49,6 @@ internal class AuthInterceptor @Inject constructor(
 
         return chain.proceed(request)
     }
-
-    private fun createUnAuthResponse(request: Request) = Response.Builder()
-        .request(request)
-        .code(401)
-        .build()
 
     companion object {
         private const val AUTH_HEADER = "Authorization"
