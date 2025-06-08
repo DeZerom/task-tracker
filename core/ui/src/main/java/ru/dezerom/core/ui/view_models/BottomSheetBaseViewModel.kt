@@ -1,26 +1,28 @@
 package ru.dezerom.core.ui.view_models
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.string_container.StringContainer
-import ru.dezerom.core.ui.tools.ScaffoldStateHolder
+import ru.dezerom.core.ui.kit.snackbars.showError
+import ru.dezerom.core.ui.kit.snackbars.showSuccess
 
-open class BaseViewModel: ViewModel() {
-    private val snackbarScope =
-        CoroutineScope(SupervisorJob() + viewModelScope.coroutineContext)
+open class BottomSheetBaseViewModel: ViewModel() {
+    val snackbarHostState = SnackbarHostState()
+    private val snackbarScope = CoroutineScope(SupervisorJob() + viewModelScope.coroutineContext)
 
     protected fun showSuccess(message: StringContainer) = snackbarScope.launch {
-        ScaffoldStateHolder.showSuccess(message)
+        snackbarHostState.showSuccess(message)
     }
 
     protected fun showError(message: StringContainer) = snackbarScope.launch {
-        ScaffoldStateHolder.showError(message)
+        snackbarHostState.showError(message)
     }
 
     protected fun showError(throwable: Throwable) = snackbarScope.launch {
-        ScaffoldStateHolder.showError(throwable)
+        snackbarHostState.showError(throwable)
     }
 }

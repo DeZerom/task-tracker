@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,11 +21,11 @@ import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.buttons.WhiteButton
-import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.text_input.PasswordInput
 import ru.dezerom.core.ui.kit.text_input.TextInput
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
+import ru.dezerom.core.ui.kit.widgets.AffectScaffold
 import ru.dezerom.core.ui.kit.widgets.VSpacer
 import ru.dezerom.core.ui.test_tools.TestTags
 import ru.dezerom.core.ui.tools.ProcessSideEffects
@@ -50,7 +48,6 @@ fun RegistrationScreen(
     RegistrationContent(
         state = state.value,
         onEvent = viewModel::onEvent,
-        snackbarHostState = viewModel.snackbarHostState
     )
 }
 
@@ -58,15 +55,13 @@ fun RegistrationScreen(
 internal fun RegistrationContent(
     state: RegistrationScreenState,
     onEvent: (RegistrationScreenEvent) -> Unit,
-    snackbarHostState: SnackbarHostState,
 ) {
-    Scaffold(
-        snackbarHost = { KitSnackbarHost(snackbarHostState) }
-    ) { innerPadding ->
+    AffectScaffold(
+      showBottomNavBar = false
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(innerPadding)
                 .imePadding()
                 .fillMaxSize()
                 .padding(all = Dimens.Padding.Medium)
@@ -120,7 +115,6 @@ private fun RegistrationPreview() {
     TaskTrackerTheme {
         RegistrationContent(
             state = RegistrationScreenState(),
-            snackbarHostState = SnackbarHostState(),
             onEvent = {}
         )
     }

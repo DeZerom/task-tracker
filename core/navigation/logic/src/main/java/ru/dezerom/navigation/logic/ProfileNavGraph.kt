@@ -16,7 +16,9 @@ fun NavGraphBuilder.profileNavGraph() {
     navigation<ProfileGraph>(
         startDestination = ProfileDestinations.Profile,
         builder = {
-            composable<ProfileDestinations.Profile> { Box(modifier = Modifier.size(40.dp).background(color = Colors.error)) }
+            composable<ProfileDestinations.Profile> {
+                Box(modifier = Modifier.size(40.dp).background(color = Colors.error))
+            }
         }
     )
 }

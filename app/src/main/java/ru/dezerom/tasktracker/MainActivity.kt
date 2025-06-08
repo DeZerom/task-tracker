@@ -29,9 +29,10 @@ import androidx.navigation.createGraph
 import dagger.hilt.android.AndroidEntryPoint
 import ru.dezerom.core.tools.consts.Colors
 import ru.dezerom.core.tools.string_container.getString
+import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
-import ru.dezerom.core.ui.tools.ScaffoldState
+import ru.dezerom.core.ui.tools.ScaffoldStateHolder
 import ru.dezerom.navigation.api.destinations.MainDestinations
 import ru.dezerom.navigation.api.destinations.RootGraph
 import ru.dezerom.navigation.logic.rootNavGraph
@@ -52,12 +53,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            val topBar = ScaffoldState.topBar.collectAsState()
+            val state by ScaffoldStateHolder.state.collectAsState()
 
             TaskTrackerTheme {
                 Scaffold(
-                    topBar = topBar.value,
-                    bottomBar = { BottomNavBar(navController) }
+                    topBar = state.topBar,
+                    floatingActionButton = state.fab,
+                    snackbarHost = { KitSnackbarHost(state.snackbarHostState) },
+                    bottomBar = { if (state.showBottomNavBar) BottomNavBar(navController) }
                 ) { padding ->
                     NavHost(
                         navController = navController,

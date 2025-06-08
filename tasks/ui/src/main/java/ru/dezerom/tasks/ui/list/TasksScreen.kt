@@ -1,15 +1,15 @@
 package ru.dezerom.tasks.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -28,13 +28,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.consts.Dimens
 import ru.dezerom.core.tools.string_container.StringContainer
+import ru.dezerom.core.ui.kit.buttons.AccentExpandableFAB
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
+import ru.dezerom.core.ui.kit.widgets.AffectScaffold
 import ru.dezerom.core.ui.kit.widgets.DefaultAlertDialog
 import ru.dezerom.core.ui.kit.widgets.DefaultErrorComponent
 import ru.dezerom.core.ui.kit.widgets.DefaultLoaderComponent
 import ru.dezerom.core.ui.kit.widgets.EmptyListComponent
 import ru.dezerom.core.ui.kit.widgets.TopLevelTopBar
-import ru.dezerom.core.ui.tools.ScaffoldState
+import ru.dezerom.core.ui.tools.ScaffoldStateHolder
+import ru.dezerom.core.ui.tools.isScrolledToBottom
 import ru.dezerom.tasks.domain.models.TaskModel
 import ru.dezerom.tasks.ui.create.CreateTaskBottomSheet
 import ru.dezerom.tasks.ui.edit.EditTaskBottomSheet
@@ -49,7 +52,6 @@ fun TasksListScreen() {
 
     TasksListComponent(
         state = state,
-        snackbarHostState = viewModel.snackbarHostState,
         onEvent = viewModel::onEvent,
         onAddTaskClicked = { showAddTask = true },
         addTaskBuilder = {
@@ -66,7 +68,6 @@ fun TasksListScreen() {
 @Composable
 internal fun TasksListComponent(
     state: TasksListState,
-    snackbarHostState: SnackbarHostState,
     onEvent: (TasksListEvent) -> Unit,
     onAddTaskClicked: () -> Unit,
     addTaskBuilder: @Composable () -> Unit,
@@ -74,15 +75,30 @@ internal fun TasksListComponent(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
 
-    ScaffoldState.SetTopBar {
+    ScaffoldStateHolder.SetTopBar {
         TopLevelTopBar(
             title = stringResource(R.string.tasks),
             scrollBehavior = scrollBehavior
         )
     }
 
-    Box(
-//        modifier = Modifier.padding(innerPadding)
+    AffectScaffold(
+        topBar = {
+            TopLevelTopBar(
+                title = stringResource(R.string.tasks),
+                scrollBehavior = scrollBehavior
+            )
+        },
+        fab = {
+            if (state is TasksListState.Loaded) {
+                AccentExpandableFAB(
+                    icon = Icons.Default.Add,
+                    expandedText = stringResource(R.string.add_task),
+                    isExpanded = isScrolledToBottom(listState),
+                    onClick = { onAddTaskClicked() }
+                )
+            }
+        },
     ) {
         when (state) {
             TasksListState.Loading -> Loading()
@@ -331,7 +347,6 @@ private fun TasksListScreenPreview() {
     TaskTrackerTheme {
         TasksListComponent(
             state = state,
-            snackbarHostState = SnackbarHostState(),
             onEvent = {},
             onAddTaskClicked = {},
             addTaskBuilder = {},

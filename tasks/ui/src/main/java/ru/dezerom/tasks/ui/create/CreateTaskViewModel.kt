@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.core.tools.R
 import ru.dezerom.core.tools.string_container.toStringContainer
-import ru.dezerom.core.ui.view_models.BaseViewModel
+import ru.dezerom.core.ui.view_models.BottomSheetBaseViewModel
 import ru.dezerom.tasks.domain.TasksListInteractor
 import ru.dezerom.tasks.ui.models.TaskEditingState
 import ru.dezerom.tasks.ui.notifiers.TasksChangeListenersHolder
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class CreateTaskViewModel @Inject constructor(
     private val interactor: TasksListInteractor
-): BaseViewModel() {
+): BottomSheetBaseViewModel() {
     private val _state = MutableStateFlow(TaskEditingState())
     val state = _state.asStateFlow()
 
