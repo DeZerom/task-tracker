@@ -7,3 +7,7 @@ plugins {
 android {
     namespace = "ru.dezerom.profile.domain"
 }
+
+dependencies {
+    implementation(project(":auth:data"))
+}

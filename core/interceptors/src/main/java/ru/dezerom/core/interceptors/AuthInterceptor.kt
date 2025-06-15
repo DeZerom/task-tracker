@@ -5,10 +5,12 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import ru.dezerom.auth.data.repositories.AuthRepository
 import ru.dezerom.core.tools.errors.unAuthorizedNetworkError
+import ru.dezerom.profile.domain.dispatchers.LogoutDispatcher
+import ru.dezerom.profile.domain.dispatchers.LogoutEvents
 import javax.inject.Inject
 
 internal class AuthInterceptor @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val authRepository: AuthRepository
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return runBlocking {
@@ -27,12 +29,12 @@ internal class AuthInterceptor @Inject constructor(
                         val newToken = authRepository.getAuthToken() ?: throw unAuthorizedNetworkError()
                         return@runBlocking sendRequest(chain, newToken)
                     } else {
-                        authRepository.unAuthorize()
+                        logout()
                         throw unAuthorizedNetworkError()
                     }
                 },
                 onFailure = {
-                    authRepository.unAuthorize()
+                    logout()
                     throw unAuthorizedNetworkError()
                 }
             )
@@ -49,6 +51,11 @@ internal class AuthInterceptor @Inject constructor(
             .build()
 
         return chain.proceed(request)
+    }
+
+    private suspend fun logout() {
+        authRepository.unAuthorize()
+        LogoutDispatcher.dispatchEvent(LogoutEvents.Logout)
     }
 
     companion object {

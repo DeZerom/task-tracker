@@ -7,7 +7,10 @@ class ProfileScreenContract {
     sealed class State {
         data object Loading: State()
         class Error(val error: StringContainer): State()
-        class Loaded(val user: UserModel): State()
+        data class Loaded(
+            val user: UserModel = UserModel.default(),
+            val logoutLoading: Boolean = false
+        ): State()
     }
 
     sealed class Event {

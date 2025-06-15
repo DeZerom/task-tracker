@@ -32,10 +32,13 @@ import ru.dezerom.core.tools.string_container.getString
 import ru.dezerom.core.ui.kit.snackbars.KitSnackbarHost
 import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.kit.theme.TaskTrackerTheme
+import ru.dezerom.core.ui.tools.ProcessSideEffects
 import ru.dezerom.core.ui.tools.ScaffoldStateHolder
 import ru.dezerom.navigation.api.destinations.MainDestinations
 import ru.dezerom.navigation.api.destinations.RootGraph
 import ru.dezerom.navigation.logic.rootNavGraph
+import ru.dezerom.profile.domain.dispatchers.LogoutDispatcher
+import ru.dezerom.profile.domain.dispatchers.LogoutEvents
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -54,6 +57,14 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             val state by ScaffoldStateHolder.state.collectAsState()
+
+            ProcessSideEffects(LogoutDispatcher.flow) {
+                when (it) {
+                    LogoutEvents.Logout -> navController.navigate(RootGraph) {
+                        popUpTo<RootGraph> { inclusive = true }
+                    }
+                }
+            }
 
             TaskTrackerTheme {
                 Scaffold(

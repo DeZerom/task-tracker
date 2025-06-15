@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":auth:data"))
+    implementation(project(":profile:domain"))
 }

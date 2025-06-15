@@ -26,8 +26,8 @@ class ProfileViewModel @Inject constructor(
 
     fun onEvent(event: Event) {
         when (event) {
-            Event.Logout -> TODO()
-            Event.TryAgain -> TODO()
+            Event.Logout -> logout()
+            Event.TryAgain -> initialize()
         }
     }
 
@@ -44,5 +44,15 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         )
+    }
+
+    private fun logout() = viewModelScope.launch {
+        reduceLoadedState { copy(logoutLoading = true) }
+        profileInteractor.logout()
+    }
+
+    private fun reduceLoadedState(reducer: State.Loaded.() -> State) {
+        val s = _state.value as? State.Loaded ?: return
+        reducer(s)
     }
 }
