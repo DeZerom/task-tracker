@@ -222,7 +222,7 @@ private fun Loading() {
 
 @Composable
 private fun ErrorComponent(err: StringContainer, onTryAgain: () -> Unit) {
-    DefaultErrorComponent(err, onTryAgain)
+    DefaultErrorComponent(onTryAgain, err)
 }
 
 @Composable

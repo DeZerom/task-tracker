@@ -23,6 +23,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 implementation(project(":auth:domain"))
                 implementation(project(":auth:data"))
 
+                implementation(project(":profile:data"))
+
                 coreUiDependencies(libs)
                 coreDiDependencies(libs)
                 timberDependencies(libs)

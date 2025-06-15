@@ -26,7 +26,7 @@ import ru.dezerom.core.ui.kit.text_style.TS
 import ru.dezerom.core.ui.test_tools.TestTags
 
 @Composable
-fun DefaultErrorComponent(err: StringContainer, onTryAgain: () -> Unit) {
+fun DefaultErrorComponent(onTryAgain: () -> Unit, err: StringContainer) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -47,4 +47,7 @@
 
     <string name="profile">Профиль</string>
     <string name="logout">Выйти из аккаунта</string>
+    <string name="profile_tasks_count">Всего задач: %d</string>
+    <string name="profile_completed_task">Выполненных задач: %d</string>
+    <string name="profile_uncompleted_tasks">Невыполненных задач: %d</string>
 </resources>
