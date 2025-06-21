@@ -140,28 +140,6 @@ internal fun TasksListComponent(
                 }
         }
     }
-
-//    Scaffold(
-//        topBar = {
-//            TopLevelTopBar(
-//                title = stringResource(R.string.tasks),
-//                scrollBehavior = scrollBehavior
-//            )
-//        },
-//        floatingActionButton = {
-//            if (state is TasksListState.Loaded) {
-//                AccentExpandableFAB(
-//                    icon = Icons.Default.Add,
-//                    expandedText = stringResource(R.string.add_task),
-//                    isExpanded = isScrolledToBottom(listState),
-//                    onClick = { onAddTaskClicked() }
-//                )
-//            }
-//        },
-//        snackbarHost = { KitSnackbarHost(snackbarHostState) }
-//    ) { innerPadding ->
-//
-//    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -8,4 +8,4 @@ class NetworkError(val messageRes: StringContainer): IOException()
 
 fun unknownNetworkError() = NetworkError(StringContainer.StringRes(R.string.unknown_error))
 
-fun unAuthorizedNetworkError() = NetworkError(StringContainer.StringRes(R.string.authorize))
+fun unAuthorizedNetworkError() = NetworkError(StringContainer.StringRes(R.string.auth_error))
