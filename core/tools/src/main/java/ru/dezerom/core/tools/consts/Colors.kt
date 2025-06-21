@@ -12,4 +12,6 @@ object Colors {
     val blue = Color(0xFF1993AE)
     val error = Color(0xFF8A1C1C)
     val red = Color(0xFFCC2C2C)
+
+    val textSelectionBackground = Color.White.copy(alpha = .33f)
 }
