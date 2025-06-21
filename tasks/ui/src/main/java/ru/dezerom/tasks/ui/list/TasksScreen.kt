@@ -50,17 +50,16 @@ fun TasksListScreen() {
 
     var showAddTask by remember { mutableStateOf(false) }
 
+    if (showAddTask) {
+        CreateTaskBottomSheet(
+            onDismiss = { showAddTask = false }
+        )
+    }
+
     TasksListComponent(
         state = state,
         onEvent = viewModel::onEvent,
         onAddTaskClicked = { showAddTask = true },
-        addTaskBuilder = {
-            if (showAddTask) {
-                CreateTaskBottomSheet(
-                    onDismiss = { showAddTask = false }
-                )
-            }
-        },
     )
 }
 
@@ -70,7 +69,6 @@ internal fun TasksListComponent(
     state: TasksListState,
     onEvent: (TasksListEvent) -> Unit,
     onAddTaskClicked: () -> Unit,
-    addTaskBuilder: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
@@ -110,8 +108,6 @@ internal fun TasksListComponent(
                 if (state.tasks.isEmpty()) {
                     EmptyListComponent(stringResource(R.string.tasks_empty))
                 } else {
-                    addTaskBuilder()
-
                     if (state.editingTask != null) {
                         EditTaskBottomSheet(
                             onDismiss = { onEvent(TasksListEvent.OnEditTaskClosed) },
@@ -327,7 +323,6 @@ private fun TasksListScreenPreview() {
             state = state,
             onEvent = {},
             onAddTaskClicked = {},
-            addTaskBuilder = {},
         )
     }
 }
